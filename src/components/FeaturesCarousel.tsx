@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Card3D } from './3d/Card3D';
+import Card3D from './3d/Card3D';
 import { 
   Carousel,
   CarouselContent,
