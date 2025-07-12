@@ -10,42 +10,36 @@ import {
 } from "@/components/ui/carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface FeatureImage {
-  src: string;
+interface Feature {
   title: string;
   description: string;
   feature: string;
 }
 
-const featureImages: FeatureImage[] = [
+const features: Feature[] = [
   {
-    src: "/lovable-uploads/79bf9c55-24c6-4feb-84ff-310a64214018.png",
     title: "Collaborative Learning",
-    description: "Connect with peers and experts",
+    description: "Connect with peers and experts in your field for enhanced learning experiences",
     feature: "Community-Driven"
   },
   {
-    src: "/lovable-uploads/43cf2307-26cc-408d-b7ec-b67811205dab.png",
     title: "Skill Exchange",
-    description: "Share your expertise, learn new skills",
+    description: "Share your expertise while learning new skills from others in the community",
     feature: "Peer-to-Peer Learning"
   },
   {
-    src: "/lovable-uploads/609db0c7-2e29-405b-ad44-bee4b401e14e.png",
     title: "Interactive Courses",
-    description: "Hands-on learning experiences",
+    description: "Engage with hands-on projects and real-world applications",
     feature: "Project-Based"
   },
   {
-    src: "/lovable-uploads/44320338-928a-4f87-80c5-b108d09edc5e.png",
     title: "Expert Mentorship",
-    description: "Get guidance from industry professionals",
+    description: "Get personalized guidance from industry professionals and experienced mentors",
     feature: "1-on-1 Mentoring"
   },
   {
-    src: "/lovable-uploads/54ffc2eb-8b8d-4893-beca-68661a996ce4.png",
     title: "Progress Tracking",
-    description: "Monitor your learning journey",
+    description: "Monitor your learning journey with detailed analytics and milestone tracking",
     feature: "Analytics & Insights"
   }
 ];
@@ -61,24 +55,15 @@ const FeaturesCarousel = ({ className = "", variant = 'hero' }: FeaturesCarousel
       <div className={`relative ${className}`}>
         <Carousel className="w-full max-w-md mx-auto">
           <CarouselContent>
-            {featureImages.map((image, index) => (
+            {features.map((feature, index) => (
               <CarouselItem key={index}>
                 <Card3D variant="tilt" className="relative overflow-hidden">
-                  <div className="relative group">
-                    <img 
-                      src={image.src}
-                      alt={image.title}
-                      className="w-full h-64 md:h-80 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent rounded-lg" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-xs px-2 py-1 rounded-full inline-block mb-2 font-medium">
-                        {image.feature}
-                      </div>
-                      <h3 className="text-lg font-bold mb-1">{image.title}</h3>
-                      <p className="text-sm text-gray-200">{image.description}</p>
+                  <div className="relative group p-8 bg-gradient-to-br from-forest to-forest-light rounded-lg min-h-[280px] flex flex-col justify-center">
+                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-xs px-3 py-1 rounded-full inline-block mb-4 font-medium text-white w-fit">
+                      {feature.feature}
                     </div>
+                    <h3 className="text-2xl font-bold mb-4 text-white">{feature.title}</h3>
+                    <p className="text-white/80 text-sm leading-relaxed">{feature.description}</p>
                   </div>
                 </Card3D>
               </CarouselItem>
@@ -95,23 +80,14 @@ const FeaturesCarousel = ({ className = "", variant = 'hero' }: FeaturesCarousel
     <div className={`relative ${className}`}>
       <ScrollArea className="w-full whitespace-nowrap">
         <div className="flex space-x-4 p-4">
-          {featureImages.map((image, index) => (
+          {features.map((feature, index) => (
             <Card3D key={index} variant="hover" className="flex-shrink-0 w-64">
-              <div className="relative group overflow-hidden rounded-lg">
-                <img 
-                  src={image.src}
-                  alt={image.title}
-                  className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-xs px-2 py-1 rounded-full inline-block mb-1 font-medium">
-                    {image.feature}
-                  </div>
-                  <h4 className="text-sm font-semibold mb-1">{image.title}</h4>
-                  <p className="text-xs text-gray-200">{image.description}</p>
+              <div className="relative group overflow-hidden rounded-lg p-6 bg-gradient-to-br from-forest to-forest-light min-h-[200px] flex flex-col justify-center">
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-xs px-2 py-1 rounded-full inline-block mb-3 font-medium text-white w-fit">
+                  {feature.feature}
                 </div>
+                <h4 className="text-lg font-semibold mb-3 text-white">{feature.title}</h4>
+                <p className="text-xs text-white/70 leading-relaxed">{feature.description}</p>
               </div>
             </Card3D>
           ))}

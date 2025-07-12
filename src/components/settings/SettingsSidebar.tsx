@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { User, Settings, Brush, Accessibility, BellRing, Globe, Shield, List, Database } from 'lucide-react';
+import { User, Settings, Brush, Accessibility, BellRing, List, Database } from 'lucide-react';
 
 interface SettingsSidebarProps {
   activeTab: string;
@@ -19,12 +18,12 @@ const SettingsSidebar = ({
   const menuItems = [
     {
       id: 'account',
-      label: 'Public profile',
+      label: 'Public Profile',
       icon: User
     },
     {
       id: 'privacy',
-      label: 'Account',
+      label: 'Privacy',
       icon: Settings
     },
     {
