@@ -1,8 +1,6 @@
-
 import React from "react";
 import { Quote } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-
 const Testimonials = () => {
   const testimonials = [{
     quote: "Taskmason transformed my learning experience. The personalized learning paths and expert feedback helped me land my dream job in tech.",
@@ -20,9 +18,7 @@ const Testimonials = () => {
     role: "Data Science Mentor",
     image: "/lovable-uploads/54ffc2eb-8b8d-4893-beca-68661a996ce4.png"
   }];
-
-  return (
-    <section className="py-16 px-4 backdrop-blur-sm">
+  return <section className="py-16 px-4 backdrop-blur-sm">
       <div className="container mx-auto">
         <ScrollReveal>
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -32,29 +28,21 @@ const Testimonials = () => {
         </ScrollReveal>
         
         <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <ScrollReveal key={index} delay={index * 0.2}>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          {testimonials.map((testimonial, index) => <ScrollReveal key={index} delay={index * 0.2}>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20 px-[14px]">
                 <Quote className="h-8 w-8 text-primary mb-4" />
                 <p className="text-white/90 mb-6 italic">"{testimonial.quote}"</p>
                 <div className="flex items-center">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.author}
-                    className="w-12 h-12 rounded-full object-cover mr-4"
-                  />
+                  <img src={testimonial.image} alt={testimonial.author} className="w-12 h-12 rounded-full object-cover mr-4" />
                   <div>
                     <h4 className="text-white font-semibold">{testimonial.author}</h4>
                     <p className="text-white/70 text-sm">{testimonial.role}</p>
                   </div>
                 </div>
               </div>
-            </ScrollReveal>
-          ))}
+            </ScrollReveal>)}
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Testimonials;
