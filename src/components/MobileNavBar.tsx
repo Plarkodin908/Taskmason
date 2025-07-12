@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Home, BookOpen, ShoppingBag, User, CreditCard, Bell, Settings, MessageCircle, Shield, Search } from "lucide-react";
@@ -9,6 +8,7 @@ import { toast } from "sonner";
 import UserSearch from "@/components/UserSearch";
 import NotificationDropdown from "@/components/notifications/NotificationDropdown";
 import { useRef } from "react";
+import { useScrollNavigation } from "@/hooks/useScrollNavigation";
 
 const MobileNavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,12 +17,9 @@ const MobileNavBar = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const notificationButtonRef = useRef<HTMLButtonElement>(null);
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
-  const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const { visible } = useScrollNavigation();
 
   // Check if device is mobile
   useEffect(() => {
@@ -35,26 +32,6 @@ const MobileNavBar = () => {
     window.addEventListener('resize', checkIfMobile);
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
-
-  // Hide navigation on scroll down for better experience
-  useEffect(() => {
-    const controlNavbar = () => {
-      if (window.scrollY > 100) {
-        if (window.scrollY > lastScrollY) {
-          setVisible(false);
-        } else {
-          setVisible(true);
-        }
-      } else {
-        setVisible(true);
-      }
-      setLastScrollY(window.scrollY);
-    };
-    window.addEventListener('scroll', controlNavbar);
-    return () => {
-      window.removeEventListener('scroll', controlNavbar);
-    };
-  }, [lastScrollY]);
 
   // Close menu when route changes
   useEffect(() => {

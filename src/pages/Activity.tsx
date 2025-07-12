@@ -1,213 +1,245 @@
 
-import React from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, MessageSquare, BookOpen, Award, Star, Heart, Calendar, Clock } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Activity as ActivityIcon, 
+  BookOpen, 
+  Users, 
+  MessageSquare, 
+  Award, 
+  Calendar,
+  TrendingUp,
+  Clock,
+  Target
+} from "lucide-react";
+import RefinedPageLayout from "@/components/layout/RefinedPageLayout";
 
 const Activity = () => {
-  // In a real app, this would fetch from an API
+  const [selectedPeriod, setSelectedPeriod] = useState("week");
+  const [selectedType, setSelectedType] = useState("all");
+
   const activities = [
     {
       id: 1,
-      type: "tutorial",
-      title: "Completed 'React Basics' tutorial",
+      type: "learning",
+      title: "Completed JavaScript Fundamentals",
+      description: "Finished all 12 lessons and passed the final quiz",
       timestamp: "2 hours ago",
-      icon: <BookOpen className="h-5 w-5 text-mint" />,
+      icon: BookOpen,
+      points: 150
     },
     {
       id: 2,
-      type: "skill",
-      title: "Skill 'JavaScript' verified",
-      timestamp: "Yesterday",
-      icon: <Check className="h-5 w-5 text-mint" />,
+      type: "social",
+      title: "Connected with Sarah Johnson",
+      description: "New connection in React development",
+      timestamp: "5 hours ago",
+      icon: Users,
+      points: 25
     },
     {
       id: 3,
-      type: "message",
-      title: "Received a message from Emma",
-      timestamp: "2 days ago", 
-      icon: <MessageSquare className="h-5 w-5 text-mint" />,
+      type: "achievement",
+      title: "Earned 'Coding Streak' badge",
+      description: "Maintained 7-day learning streak",
+      timestamp: "Yesterday",
+      icon: Award,
+      points: 200
     },
     {
       id: 4,
-      type: "achievement",
-      title: "Earned 'Profile Pro' badge",
-      timestamp: "3 days ago",
-      icon: <Award className="h-5 w-5 text-mint" />,
+      type: "discussion",
+      title: "Answered question in React forum",
+      description: "Helped with state management issue",
+      timestamp: "Yesterday",
+      icon: MessageSquare,
+      points: 50
     },
     {
-      id: 5, 
-      type: "rating",
-      title: "Received a 5-star rating from James",
-      timestamp: "4 days ago",
-      icon: <Star className="h-5 w-5 text-mint" />
+      id: 5,
+      type: "learning",
+      title: "Started Advanced React Course",
+      description: "Enrolled in advanced hooks and patterns",
+      timestamp: "2 days ago",
+      icon: BookOpen,
+      points: 0
     },
     {
       id: 6,
-      type: "like",
-      title: "John liked your tutorial on CSS Grid",
-      timestamp: "5 days ago",
-      icon: <Heart className="h-5 w-5 text-mint" />
-    },
-    {
-      id: 7,
-      type: "appointment",
-      title: "Scheduled session with Michael",
-      timestamp: "1 week ago",
-      icon: <Calendar className="h-5 w-5 text-mint" />
+      type: "session",
+      title: "Mentoring Session with Alex",
+      description: "1-hour portfolio review session",
+      timestamp: "3 days ago",
+      icon: Calendar,
+      points: 100
     }
+  ];
+
+  const stats = [
+    { label: "Total Points", value: "2,485", icon: Target, change: "+12%" },
+    { label: "Courses Completed", value: "18", icon: BookOpen, change: "+3" },
+    { label: "Connections Made", value: "34", icon: Users, change: "+5" },
+    { label: "Hours Learned", value: "127", icon: Clock, change: "+8h" }
+  ];
+
+  const periods = [
+    { id: "day", label: "Today" },
+    { id: "week", label: "This Week" },
+    { id: "month", label: "This Month" },
+    { id: "all", label: "All Time" }
   ];
 
   const activityTypes = [
-    { value: "all", label: "All Activities" },
-    { value: "tutorial", label: "Tutorials" },
-    { value: "skill", label: "Skills" },
-    { value: "message", label: "Messages" },
-    { value: "achievement", label: "Achievements" },
-    { value: "appointment", label: "Appointments" }
+    { id: "all", label: "All Activity" },
+    { id: "learning", label: "Learning" },
+    { id: "social", label: "Social" },
+    { id: "achievement", label: "Achievements" },
+    { id: "discussion", label: "Discussions" },
+    { id: "session", label: "Sessions" }
   ];
 
-  const [filter, setFilter] = React.useState("all");
-  const [timeRange, setTimeRange] = React.useState("all");
+  const filteredActivities = selectedType === "all" 
+    ? activities 
+    : activities.filter(a => a.type === selectedType);
 
-  const filteredActivities = activities.filter(activity => {
-    if (filter !== "all" && activity.type !== filter) {
-      return false;
-    }
-    return true;
-  });
+  const getTypeColor = (type: string) => {
+    const colors = {
+      learning: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+      social: "bg-green-500/10 text-green-400 border-green-500/20",
+      achievement: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+      discussion: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+      session: "bg-mint/10 text-mint border-mint/20"
+    };
+    return colors[type as keyof typeof colors] || "bg-gray-500/10 text-gray-400 border-gray-500/20";
+  };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-white">Activity History</h1>
-        <Button 
-          onClick={() => window.location.href = "/dashboard"} 
-          variant="outline"
-          className="border-mint/20 text-mint hover:bg-mint/10"
-        >
-          Back to Dashboard
-        </Button>
-      </div>
+    <RefinedPageLayout title="Activity Dashboard" backUrl="/dashboard">
+      <div className="max-w-6xl mx-auto">
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {stats.map((stat, index) => (
+            <Card key={index} className="bg-forest-light border border-mint/10 p-6">
+              <div className="flex items-center justify-between mb-2">
+                <stat.icon className="h-8 w-8 text-mint" />
+                <Badge variant="outline" className="border-mint/20 text-mint">
+                  {stat.change}
+                </Badge>
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+              <div className="text-white/70 text-sm">{stat.label}</div>
+            </Card>
+          ))}
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <div className="lg:col-span-1">
-          <Card className="bg-forest-light border border-mint/10 p-6 sticky top-8">
-            <h3 className="text-xl font-bold mb-4 text-white">Filters</h3>
+        {/* Filters */}
+        <Card className="bg-forest-light border border-mint/10 p-6 mb-8">
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex-1">
+              <h3 className="text-white font-medium mb-3">Time Period</h3>
+              <div className="flex flex-wrap gap-2">
+                {periods.map(period => (
+                  <Button
+                    key={period.id}
+                    variant={selectedPeriod === period.id ? "default" : "outline"}
+                    size="sm"
+                    className={`${
+                      selectedPeriod === period.id
+                        ? "bg-mint hover:bg-mint/90 text-forest"
+                        : "border-mint/20 text-white hover:bg-mint/10"
+                    } hover-scale`}
+                    onClick={() => setSelectedPeriod(period.id)}
+                  >
+                    {period.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
             
-            <div className="mb-6">
-              <h4 className="font-medium text-white mb-2">Activity Type</h4>
-              <div className="space-y-2">
+            <div className="flex-1">
+              <h3 className="text-white font-medium mb-3">Activity Type</h3>
+              <div className="flex flex-wrap gap-2">
                 {activityTypes.map(type => (
-                  <div key={type.value} className="flex items-center">
-                    <input 
-                      type="radio" 
-                      id={`type-${type.value}`} 
-                      name="activity-type"
-                      checked={filter === type.value}
-                      onChange={() => setFilter(type.value)}
-                      className="mr-2 accent-mint"
-                    />
-                    <label htmlFor={`type-${type.value}`} className="text-white/80">
-                      {type.label}
-                    </label>
-                  </div>
+                  <Button
+                    key={type.id}
+                    variant={selectedType === type.id ? "default" : "outline"}
+                    size="sm"
+                    className={`${
+                      selectedType === type.id
+                        ? "bg-mint hover:bg-mint/90 text-forest"
+                        : "border-mint/20 text-white hover:bg-mint/10"
+                    } hover-scale`}
+                    onClick={() => setSelectedType(type.id)}
+                  >
+                    {type.label}
+                  </Button>
                 ))}
               </div>
             </div>
-            
-            <div>
-              <h4 className="font-medium text-white mb-2">Time Range</h4>
-              <div className="space-y-2">
-                {[
-                  { value: "all", label: "All Time" },
-                  { value: "today", label: "Today" },
-                  { value: "week", label: "This Week" },
-                  { value: "month", label: "This Month" }
-                ].map(range => (
-                  <div key={range.value} className="flex items-center">
-                    <input 
-                      type="radio" 
-                      id={`range-${range.value}`} 
-                      name="time-range"
-                      checked={timeRange === range.value}
-                      onChange={() => setTimeRange(range.value)}
-                      className="mr-2 accent-mint"
-                    />
-                    <label htmlFor={`range-${range.value}`} className="text-white/80">
-                      {range.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <Button 
-              onClick={() => {
-                setFilter("all");
-                setTimeRange("all");
-              }}
-              className="w-full mt-6 bg-mint/10 text-mint hover:bg-mint/20"
-            >
-              Reset Filters
-            </Button>
-          </Card>
-        </div>
-        
-        <div className="lg:col-span-3">
-          <Card className="bg-forest-light border border-mint/10 p-6">
-            <div className="flex items-center gap-2 mb-6">
-              <Clock className="h-5 w-5 text-mint" />
-              <h3 className="text-xl font-bold text-white">Activity Timeline</h3>
-            </div>
-            
-            {filteredActivities.length > 0 ? (
-              <div className="relative">
-                <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-mint/30"></div>
-                <div className="space-y-6 pl-10 relative">
-                  {filteredActivities.map(activity => (
-                    <div key={activity.id} className="relative">
-                      <div className="absolute -left-10 top-1.5 w-4 h-4 rounded-full bg-mint flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-forest"></div>
-                      </div>
-                      <Card className="bg-forest border border-mint/10 p-4 hover:border-mint/30 transition-all hover:translate-x-1">
-                        <div className="flex items-start gap-3">
-                          <div className="bg-forest-light p-2 rounded-full flex-shrink-0">
-                            {activity.icon}
-                          </div>
-                          <div>
-                            <p className="text-white font-medium">{activity.title}</p>
-                            <p className="text-white/60 text-sm">{activity.timestamp}</p>
-                          </div>
-                        </div>
-                      </Card>
+          </div>
+        </Card>
+
+        {/* Activity Feed */}
+        <Card className="bg-forest-light border border-mint/10 p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <ActivityIcon className="h-6 w-6 text-mint" />
+            <h2 className="text-xl font-bold text-white">Recent Activity</h2>
+            <Badge variant="outline" className="border-mint/20 text-mint">
+              {filteredActivities.length} activities
+            </Badge>
+          </div>
+
+          <div className="space-y-4">
+            {filteredActivities.map(activity => (
+              <div 
+                key={activity.id}
+                className="flex items-start gap-4 p-4 bg-forest rounded-lg border border-mint/10 hover:border-mint/30 transition-all"
+              >
+                <div className="p-2 rounded-full bg-mint/10">
+                  <activity.icon className="h-5 w-5 text-mint" />
+                </div>
+                
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-medium text-white">{activity.title}</h3>
+                    <div className="flex items-center gap-2">
+                      {activity.points > 0 && (
+                        <Badge className="bg-mint/10 text-mint border-mint/20">
+                          +{activity.points} pts
+                        </Badge>
+                      )}
+                      <Badge 
+                        variant="outline"
+                        className={getTypeColor(activity.type)}
+                      >
+                        {activity.type}
+                      </Badge>
                     </div>
-                  ))}
+                  </div>
+                  <p className="text-white/70 text-sm mb-2">{activity.description}</p>
+                  <div className="flex items-center gap-2 text-white/50 text-xs">
+                    <Clock className="h-3 w-3" />
+                    <span>{activity.timestamp}</span>
+                  </div>
                 </div>
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <div className="bg-forest-light p-4 rounded-full mb-4">
-                  <Clock className="h-8 w-8 text-mint/40" />
-                </div>
-                <h4 className="text-lg font-medium text-white mb-2">No activities found</h4>
-                <p className="text-white/60 mb-4">Try changing your filters to see more activities</p>
-                <Button 
-                  onClick={() => {
-                    setFilter("all");
-                    setTimeRange("all");
-                  }}
-                  variant="outline"
-                  className="border-mint/20 text-mint hover:bg-mint/10"
-                >
-                  Reset Filters
-                </Button>
-              </div>
-            )}
-          </Card>
-        </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <Button 
+              variant="outline"
+              className="border-mint/20 text-mint hover:bg-mint/10 hover-scale"
+            >
+              <TrendingUp className="mr-2 h-4 w-4" />
+              View Detailed Analytics
+            </Button>
+          </div>
+        </Card>
       </div>
-    </div>
+    </RefinedPageLayout>
   );
 };
 
