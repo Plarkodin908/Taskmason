@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen, Users, GraduationCap, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -9,6 +8,7 @@ import FloatingShapes from "./3d/FloatingShapes";
 import Card3D from "./3d/Card3D";
 import Button3D from "./3d/Button3D";
 import Text3D from "./3d/Text3D";
+import FeaturesCarousel from "./FeaturesCarousel";
 
 const Hero = () => {
   const { user } = useAuth();
@@ -88,18 +88,7 @@ const Hero = () => {
           </ScrollReveal>
           
           <ScrollReveal direction="right" className="w-full md:w-1/2 flex justify-center">
-            <Card3D variant="tilt" className="relative">
-              {/* Animated collaboration illustration */}
-              <div className="relative z-20">
-                <img 
-                  alt="Users collaborating" 
-                  className="max-w-full w-full md:max-w-md mx-auto float-3d" 
-                  src="/lovable-uploads/79bf9c55-24c6-4feb-84ff-310a64214018.png" 
-                  loading="eager"
-                />
-              </div>
-              <div className="absolute -z-10 w-full h-full bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-full blur-3xl shape-3d"></div>
-            </Card3D>
+            <FeaturesCarousel variant="hero" className="relative z-20" />
           </ScrollReveal>
         </div>
         

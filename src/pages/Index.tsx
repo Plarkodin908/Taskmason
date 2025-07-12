@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -15,6 +14,7 @@ import Testimonials from "@/components/Testimonials";
 import { useEffect } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import MobileNavBar from "@/components/MobileNavBar";
+import FeaturesCarousel from "@/components/FeaturesCarousel";
 
 const Index = () => {
   const { user } = useAuth();
@@ -76,6 +76,19 @@ const Index = () => {
         
         {/* Feature Highlights with Icons and Descriptions */}
         <Features />
+        
+        {/* Additional Features Carousel Section */}
+        <section className="py-16 px-4 backdrop-blur-sm">
+          <div className="container mx-auto">
+            <ScrollReveal>
+              <div className="text-center max-w-2xl mx-auto mb-8">
+                <h2 className="text-3xl font-bold mb-4 text-white">Discover What Makes Us Different</h2>
+                <p className="text-white/80">Explore our innovative features that transform how you learn and grow.</p>
+              </div>
+              <FeaturesCarousel variant="section" className="mt-8" />
+            </ScrollReveal>
+          </div>
+        </section>
         
         {/* Stats Section */}
         <ScrollReveal>
