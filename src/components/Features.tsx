@@ -1,54 +1,81 @@
-import React from "react";
-import { Star, Award, ShieldCheck, BookOpen, Users, GraduationCap, BarChart, MessageSquare } from "lucide-react";
+
+import { BookOpen, Users, Award, MessageSquare, Zap, Shield } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import Card3D from "./3d/Card3D";
+import Text3D from "./3d/Text3D";
+
 const Features = () => {
-  const features = [{
-    icon: BookOpen,
-    title: "Expert Courses",
-    description: "Access high-quality courses created by industry professionals with proven expertise."
-  }, {
-    icon: Users,
-    title: "Community Learning",
-    description: "Join a supportive community of learners and mentors who help each other grow."
-  }, {
-    icon: Award,
-    title: "Skill Certification",
-    description: "Earn verifiable certificates that showcase your expertise to employers."
-  }, {
-    icon: GraduationCap,
-    title: "Personalized Paths",
-    description: "Follow learning paths tailored to your specific career goals and interests."
-  }, {
-    icon: BarChart,
-    title: "Progress Tracking",
-    description: "Monitor your learning journey with detailed analytics and achievement badges."
-  }, {
-    icon: MessageSquare,
-    title: "Direct Mentorship",
-    description: "Connect directly with experts for personalized guidance and feedback."
-  }];
-  return <section className="gradient-rain-background py-20 px-4" id="features">
+  const features = [
+    {
+      icon: BookOpen,
+      title: "Expert-Led Courses",
+      description: "Learn from industry professionals with real-world experience and proven track records."
+    },
+    {
+      icon: Users,
+      title: "Community Learning",
+      description: "Connect with peers, join study groups, and collaborate on projects together."
+    },
+    {
+      icon: Award,
+      title: "Skill Verification",
+      description: "Earn verified badges and certificates to showcase your expertise to employers."
+    },
+    {
+      icon: MessageSquare,
+      title: "Interactive Discussions",
+      description: "Engage in meaningful conversations and get personalized feedback from instructors."
+    },
+    {
+      icon: Zap,
+      title: "Personalized Learning",
+      description: "AI-powered recommendations adapt to your learning style and pace."
+    },
+    {
+      icon: Shield,
+      title: "Secure Platform",
+      description: "Your data and progress are protected with enterprise-grade security."
+    }
+  ];
+
+  return (
+    <section id="features" className="py-16 px-4 relative transform-3d">
       <div className="container mx-auto">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">How Skill Nexus Works</h2>
-          <p className="text-white/80">Our platform simplifies tech learning and knowledge sharing</p>
-        </div>
+        <ScrollReveal className="text-center mb-12">
+          <Text3D as="h2" variant="glow" className="text-3xl md:text-4xl font-bold mb-4 text-white">
+            Why Choose Taskmason?
+          </Text3D>
+          <p className="text-white/80 max-w-2xl mx-auto">
+            Discover the features that make our platform the perfect choice for your learning journey.
+          </p>
+        </ScrollReveal>
         
-        <div className="grid md:grid-cols-3 gap-8">
-          {features.map((feature, index) => <ScrollReveal key={index} delay={(index + 1) * 100} direction={index % 3 === 0 ? 'left' : index % 3 === 2 ? 'right' : 'up'}>
-              <div className="backdrop-blur-sm p-6 md:p-8 rounded-xl border border-gray-700/30 h-full transition-all duration-300 hover:transform hover:scale-105 group py-[20px] bg-gray-800">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center mb-6 bg-gradient-to-br from-gray-700 to-gray-800 group-hover:from-gray-600 group-hover:to-gray-700 transition-all duration-300">
-                  {React.createElement(feature.icon, {
-                className: "w-6 h-6 text-gray-300 group-hover:text-white transition-all duration-300",
-                "aria-hidden": "true"
-              })}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <ScrollReveal key={feature.title} delay={index * 100}>
+              <Card3D 
+                variant="tilt" 
+                glowOnHover
+                className="h-full p-6 rounded-xl glass-card hover:bg-white/10 transition-all duration-300"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center float-3d">
+                    <feature.icon className="h-8 w-8 text-white" />
+                  </div>
+                  <Text3D as="h3" className="text-xl font-semibold text-white">
+                    {feature.title}
+                  </Text3D>
+                  <p className="text-white/70 leading-relaxed">
+                    {feature.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-300 group-hover:text-white transition-colors duration-300">{feature.title}</h3>
-                <p className="text-white/70 group-hover:text-white/90 transition-colors duration-300">{feature.description}</p>
-              </div>
-            </ScrollReveal>)}
+              </Card3D>
+            </ScrollReveal>
+          ))}
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Features;
