@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from "sonner";
 
 // Define user types and membership levels
@@ -29,7 +28,7 @@ interface AuthContextType {
   updateUserCover: (coverUrl: string) => void;
 }
 
-const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Mock user data for demo purposes
 const mockUsers = [
@@ -45,11 +44,11 @@ const mockUsers = [
 ];
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = React.useState<User | null>(null);
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Check for existing session on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     const savedUser = localStorage.getItem('skillNexusUser');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -215,7 +214,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const useAuth = () => {
-  const context = React.useContext(AuthContext);
+  const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
