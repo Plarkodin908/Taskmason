@@ -23,34 +23,79 @@ import SignUp from './pages/auth/SignUp';
 
 const queryClient = new QueryClient();
 
+// Error Boundary Component
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    console.log('Error caught by boundary:', error);
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.log('Error boundary caught error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
+            <p className="mb-4">Error: {this.state.error?.message}</p>
+            <button 
+              onClick={() => this.setState({ hasError: false })}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Try again
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 function App() {
+  console.log('App component rendering...');
+  
   return (
-    <AuthProvider>
+    <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <Toaster />
-        <Router>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/auth/signin" element={<SignIn />} />
-            <Route path="/auth/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/profile/:username?" element={<Profile />} />
-            <Route path="/plan/:planId" element={<PlanDetails />} />
-            <Route path="/payment/:planId" element={<PaymentPage />} />
-            <Route path="/import" element={<ImportContent />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/achievements" element={<Achievements />} />
-            <Route path="/activity" element={<Activity />} />
-            <Route path="/matches" element={<Matches />} />
-            <Route path="/matches/:action" element={<Matches />} />
-            <Route path="/skills" element={<Skills />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-          </Routes>
-        </Router>
+        <AuthProvider>
+          <Toaster />
+          <Router>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/auth/signin" element={<SignIn />} />
+              <Route path="/auth/signup" element={<SignUp />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/profile/:username?" element={<Profile />} />
+              <Route path="/plan/:planId" element={<PlanDetails />} />
+              <Route path="/payment/:planId" element={<PaymentPage />} />
+              <Route path="/import" element={<ImportContent />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/achievements" element={<Achievements />} />
+              <Route path="/activity" element={<Activity />} />
+              <Route path="/matches" element={<Matches />} />
+              <Route path="/matches/:action" element={<Matches />} />
+              <Route path="/skills" element={<Skills />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+            </Routes>
+          </Router>
+        </AuthProvider>
       </QueryClientProvider>
-    </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
