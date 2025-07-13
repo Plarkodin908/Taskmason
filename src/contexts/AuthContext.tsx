@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+import React from 'react';
 import { toast } from "sonner";
 
 // Define user types and membership levels
@@ -28,7 +29,7 @@ interface AuthContextType {
   updateUserCover: (coverUrl: string) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 // Mock user data for demo purposes
 const mockUsers = [
@@ -43,12 +44,12 @@ const mockUsers = [
   }
 ];
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = React.useState<User | null>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   // Check for existing session on component mount
-  useEffect(() => {
+  React.useEffect(() => {
     const savedUser = localStorage.getItem('skillNexusUser');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -89,7 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         return { shouldRedirect: true, redirectTo: '/dashboard' };
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.message || 'Failed to sign in');
       throw error;
     } finally {
@@ -125,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       toast.success('Account created successfully!');
       return { shouldRedirect: true, redirectTo: '/profile' };
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.message || 'Failed to create account');
       throw error;
     } finally {
@@ -214,7 +215,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = React.useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
