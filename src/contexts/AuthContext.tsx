@@ -16,8 +16,7 @@ export interface User {
   verificationStatus: VerificationStatus;
 }
 
-interface AuthContextType {
-  user: User | null;
+interface AuthContextType;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
   signUp: (email: string, password: string, name: string) => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
@@ -44,25 +43,16 @@ const mockUsers = [
 ];
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  console.log('AuthProvider rendering...');
-  
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Check for existing session on component mount
   useEffect(() => {
-    console.log('AuthProvider useEffect running...');
-    try {
-      const savedUser = localStorage.getItem('skillNexusUser');
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
-      }
-      setIsLoading(false);
-      console.log('AuthProvider initialized successfully');
-    } catch (error) {
-      console.error('Error initializing AuthProvider:', error);
-      setIsLoading(false);
+    const savedUser = localStorage.getItem('skillNexusUser');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
     }
+    setIsLoading(false);
   }, []);
 
   // Sign in function
@@ -204,8 +194,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(false);
     }
   };
-
-  console.log('AuthProvider rendering with user:', user, 'isLoading:', isLoading);
 
   return (
     <AuthContext.Provider value={{ 

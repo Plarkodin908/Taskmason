@@ -61,7 +61,7 @@ const Footer = () => {
             
           </div>
           <div className="md:col-span-2 text-center text-white/60 pt-4">
-            <p className="px-0 my-[51px] py-[86px]">&copy; {new Date().getFullYear()} TASKMASON. All rights reserved.</p>
+            <p className="px-0 py-0 my-0">&copy; {new Date().getFullYear()} TASKMASON. All rights reserved.</p>
           </div>
         </div>
       </div>
