@@ -7,6 +7,8 @@ import VerifiedBadge from "./profile/VerifiedBadge";
 import { toast } from "sonner";
 import UserSearch from "./UserSearch";
 import NotificationDropdown from "./notifications/NotificationDropdown";
+import { useScrollNavigation } from "@/hooks/useScrollNavigation";
+
 const Navbar = () => {
   const {
     user,
@@ -20,6 +22,7 @@ const Navbar = () => {
   const notificationButtonRef = useRef<HTMLButtonElement>(null);
   const isVerified = user?.verificationStatus === "verified";
   const location = useLocation();
+  const { visible } = useScrollNavigation();
 
   // Trigger shine animation on mount
   useEffect(() => {
@@ -48,6 +51,7 @@ const Navbar = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+  
   const handleNotificationsClick = () => {
     if (user) {
       setIsNotificationOpen(!isNotificationOpen);
@@ -55,11 +59,13 @@ const Navbar = () => {
       toast.info("Please sign in to view notifications");
     }
   };
+  
   const toggleSecureNavigation = () => {
     setSecureNavigation(!secureNavigation);
     toast.success(secureNavigation ? "Standard navigation mode enabled" : "Secure navigation mode enabled");
   };
-  return <nav className={`fixed top-0 left-0 w-full z-[70] transition-all duration-300 ${scrolled ? "bg-gray-900/95 backdrop-blur-lg shadow-lg" : "bg-transparent"}`}>
+  
+  return <nav className={`fixed top-0 left-0 w-full z-[70] transition-all duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? "bg-gray-900/95 backdrop-blur-lg shadow-lg" : "bg-transparent"}`}>
       <div className="container mx-auto px-4 py-2 md:py-4 bg-gray-900/90 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -144,4 +150,5 @@ const Navbar = () => {
       </div>
     </nav>;
 };
+
 export default Navbar;
