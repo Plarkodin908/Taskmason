@@ -16,7 +16,8 @@ export interface User {
   verificationStatus: VerificationStatus;
 }
 
-interface AuthContextType;
+interface AuthContextType {
+  user: User | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
   signUp: (email: string, password: string, name: string) => Promise<{ shouldRedirect: boolean; redirectTo: string }>;

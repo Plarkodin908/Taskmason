@@ -22,7 +22,6 @@ const Marketplace = () => {
   const { user } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   
-  // Check if device is mobile
   useEffect(() => {
     const checkIfMobile = () => setIsMobile(window.innerWidth <= 768);
     checkIfMobile();
@@ -32,13 +31,10 @@ const Marketplace = () => {
   
   const searchSuggestions = [
     "Web Development",
-    "Data Science",
+    "Data Science", 
     "UI/UX Design",
     "Mobile App Development",
-    "Machine Learning",
-    "JavaScript",
-    "Python",
-    "React",
+    "Machine Learning"
   ];
   
   const toggleFilters = () => {
@@ -47,27 +43,16 @@ const Marketplace = () => {
   
   const handleImportContent = () => {
     if (user && ["Pro Learner", "Educator"].includes(user.membership)) {
-      navigate("/import-content");
+      navigate("/import");
     } else {
-      toast.info("Importing content requires a Pro Learner membership", {
-        description: "Upgrade your plan to unlock this feature",
-        action: {
-          label: "View Plans",
-          onClick: () => navigate("/pricing"),
-        },
-      });
+      toast.info("Importing content requires a Pro Learner membership");
     }
   };
   
   return (
-    <div className="relative bg-black min-h-screen">
-      {/* Grid pattern background */}
-      <div className="grid-pattern-container"></div>
-      <div className="grid-pattern-overlay"></div>
-      
+    <div className="relative bg-slate-900 min-h-screen">
       <Navbar />
       
-      {/* Desktop Layout with Sidebar */}
       <div className="flex">
         <SkillSidebar />
         
@@ -77,19 +62,14 @@ const Marketplace = () => {
               <MarketplaceHeader />
               {!isMobile && (
                 <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    className="border-mint/20 text-white hover:bg-mint/10 flex items-center gap-2"
-                    onClick={handleImportContent}
-                  >
-                    <Import className="h-4 w-4" />
-                    <span className="hidden md:inline">Import Content</span>
-                    <span className="md:hidden">Import</span>
+                  <Button variant="outline" onClick={handleImportContent}>
+                    <Import className="h-4 w-4 mr-2" />
+                    Import Content
                   </Button>
                   <Link to="/">
-                    <Button variant="outline" className="border-mint/20 text-white hover:bg-mint/10 flex items-center gap-2">
-                      <Home className="h-4 w-4" />
-                      <span className="hidden md:inline">Home</span>
+                    <Button variant="outline">
+                      <Home className="h-4 w-4 mr-2" />
+                      Home
                     </Button>
                   </Link>
                 </div>
@@ -109,7 +89,6 @@ const Marketplace = () => {
             </div>
             
             <FilterPanel showFilters={showFilters} />
-            
             <CourseTabsSection />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
@@ -119,7 +98,6 @@ const Marketplace = () => {
         </div>
       </div>
       
-      {/* Mobile Navigation */}
       <MobileNavBar />
     </div>
   );

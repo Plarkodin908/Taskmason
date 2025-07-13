@@ -19,10 +19,7 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [isCreating, setIsCreating] = useState(false);
-  const {
-    signUp,
-    isLoading
-  } = useAuth();
+  const { signUp, isLoading } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,9 +44,14 @@ const SignUp = () => {
     
     try {
       setIsCreating(true);
-      // Show earth loader for a bit longer to demonstrate the animation
       await new Promise(resolve => setTimeout(resolve, 2000));
-      await signUp(email, password, name);
+      const result = await signUp(email, password, name);
+      
+      // Navigate to the appropriate page
+      if (result.shouldRedirect) {
+        navigate(result.redirectTo);
+      }
+      
       toast.success("Account created successfully!");
     } catch (error: any) {
       setError(error.message || "Failed to create account");
