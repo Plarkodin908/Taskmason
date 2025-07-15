@@ -1,177 +1,19 @@
-
-@import url("./base.css");
-@import url("./animations.css");
-@import url("./modern-animations.css");
-@import url("./3d-effects.css");
-@import url("./responsive.css");
-@import url("./notifications.css");
-@import url("./badges.css");
-@import url("./buttons.css");
-@import url("./cards.css");
-@import url("./backgrounds.css");
-@import url("./grid-pattern.css");
-@import url("./animated-pattern.css");
-@import url("./delivery-animation.css");
-@import url("./earth-loader.css");
-@import url("./loaders.css");
-@import url("./performance.css");
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 84% 4.9%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-
-    --radius: 0.5rem;
-
-    /* Modern gradient color palette */
-    --gradient-pink: #FFE5F1;
-    --gradient-cyan: #B7F5F5;
-    --gradient-purple: #7226FF;
-    --gradient-magenta: #F042FF;
-    --gradient-navy: #010030;
-    --gradient-dark-purple: #160078;
-    
-    /* Legacy colors for compatibility */
-    --forest: var(--gradient-navy);
-    --forest-light: var(--gradient-dark-purple);
-    --mint: var(--gradient-cyan);
-    --sage: var(--gradient-pink);
-    --lavender: var(--gradient-purple);
-    --coral: var(--gradient-magenta);
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 84% 4.9%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
-
-@layer base {
-  * {
-    border-color: hsl(var(--border));
-  }
-  body {
-    color: hsl(var(--foreground));
-  }
-}
-
-/* Modern gradient utility classes */
-.text-gradient-pink { color: var(--gradient-pink); }
-.text-gradient-cyan { color: var(--gradient-cyan); }
-.text-gradient-purple { color: var(--gradient-purple); }
-.text-gradient-magenta { color: var(--gradient-magenta); }
-.text-gradient-navy { color: var(--gradient-navy); }
-.text-gradient-dark-purple { color: var(--gradient-dark-purple); }
-
-.bg-gradient-pink { background-color: var(--gradient-pink); }
-.bg-gradient-cyan { background-color: var(--gradient-cyan); }
-.bg-gradient-purple { background-color: var(--gradient-purple); }
-.bg-gradient-magenta { background-color: var(--gradient-magenta); }
-.bg-gradient-navy { background-color: var(--gradient-navy); }
-.bg-gradient-dark-purple { background-color: var(--gradient-dark-purple); }
-
-.border-gradient-pink { border-color: var(--gradient-pink); }
-.border-gradient-cyan { border-color: var(--gradient-cyan); }
-.border-gradient-purple { border-color: var(--gradient-purple); }
-.border-gradient-magenta { border-color: var(--gradient-magenta); }
-.border-gradient-navy { border-color: var(--gradient-navy); }
-.border-gradient-dark-purple { border-color: var(--gradient-dark-purple); }
-
-/* Legacy utility classes (mapped to new colors) */
-.text-forest { color: var(--forest); }
-.text-forest-light { color: var(--forest-light); }
-.text-mint { color: var(--mint); }
-.text-sage { color: var(--sage); }
-.text-lavender { color: var(--lavender); }
-.text-coral { color: var(--coral); }
-
-.bg-forest { background-color: var(--forest); }
-.bg-forest-light { background-color: var(--forest-light); }
-.bg-mint { background-color: var(--mint); }
-.bg-sage { background-color: var(--sage); }
-.bg-lavender { background-color: var(--lavender); }
-.bg-coral { background-color: var(--coral); }
-
-.border-forest { border-color: var(--forest); }
-.border-forest-light { border-color: var(--forest-light); }
-.border-mint { border-color: var(--mint); }
-.border-sage { border-color: var(--sage); }
-.border-lavender { border-color: var(--lavender); }
-.border-coral { border-color: var(--coral); }
-
-/* Modern gradient backgrounds */
-.bg-gradient-primary { 
-  background: linear-gradient(135deg, var(--gradient-purple), var(--gradient-magenta)); 
-}
-.bg-gradient-secondary { 
-  background: linear-gradient(135deg, var(--gradient-cyan), var(--gradient-pink)); 
-}
-.bg-gradient-dark { 
-  background: linear-gradient(135deg, var(--gradient-navy), var(--gradient-dark-purple)); 
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('./base.css');
+@import url('./animations.css');
+@import url('./modern-animations.css');
+@import url('./buttons.css');
+@import url('./cards.css');
+@import url('./badges.css');
+@import url('./backgrounds.css');
+@import url('./notifications.css');
+@import url('./responsive.css');
+@import url('./3d-effects.css');
+@import url('./educational-3d.css');
+@import url('./animated-pattern.css');
+@import url('./grid-pattern.css');
+@import url('./loaders.css');
+@import url('./earth-loader.css');
+@import url('./delivery-animation.css');
+@import url('./performance.css');
+@import url('./SkillExchangeTheme.css');

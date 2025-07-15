@@ -1,0 +1,422 @@
+
+/* Educational & Sales Themed 3D Elements */
+
+/* 3D Book Animation */
+.book-3d {
+  width: 80px;
+  height: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: floatBook 8s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.3));
+}
+
+.book-spine {
+  position: absolute;
+  width: 12px;
+  height: 100px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  transform: rotateY(-90deg) translateZ(40px);
+  border-radius: 2px;
+}
+
+.book-cover {
+  position: absolute;
+  width: 80px;
+  height: 100px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-radius: 4px;
+  border: 2px solid rgba(99, 102, 241, 0.3);
+}
+
+.book-pages {
+  position: absolute;
+  width: 76px;
+  height: 96px;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  transform: translateZ(8px) translate(2px, 2px);
+  border-radius: 2px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes floatBook {
+  0%, 100% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: translateY(-20px) rotateX(5deg) rotateY(15deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(0deg) rotateY(30deg);
+  }
+  75% {
+    transform: translateY(-15px) rotateX(-5deg) rotateY(15deg);
+  }
+}
+
+/* 3D Shopping Cart Animation */
+.shopping-cart-3d {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: floatCart 10s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(34, 197, 94, 0.3));
+}
+
+.cart-body {
+  position: absolute;
+  width: 50px;
+  height: 40px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-radius: 8px;
+  border: 2px solid rgba(34, 197, 94, 0.3);
+}
+
+.cart-handle {
+  position: absolute;
+  width: 6px;
+  height: 30px;
+  background: linear-gradient(135deg, #15803d, #166534);
+  transform: translateX(-10px) translateY(5px);
+  border-radius: 3px;
+}
+
+.cart-wheels {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #374151, #1f2937);
+  border-radius: 50%;
+  transform: translateY(35px);
+  box-shadow: 30px 0 0 rgba(55, 65, 81, 1);
+}
+
+@keyframes floatCart {
+  0%, 100% {
+    transform: translateY(0px) rotateZ(0deg);
+  }
+  33% {
+    transform: translateY(-15px) rotateZ(5deg);
+  }
+  66% {
+    transform: translateY(-25px) rotateZ(-3deg);
+  }
+}
+
+/* 3D Graduation Cap Animation */
+.graduation-cap-3d {
+  width: 70px;
+  height: 50px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: floatGradCap 12s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(168, 85, 247, 0.3));
+}
+
+.cap-top {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #a855f7, #9333ea);
+  transform: rotateX(0deg);
+  border-radius: 4px;
+  border: 2px solid rgba(168, 85, 247, 0.3);
+}
+
+.cap-base {
+  position: absolute;
+  width: 50px;
+  height: 30px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  transform: translateX(10px) translateY(25px);
+  border-radius: 25px;
+}
+
+.cap-tassel {
+  position: absolute;
+  width: 3px;
+  height: 25px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  transform: translateX(35px) translateY(-5px);
+  border-radius: 2px;
+  animation: swingTassel 3s ease-in-out infinite;
+}
+
+@keyframes floatGradCap {
+  0%, 100% {
+    transform: translateY(0px) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotateY(180deg);
+  }
+}
+
+@keyframes swingTassel {
+  0%, 100% {
+    transform: translateX(35px) translateY(-5px) rotateZ(0deg);
+  }
+  50% {
+    transform: translateX(35px) translateY(-5px) rotateZ(15deg);
+  }
+}
+
+/* 3D School Building Animation */
+.school-building-3d {
+  width: 80px;
+  height: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: float3d 15s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(239, 68, 68, 0.3));
+}
+
+.building-base {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-radius: 4px;
+  border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.building-roof {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 42px solid transparent;
+  border-right: 42px solid transparent;
+  border-bottom: 25px solid #b91c1c;
+  transform: translateY(-25px) translateX(-2px);
+}
+
+.building-door {
+  position: absolute;
+  width: 15px;
+  height: 25px;
+  background: linear-gradient(135deg, #92400e, #78350f);
+  transform: translateX(32px) translateY(55px);
+  border-radius: 2px;
+}
+
+.building-windows {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  transform: translateX(15px) translateY(30px);
+  border-radius: 2px;
+  box-shadow: 25px 0 0 rgba(251, 191, 36, 1), 0 20px 0 rgba(251, 191, 36, 1), 25px 20px 0 rgba(251, 191, 36, 1);
+}
+
+/* Additional Educational Elements */
+.calculator-3d {
+  width: 50px;
+  height: 70px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: float3d-delayed 9s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(75, 85, 99, 0.3));
+}
+
+.calc-body {
+  position: absolute;
+  width: 50px;
+  height: 70px;
+  background: linear-gradient(135deg, #4b5563, #374151);
+  border-radius: 8px;
+  border: 2px solid rgba(75, 85, 99, 0.3);
+}
+
+.calc-screen {
+  position: absolute;
+  width: 40px;
+  height: 15px;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  transform: translateX(5px) translateY(8px);
+  border-radius: 2px;
+}
+
+.calc-buttons {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #6b7280, #4b5563);
+  transform: translateX(8px) translateY(30px);
+  border-radius: 2px;
+  box-shadow: 
+    12px 0 0 rgba(107, 114, 128, 1),
+    24px 0 0 rgba(107, 114, 128, 1),
+    0 12px 0 rgba(107, 114, 128, 1),
+    12px 12px 0 rgba(107, 114, 128, 1),
+    24px 12px 0 rgba(107, 114, 128, 1);
+}
+
+.pencil-3d {
+  width: 8px;
+  height: 80px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: float3d-slow 11s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(245, 158, 11, 0.3));
+}
+
+.pencil-body {
+  position: absolute;
+  width: 8px;
+  height: 60px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-radius: 4px;
+}
+
+.pencil-tip {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 12px solid #78350f;
+  transform: translateY(60px);
+}
+
+.pencil-eraser {
+  position: absolute;
+  width: 10px;
+  height: 8px;
+  background: radial-gradient(circle, #ef4444, #dc2626);
+  transform: translateY(-8px) translateX(-1px);
+  border-radius: 50%;
+}
+
+/* Additional themed elements */
+.notebook-3d, .trophy-3d, .lightbulb-3d, .certificate-3d {
+  animation: float3d 13s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.3));
+}
+
+.notebook-3d {
+  width: 60px;
+  height: 80px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.notebook-cover {
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-radius: 4px;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.notebook-spiral {
+  position: absolute;
+  width: 4px;
+  height: 60px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #e5e7eb 0px,
+    #e5e7eb 3px,
+    #d1d5db 3px,
+    #d1d5db 6px
+  );
+  transform: translateX(-2px) translateY(10px);
+  border-radius: 2px;
+}
+
+.trophy-3d {
+  width: 40px;
+  height: 60px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.trophy-cup {
+  position: absolute;
+  width: 40px;
+  height: 35px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 20px 20px 10px 10px;
+  border: 2px solid rgba(251, 191, 36, 0.3);
+}
+
+.trophy-base {
+  position: absolute;
+  width: 45px;
+  height: 15px;
+  background: linear-gradient(135deg, #92400e, #78350f);
+  transform: translateY(45px) translateX(-2.5px);
+  border-radius: 4px;
+}
+
+.lightbulb-3d {
+  width: 30px;
+  height: 50px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.bulb-glass {
+  position: absolute;
+  width: 30px;
+  height: 35px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 50% 50% 20% 20%;
+  border: 2px solid rgba(251, 191, 36, 0.3);
+}
+
+.bulb-glow {
+  position: absolute;
+  width: 35px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent);
+  transform: translateX(-2.5px) translateY(-2.5px);
+  border-radius: 50%;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    opacity: 0.5;
+    transform: translateX(-2.5px) translateY(-2.5px) scale(1);
+  }
+  to {
+    opacity: 0.8;
+    transform: translateX(-2.5px) translateY(-2.5px) scale(1.1);
+  }
+}
+
+.certificate-3d {
+  width: 70px;
+  height: 50px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cert-paper {
+  position: absolute;
+  width: 70px;
+  height: 50px;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border-radius: 4px;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.cert-ribbon {
+  position: absolute;
+  width: 15px;
+  height: 8px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  transform: translateX(55px) translateY(35px);
+  border-radius: 2px;
+}
+
+.cert-seal {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #fbbf24, #f59e0b);
+  transform: translateX(58px) translateY(32px);
+  border-radius: 50%;
+}
