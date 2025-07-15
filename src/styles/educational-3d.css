@@ -1,14 +1,25 @@
 
-/* Educational & Sales Themed 3D Elements */
+/* Educational Marketplace 3D Elements with Realistic Animations */
 
-/* 3D Book Animation */
+/* Animated Books with Opening/Closing Effects */
 .book-3d {
   width: 80px;
   height: 100px;
   position: relative;
   transform-style: preserve-3d;
-  animation: floatBook 8s ease-in-out infinite;
   filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.3));
+}
+
+.book-opening {
+  animation: bookOpen 6s ease-in-out infinite;
+}
+
+.book-floating {
+  animation: bookFloat 8s ease-in-out infinite;
+}
+
+.book-rotating {
+  animation: bookRotate 10s linear infinite;
 }
 
 .book-spine {
@@ -29,88 +40,234 @@
   border: 2px solid rgba(99, 102, 241, 0.3);
 }
 
+.book-cover-left {
+  transform-origin: left center;
+  animation: bookCoverLeft 6s ease-in-out infinite;
+}
+
+.book-cover-right {
+  transform-origin: right center;
+  transform: rotateY(180deg);
+  animation: bookCoverRight 6s ease-in-out infinite;
+}
+
 .book-pages {
   position: absolute;
   width: 76px;
   height: 96px;
   background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-  transform: translateZ(8px) translate(2px, 2px);
+  transform: translateZ(4px) translate(2px, 2px);
   border-radius: 2px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes floatBook {
-  0%, 100% {
-    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
-  }
-  25% {
-    transform: translateY(-20px) rotateX(5deg) rotateY(15deg);
-  }
-  50% {
-    transform: translateY(-10px) rotateX(0deg) rotateY(30deg);
-  }
-  75% {
-    transform: translateY(-15px) rotateX(-5deg) rotateY(15deg);
-  }
+@keyframes bookOpen {
+  0%, 80%, 100% { transform: translateY(0px) rotateX(0deg); }
+  20%, 60% { transform: translateY(-15px) rotateX(-10deg); }
 }
 
-/* 3D Shopping Cart Animation */
-.shopping-cart-3d {
+@keyframes bookCoverLeft {
+  0%, 80%, 100% { transform: rotateY(0deg); }
+  20%, 60% { transform: rotateY(-120deg); }
+}
+
+@keyframes bookCoverRight {
+  0%, 80%, 100% { transform: rotateY(180deg); }
+  20%, 60% { transform: rotateY(60deg); }
+}
+
+@keyframes bookFloat {
+  0%, 100% { transform: translateY(0px) rotateY(0deg); }
+  50% { transform: translateY(-20px) rotateY(15deg); }
+}
+
+@keyframes bookRotate {
+  0% { transform: rotateY(0deg) rotateX(0deg); }
+  100% { transform: rotateY(360deg) rotateX(15deg); }
+}
+
+/* Moving Shopping Carts on Floor */
+.shopping-floor {
+  background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+}
+
+.cart-moving {
+  animation: cartMovingFloor 12s linear infinite;
+}
+
+.cart-1 {
+  left: -100px;
+}
+
+.cart-2 {
+  left: -150px;
+  animation-duration: 15s;
+}
+
+.shopping-cart-realistic {
   width: 60px;
   height: 60px;
   position: relative;
   transform-style: preserve-3d;
-  animation: floatCart 10s ease-in-out infinite;
-  filter: drop-shadow(0 8px 16px rgba(34, 197, 94, 0.3));
+  filter: drop-shadow(0 4px 8px rgba(34, 197, 94, 0.3));
 }
 
-.cart-body {
+.cart-body-realistic {
   position: absolute;
   width: 50px;
-  height: 40px;
+  height: 35px;
   background: linear-gradient(135deg, #22c55e, #16a34a);
-  border-radius: 8px;
+  border-radius: 8px 8px 4px 4px;
   border: 2px solid rgba(34, 197, 94, 0.3);
 }
 
-.cart-handle {
+.cart-handle-realistic {
   position: absolute;
-  width: 6px;
-  height: 30px;
+  width: 4px;
+  height: 25px;
   background: linear-gradient(135deg, #15803d, #166534);
-  transform: translateX(-10px) translateY(5px);
-  border-radius: 3px;
+  transform: translateX(-8px) translateY(5px);
+  border-radius: 2px;
 }
 
-.cart-wheels {
+.cart-wheels-realistic {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #374151, #1f2937);
+  border-radius: 50%;
+  transform: translateY(35px) translateX(8px);
+  box-shadow: 25px 0 0 rgba(55, 65, 81, 1);
+  animation: wheelSpin 1s linear infinite;
+}
+
+.cart-items {
+  position: absolute;
+  width: 12px;
+  height: 8px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  transform: translateX(15px) translateY(10px);
+  border-radius: 2px;
+  box-shadow: 0 10px 0 rgba(239, 68, 68, 1), 15px 5px 0 rgba(99, 102, 241, 1);
+}
+
+@keyframes cartMovingFloor {
+  0% { left: -100px; }
+  100% { left: calc(100vw + 100px); }
+}
+
+@keyframes wheelSpin {
+  0% { transform: translateY(35px) translateX(8px) rotate(0deg); }
+  100% { transform: translateY(35px) translateX(8px) rotate(360deg); }
+}
+
+/* People Silhouettes Shopping */
+.people-shopping {
+  width: 40px;
+  height: 80px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.person-silhouette {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.person-browsing {
+  animation: personBrowsing 8s ease-in-out infinite;
+}
+
+.person-walking {
+  animation: personWalking 6s ease-in-out infinite;
+}
+
+.person-head {
   position: absolute;
   width: 12px;
   height: 12px;
-  background: radial-gradient(circle, #374151, #1f2937);
+  background: radial-gradient(circle, #4b5563, #374151);
   border-radius: 50%;
-  transform: translateY(35px);
-  box-shadow: 30px 0 0 rgba(55, 65, 81, 1);
+  top: 0;
+  left: 14px;
 }
 
-@keyframes floatCart {
-  0%, 100% {
-    transform: translateY(0px) rotateZ(0deg);
-  }
-  33% {
-    transform: translateY(-15px) rotateZ(5deg);
-  }
-  66% {
-    transform: translateY(-25px) rotateZ(-3deg);
-  }
+.person-body {
+  position: absolute;
+  width: 16px;
+  height: 30px;
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  top: 12px;
+  left: 12px;
+  border-radius: 8px 8px 4px 4px;
 }
 
-/* 3D Graduation Cap Animation */
+.person-arms {
+  position: absolute;
+  width: 6px;
+  height: 20px;
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  top: 15px;
+  border-radius: 3px;
+}
+
+.person-arm-left {
+  left: 6px;
+  animation: armSwing 3s ease-in-out infinite;
+}
+
+.person-arm-right {
+  right: 6px;
+  animation: armSwing 3s ease-in-out infinite reverse;
+}
+
+.person-legs {
+  position: absolute;
+  width: 8px;
+  height: 25px;
+  background: linear-gradient(135deg, #374151, #1f2937);
+  top: 40px;
+  left: 16px;
+  border-radius: 4px;
+}
+
+.shopping-device {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  top: 20px;
+  left: 8px;
+  border-radius: 2px;
+}
+
+@keyframes personBrowsing {
+  0%, 100% { transform: scale(1) translateY(0px); }
+  50% { transform: scale(1.05) translateY(-5px); }
+}
+
+@keyframes personWalking {
+  0%, 100% { transform: translateX(0px); }
+  50% { transform: translateX(20px); }
+}
+
+@keyframes armSwing {
+  0%, 100% { transform: rotateZ(0deg); }
+  50% { transform: rotateZ(15deg); }
+}
+
+/* Enhanced Graduation Cap */
+.cap-floating {
+  animation: capFloat 10s ease-in-out infinite;
+}
+
 .graduation-cap-3d {
   width: 70px;
   height: 50px;
   position: relative;
   transform-style: preserve-3d;
-  animation: floatGradCap 12s ease-in-out infinite;
   filter: drop-shadow(0 8px 16px rgba(168, 85, 247, 0.3));
 }
 
@@ -119,7 +276,6 @@
   width: 70px;
   height: 70px;
   background: linear-gradient(135deg, #a855f7, #9333ea);
-  transform: rotateX(0deg);
   border-radius: 4px;
   border: 2px solid rgba(168, 85, 247, 0.3);
 }
@@ -140,34 +296,30 @@
   background: linear-gradient(135deg, #fbbf24, #f59e0b);
   transform: translateX(35px) translateY(-5px);
   border-radius: 2px;
-  animation: swingTassel 3s ease-in-out infinite;
+  animation: tasselSwing 4s ease-in-out infinite;
 }
 
-@keyframes floatGradCap {
-  0%, 100% {
-    transform: translateY(0px) rotateY(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotateY(180deg);
-  }
+@keyframes capFloat {
+  0%, 100% { transform: translateY(0px) rotateY(0deg); }
+  33% { transform: translateY(-15px) rotateY(120deg); }
+  66% { transform: translateY(-10px) rotateY(240deg); }
 }
 
-@keyframes swingTassel {
-  0%, 100% {
-    transform: translateX(35px) translateY(-5px) rotateZ(0deg);
-  }
-  50% {
-    transform: translateX(35px) translateY(-5px) rotateZ(15deg);
-  }
+@keyframes tasselSwing {
+  0%, 100% { transform: translateX(35px) translateY(-5px) rotateZ(0deg); }
+  50% { transform: translateX(35px) translateY(-5px) rotateZ(20deg); }
 }
 
-/* 3D School Building Animation */
+/* School Building with Students */
+.building-with-students {
+  animation: buildingPulse 12s ease-in-out infinite;
+}
+
 .school-building-3d {
   width: 80px;
   height: 100px;
   position: relative;
   transform-style: preserve-3d;
-  animation: float3d 15s ease-in-out infinite;
   filter: drop-shadow(0 10px 20px rgba(239, 68, 68, 0.3));
 }
 
@@ -209,214 +361,237 @@
   box-shadow: 25px 0 0 rgba(251, 191, 36, 1), 0 20px 0 rgba(251, 191, 36, 1), 25px 20px 0 rgba(251, 191, 36, 1);
 }
 
-/* Additional Educational Elements */
-.calculator-3d {
-  width: 50px;
-  height: 70px;
+.students-entering {
+  position: absolute;
+  width: 4px;
+  height: 8px;
+  background: radial-gradient(circle, #4b5563, #374151);
+  transform: translateX(35px) translateY(75px);
+  border-radius: 2px;
+  animation: studentsMoving 8s ease-in-out infinite;
+}
+
+@keyframes buildingPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes studentsMoving {
+  0%, 100% { opacity: 0; transform: translateX(35px) translateY(75px); }
+  50% { opacity: 1; transform: translateX(38px) translateY(70px); }
+}
+
+/* Digital Learning Elements */
+.laptop-learning {
+  width: 60px;
+  height: 40px;
   position: relative;
   transform-style: preserve-3d;
-  animation: float3d-delayed 9s ease-in-out infinite;
-  filter: drop-shadow(0 8px 16px rgba(75, 85, 99, 0.3));
+  animation: laptopTyping 6s ease-in-out infinite;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
 }
 
-.calc-body {
+.laptop-screen {
   position: absolute;
   width: 50px;
-  height: 70px;
-  background: linear-gradient(135deg, #4b5563, #374151);
-  border-radius: 8px;
-  border: 2px solid rgba(75, 85, 99, 0.3);
+  height: 30px;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  border-radius: 4px 4px 0 0;
+  border: 2px solid rgba(75, 85, 99, 0.5);
 }
 
-.calc-screen {
+.laptop-keyboard {
+  position: absolute;
+  width: 60px;
+  height: 15px;
+  background: linear-gradient(135deg, #4b5563, #374151);
+  transform: translateY(28px) translateX(-5px);
+  border-radius: 0 0 8px 8px;
+}
+
+.learning-content {
   position: absolute;
   width: 40px;
-  height: 15px;
-  background: linear-gradient(135deg, #1f2937, #111827);
-  transform: translateX(5px) translateY(8px);
+  height: 20px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  transform: translateX(5px) translateY(5px);
   border-radius: 2px;
+  animation: contentLoading 4s ease-in-out infinite;
 }
 
-.calc-buttons {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, #6b7280, #4b5563);
-  transform: translateX(8px) translateY(30px);
-  border-radius: 2px;
-  box-shadow: 
-    12px 0 0 rgba(107, 114, 128, 1),
-    24px 0 0 rgba(107, 114, 128, 1),
-    0 12px 0 rgba(107, 114, 128, 1),
-    12px 12px 0 rgba(107, 114, 128, 1),
-    24px 12px 0 rgba(107, 114, 128, 1);
+@keyframes laptopTyping {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
 }
 
-.pencil-3d {
-  width: 8px;
-  height: 80px;
+@keyframes contentLoading {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Digital Marketplace Visualization */
+.digital-marketplace {
+  width: 70px;
+  height: 90px;
   position: relative;
   transform-style: preserve-3d;
-  animation: float3d-slow 11s ease-in-out infinite;
-  filter: drop-shadow(0 8px 16px rgba(245, 158, 11, 0.3));
+  animation: marketplaceGlow 8s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(59, 130, 246, 0.3));
 }
 
-.pencil-body {
+.marketplace-screen {
   position: absolute;
-  width: 8px;
-  height: 60px;
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  border-radius: 4px;
+  width: 70px;
+  height: 90px;
+  background: linear-gradient(135deg, #1e40af, #1d4ed8);
+  border-radius: 8px;
+  border: 2px solid rgba(59, 130, 246, 0.4);
 }
 
-.pencil-tip {
+.course-tiles {
+  position: absolute;
+  width: 15px;
+  height: 12px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  transform: translateX(8px) translateY(15px);
+  border-radius: 2px;
+  box-shadow: 
+    25px 0 0 rgba(34, 197, 94, 1),
+    0 20px 0 rgba(239, 68, 68, 1),
+    25px 20px 0 rgba(168, 85, 247, 1),
+    0 40px 0 rgba(59, 130, 246, 1),
+    25px 40px 0 rgba(245, 158, 11, 1);
+}
+
+.rating-stars {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #fbbf24, #f59e0b);
+  transform: translateX(10px) translateY(70px);
+  border-radius: 2px;
+  box-shadow: 
+    6px 0 0 rgba(251, 191, 36, 1),
+    12px 0 0 rgba(251, 191, 36, 1),
+    30px 0 0 rgba(251, 191, 36, 1),
+    36px 0 0 rgba(251, 191, 36, 1);
+  animation: starsShimmer 3s ease-in-out infinite;
+}
+
+@keyframes marketplaceGlow {
+  0%, 100% { filter: drop-shadow(0 8px 16px rgba(59, 130, 246, 0.3)); }
+  50% { filter: drop-shadow(0 12px 24px rgba(59, 130, 246, 0.6)); }
+}
+
+@keyframes starsShimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Knowledge Transfer Visualization */
+.knowledge-transfer {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: knowledgeFlow 10s ease-in-out infinite;
+  filter: drop-shadow(0 6px 12px rgba(168, 85, 247, 0.3));
+}
+
+.brain-icon {
+  position: absolute;
+  width: 30px;
+  height: 25px;
+  background: linear-gradient(135deg, #a855f7, #9333ea);
+  border-radius: 15px 15px 8px 8px;
+  border: 2px solid rgba(168, 85, 247, 0.4);
+}
+
+.knowledge-particles {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #fbbf24, #f59e0b);
+  transform: translateX(35px) translateY(10px);
+  border-radius: 50%;
+  animation: particlesFlow 4s ease-in-out infinite;
+  box-shadow: 
+    8px -5px 0 rgba(34, 197, 94, 1),
+    16px 0px 0 rgba(239, 68, 68, 1),
+    24px 5px 0 rgba(59, 130, 246, 1);
+}
+
+.transfer-arrow {
   position: absolute;
   width: 0;
   height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 12px solid #78350f;
-  transform: translateY(60px);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 12px solid #6366f1;
+  transform: translateX(40px) translateY(35px) rotateZ(45deg);
 }
 
-.pencil-eraser {
-  position: absolute;
-  width: 10px;
-  height: 8px;
-  background: radial-gradient(circle, #ef4444, #dc2626);
-  transform: translateY(-8px) translateX(-1px);
-  border-radius: 50%;
+@keyframes knowledgeFlow {
+  0%, 100% { transform: scale(1) rotateY(0deg); }
+  50% { transform: scale(1.1) rotateY(180deg); }
 }
 
-/* Additional themed elements */
-.notebook-3d, .trophy-3d, .lightbulb-3d, .certificate-3d {
-  animation: float3d 13s ease-in-out infinite;
-  filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.3));
+@keyframes particlesFlow {
+  0% { opacity: 0; transform: translateX(35px) translateY(10px) scale(0.5); }
+  50% { opacity: 1; transform: translateX(45px) translateY(5px) scale(1); }
+  100% { opacity: 0; transform: translateX(55px) translateY(0px) scale(0.5); }
 }
 
-.notebook-3d {
-  width: 60px;
-  height: 80px;
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-.notebook-cover {
-  position: absolute;
-  width: 60px;
-  height: 80px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  border-radius: 4px;
-  border: 2px solid rgba(59, 130, 246, 0.3);
-}
-
-.notebook-spiral {
-  position: absolute;
-  width: 4px;
-  height: 60px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #e5e7eb 0px,
-    #e5e7eb 3px,
-    #d1d5db 3px,
-    #d1d5db 6px
-  );
-  transform: translateX(-2px) translateY(10px);
-  border-radius: 2px;
-}
-
-.trophy-3d {
-  width: 40px;
+/* Certificate Floating Animation */
+.certificate-floating {
+  width: 80px;
   height: 60px;
   position: relative;
   transform-style: preserve-3d;
+  animation: certificateFloat 12s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(34, 197, 94, 0.3));
 }
 
-.trophy-cup {
+.certificate-paper {
   position: absolute;
-  width: 40px;
-  height: 35px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  border-radius: 20px 20px 10px 10px;
-  border: 2px solid rgba(251, 191, 36, 0.3);
-}
-
-.trophy-base {
-  position: absolute;
-  width: 45px;
-  height: 15px;
-  background: linear-gradient(135deg, #92400e, #78350f);
-  transform: translateY(45px) translateX(-2.5px);
-  border-radius: 4px;
-}
-
-.lightbulb-3d {
-  width: 30px;
-  height: 50px;
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-.bulb-glass {
-  position: absolute;
-  width: 30px;
-  height: 35px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  border-radius: 50% 50% 20% 20%;
-  border: 2px solid rgba(251, 191, 36, 0.3);
-}
-
-.bulb-glow {
-  position: absolute;
-  width: 35px;
-  height: 40px;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent);
-  transform: translateX(-2.5px) translateY(-2.5px);
-  border-radius: 50%;
-  animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    opacity: 0.5;
-    transform: translateX(-2.5px) translateY(-2.5px) scale(1);
-  }
-  to {
-    opacity: 0.8;
-    transform: translateX(-2.5px) translateY(-2.5px) scale(1.1);
-  }
-}
-
-.certificate-3d {
-  width: 70px;
-  height: 50px;
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-.cert-paper {
-  position: absolute;
-  width: 70px;
-  height: 50px;
+  width: 80px;
+  height: 60px;
   background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-  border-radius: 4px;
-  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 6px;
+  border: 3px solid rgba(34, 197, 94, 0.4);
 }
 
-.cert-ribbon {
+.certificate-seal {
   position: absolute;
-  width: 15px;
-  height: 8px;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle, #fbbf24, #f59e0b);
   transform: translateX(55px) translateY(35px);
+  border-radius: 50%;
+  border: 2px solid rgba(251, 191, 36, 0.6);
+}
+
+.certificate-ribbon {
+  position: absolute;
+  width: 20px;
+  height: 12px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  transform: translateX(50px) translateY(45px);
   border-radius: 2px;
 }
 
-.cert-seal {
+.certificate-text {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle, #fbbf24, #f59e0b);
-  transform: translateX(58px) translateY(32px);
-  border-radius: 50%;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  transform: translateX(10px) translateY(15px);
+  border-radius: 2px;
+  box-shadow: 0 8px 0 rgba(107, 114, 128, 1), 0 16px 0 rgba(107, 114, 128, 1);
+}
+
+@keyframes certificateFloat {
+  0%, 100% { transform: translateY(0px) rotateZ(0deg); }
+  33% { transform: translateY(-20px) rotateZ(5deg); }
+  66% { transform: translateY(-10px) rotateZ(-3deg); }
 }
