@@ -4,111 +4,78 @@ import React from 'react';
 const FloatingShapes = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Animated Books with Opening/Closing */}
-      <div className="book-3d book-opening absolute top-20 left-10 opacity-60">
-        <div className="book-spine"></div>
-        <div className="book-cover book-cover-left"></div>
-        <div className="book-cover book-cover-right"></div>
-        <div className="book-pages"></div>
+      {/* Enhanced 3D Floating Cubes */}
+      <div className="cube-3d absolute top-20 left-10 opacity-40">
+        <div className="cube-face front"></div>
+        <div className="cube-face back"></div>
+        <div className="cube-face right"></div>
+        <div className="cube-face left"></div>
+        <div className="cube-face top"></div>
+        <div className="cube-face bottom"></div>
       </div>
       
-      <div className="book-3d book-floating absolute top-40 right-20 opacity-50 scale-75" style={{ animationDelay: '3s' }}>
-        <div className="book-spine"></div>
-        <div className="book-cover"></div>
-        <div className="book-pages"></div>
+      <div className="cube-3d absolute top-40 right-20 opacity-30 scale-75">
+        <div className="cube-face front"></div>
+        <div className="cube-face back"></div>
+        <div className="cube-face right"></div>
+        <div className="cube-face left"></div>
+        <div className="cube-face top"></div>
+        <div className="cube-face bottom"></div>
       </div>
 
-      <div className="book-3d book-rotating absolute bottom-32 left-1/3 opacity-55 scale-50" style={{ animationDelay: '6s' }}>
-        <div className="book-spine"></div>
-        <div className="book-cover"></div>
-        <div className="book-pages"></div>
+      <div className="cube-3d absolute bottom-32 left-1/3 opacity-35 scale-50" style={{ animationDelay: '10s' }}>
+        <div className="cube-face front"></div>
+        <div className="cube-face back"></div>
+        <div className="cube-face right"></div>
+        <div className="cube-face left"></div>
+        <div className="cube-face top"></div>
+        <div className="cube-face bottom"></div>
       </div>
 
-      {/* Moving Shopping Carts on Floor */}
-      <div className="shopping-floor absolute bottom-0 left-0 w-full h-32 opacity-30">
-        <div className="cart-moving cart-1 absolute bottom-8">
-          <div className="shopping-cart-realistic">
-            <div className="cart-body-realistic"></div>
-            <div className="cart-handle-realistic"></div>
-            <div className="cart-wheels-realistic"></div>
-            <div className="cart-items"></div>
-          </div>
-        </div>
-        
-        <div className="cart-moving cart-2 absolute bottom-8" style={{ animationDelay: '4s' }}>
-          <div className="shopping-cart-realistic scale-75">
-            <div className="cart-body-realistic"></div>
-            <div className="cart-handle-realistic"></div>
-            <div className="cart-wheels-realistic"></div>
-            <div className="cart-items"></div>
-          </div>
-        </div>
-      </div>
+      {/* Enhanced 3D Morphing Shapes */}
+      <div className="shape-3d absolute top-60 left-1/4 w-24 h-24 bg-gradient-to-br from-indigo-500/30 to-purple-600/30 opacity-50"></div>
+      <div className="shape-3d absolute bottom-40 right-1/3 w-20 h-20 bg-gradient-to-br from-purple-500/30 to-pink-600/30 opacity-40" style={{ animationDelay: '3s' }}></div>
+      <div className="shape-3d absolute bottom-20 left-1/2 w-16 h-16 bg-gradient-to-br from-blue-500/30 to-indigo-600/30 opacity-45" style={{ animationDelay: '6s' }}></div>
+      <div className="shape-3d absolute top-32 right-1/4 w-18 h-18 bg-gradient-to-br from-violet-500/30 to-purple-600/30 opacity-35" style={{ animationDelay: '9s' }}></div>
 
-      {/* People Silhouettes Shopping */}
-      <div className="people-shopping absolute bottom-16 left-1/4 opacity-40">
-        <div className="person-silhouette person-browsing">
-          <div className="person-head"></div>
-          <div className="person-body"></div>
-          <div className="person-arms person-arm-left"></div>
-          <div className="person-arms person-arm-right"></div>
-          <div className="person-legs"></div>
-          <div className="shopping-device"></div>
-        </div>
-      </div>
-
-      <div className="people-shopping absolute bottom-16 right-1/3 opacity-35" style={{ animationDelay: '2s' }}>
-        <div className="person-silhouette person-walking">
-          <div className="person-head"></div>
-          <div className="person-body"></div>
-          <div className="person-arms person-arm-left"></div>
-          <div className="person-arms person-arm-right"></div>
-          <div className="person-legs"></div>
-        </div>
-      </div>
-
-      {/* Floating School Elements */}
-      <div className="graduation-cap-3d cap-floating absolute top-32 right-10 opacity-70">
-        <div className="cap-top"></div>
-        <div className="cap-base"></div>
-        <div className="cap-tassel"></div>
+      {/* Enhanced 3D Floating Elements */}
+      <div className="float-3d absolute top-32 right-10 w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full opacity-70"></div>
+      <div className="float-3d-delayed absolute bottom-60 left-20 w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full opacity-60"></div>
+      <div className="float-3d-slow absolute top-80 left-1/3 w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full opacity-50"></div>
+      <div className="float-3d absolute bottom-40 right-10 w-6 h-6 bg-gradient-to-r from-violet-500 to-purple-600 rounded-full opacity-65" style={{ animationDelay: '4s' }}></div>
+      <div className="float-3d-delayed absolute top-1/2 left-10 w-14 h-14 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full opacity-45"></div>
+      
+      {/* Additional Geometric Shapes */}
+      <div className="absolute top-1/4 left-1/2 w-0 h-0 opacity-40 float-3d" 
+           style={{ 
+             borderLeft: '15px solid transparent',
+             borderRight: '15px solid transparent', 
+             borderBottom: '25px solid rgba(99, 102, 241, 0.4)',
+             filter: 'drop-shadow(0 5px 10px rgba(99, 102, 241, 0.3))'
+           }}>
       </div>
       
-      <div className="school-building-3d building-with-students absolute top-80 left-1/3 opacity-50">
-        <div className="building-base"></div>
-        <div className="building-roof"></div>
-        <div className="building-door"></div>
-        <div className="building-windows"></div>
-        <div className="students-entering"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-8 h-8 opacity-45 float-3d-slow transform rotate-45"
+           style={{ 
+             background: 'linear-gradient(45deg, rgba(139, 92, 246, 0.4), rgba(168, 85, 247, 0.4))',
+             filter: 'drop-shadow(0 8px 16px rgba(139, 92, 246, 0.3))'
+           }}>
       </div>
 
-      {/* Digital Learning Elements */}
-      <div className="laptop-learning absolute top-1/2 left-10 opacity-45">
-        <div className="laptop-screen"></div>
-        <div className="laptop-keyboard"></div>
-        <div className="learning-content"></div>
+      {/* Glowing Orbs */}
+      <div className="absolute top-1/3 right-1/3 w-4 h-4 rounded-full float-3d opacity-60"
+           style={{ 
+             background: 'radial-gradient(circle, rgba(99, 102, 241, 0.8), rgba(99, 102, 241, 0.2))',
+             boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)',
+             animationDelay: '2s'
+           }}>
       </div>
       
-      {/* Floating Course Certificates */}
-      <div className="certificate-floating absolute top-1/4 left-1/2 opacity-40">
-        <div className="certificate-paper"></div>
-        <div className="certificate-seal"></div>
-        <div className="certificate-ribbon"></div>
-        <div className="certificate-text"></div>
-      </div>
-      
-      {/* Knowledge Transfer Visualization */}
-      <div className="knowledge-transfer absolute bottom-1/4 right-1/4 opacity-45">
-        <div className="brain-icon"></div>
-        <div className="knowledge-particles"></div>
-        <div className="transfer-arrow"></div>
-      </div>
-
-      {/* Marketplace Elements */}
-      <div className="digital-marketplace absolute top-1/3 right-1/3 opacity-60" style={{ animationDelay: '1s' }}>
-        <div className="marketplace-screen"></div>
-        <div className="course-tiles"></div>
-        <div className="rating-stars"></div>
+      <div className="absolute bottom-1/3 left-1/4 w-6 h-6 rounded-full float-3d-delayed opacity-50"
+           style={{ 
+             background: 'radial-gradient(circle, rgba(139, 92, 246, 0.8), rgba(139, 92, 246, 0.2))',
+             boxShadow: '0 0 25px rgba(139, 92, 246, 0.4)'
+           }}>
       </div>
     </div>
   );
