@@ -18,11 +18,10 @@ import Activity from './pages/Activity';
 import Matches from './pages/Matches';
 import Skills from "@/pages/Skills";
 import Wishlist from "@/pages/Wishlist";
-import Marketplace from './pages/Marketplace';
-import Company from './pages/Company';
-import Legal from './pages/Legal';
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
+
+const queryClient = new QueryClient();
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component<
@@ -68,16 +67,6 @@ class ErrorBoundary extends React.Component<
 function App() {
   console.log('App component rendering...');
   
-  // Create QueryClient inside the component to ensure React context is available
-  const [queryClient] = React.useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: 1,
-        refetchOnWindowFocus: false,
-      },
-    },
-  }));
-  
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
@@ -87,13 +76,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/pricing" element={<Pricing />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/company" element={<Company />} />
-              <Route path="/legal" element={<Legal />} />
               <Route path="/auth/signin" element={<SignIn />} />
               <Route path="/auth/signup" element={<SignUp />} />
-              <Route path="/auth/sign-in" element={<SignIn />} />
-              <Route path="/auth/sign-up" element={<SignUp />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile/:username?" element={<Profile />} />
