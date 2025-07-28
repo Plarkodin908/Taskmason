@@ -21,8 +21,6 @@ import Wishlist from "@/pages/Wishlist";
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 
-const queryClient = new QueryClient();
-
 // Error Boundary Component
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -66,6 +64,16 @@ class ErrorBoundary extends React.Component<
 
 function App() {
   console.log('App component rendering...');
+  
+  // Create QueryClient inside the component to ensure React context is available
+  const [queryClient] = React.useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        refetchOnWindowFocus: false,
+      },
+    },
+  }));
   
   return (
     <ErrorBoundary>
