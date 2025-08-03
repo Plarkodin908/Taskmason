@@ -4,13 +4,10 @@ import { toast } from "sonner";
 import HeaderSection from "@/components/tutorials/HeaderSection";
 import TabsSection from "@/components/tutorials/TabsSection";
 import ResourceDialog from "@/components/tutorials/ResourceDialog";
-import QuizGenerator from "@/components/tutorials/QuizGenerator";
 
 const Tutorials = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [selectedTutorial, setSelectedTutorial] = useState<string | null>(null);
   
   const handleAddResource = (type: string) => {
     setActiveDialog(type);
@@ -26,19 +23,6 @@ const Tutorials = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
-
-  const handleQuizComplete = (score: number, passed: boolean) => {
-    if (passed) {
-      toast.success(`Congratulations! You scored ${score}% and earned a skill badge!`);
-    } else {
-      toast.error(`You scored ${score}%. Try again to earn your badge!`);
-    }
-  };
-
-  const startQuiz = (tutorialId: string) => {
-    setSelectedTutorial(tutorialId);
-    setShowQuiz(true);
-  };
   
   return (
     <div className="container mx-auto px-4 py-8">
@@ -48,18 +32,7 @@ const Tutorials = () => {
         onSearchChange={handleSearchChange}
       />
       
-      <TabsSection onResourceAdd={handleAddResource} onStartQuiz={startQuiz} />
-      
-      {/* Quiz Section */}
-      {showQuiz && selectedTutorial && (
-        <div className="mt-8">
-          <QuizGenerator
-            tutorialId={selectedTutorial}
-            tutorialTitle="React Advanced Concepts"
-            onComplete={handleQuizComplete}
-          />
-        </div>
-      )}
+      <TabsSection onResourceAdd={handleAddResource} />
       
       {/* Resource Dialog for Post */}
       <ResourceDialog

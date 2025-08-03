@@ -21,7 +21,6 @@ export interface Message {
   chatId?: number;
 }
 
-// Return empty arrays for a clean start
+// Return empty arrays - no sample data
 export const getSampleChats = (): Chat[] => [];
-
 export const getSampleMessages = (): Message[] => [];

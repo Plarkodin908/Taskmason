@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlanType } from "@/components/pricing/types";
 import { useNavigate } from "react-router-dom";
+import { Crown } from "lucide-react";
 
 interface UserPlan {
   name: PlanType;
@@ -32,6 +33,26 @@ const UserPlanCard = ({ plan }: UserPlanCardProps) => {
   const handlePlanAction = () => {
     navigate('/pricing');
   };
+  
+  if (plan.features.length === 0) {
+    return (
+      <Card className="bg-dark-purple border border-primary-purple/10 p-6">
+        <h3 className="text-xl font-bold mb-4 text-white">
+          Current Plan: <span className={planColor}>{plan.name}</span>
+        </h3>
+        <div className="text-center py-8">
+          <Crown className="h-12 w-12 text-white/20 mx-auto mb-4" />
+          <p className="text-white/60 mb-4">Ready to unlock premium features?</p>
+        </div>
+        <Button 
+          className="w-full bg-primary-purple hover:bg-primary-purple/90 text-white"
+          onClick={handlePlanAction}
+        >
+          {isPremium ? "Manage Subscription" : "Upgrade Now"}
+        </Button>
+      </Card>
+    );
+  }
   
   return (
     <Card className="bg-dark-purple border border-primary-purple/10 p-6">
