@@ -18,6 +18,8 @@ import Activity from './pages/Activity';
 import Matches from './pages/Matches';
 import Skills from "@/pages/Skills";
 import Wishlist from "@/pages/Wishlist";
+import Marketplace from "./pages/Marketplace";
+import Tutorials from "./pages/Tutorials";
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 
@@ -99,6 +101,8 @@ function App() {
               <Route path="/matches/:action" element={<Matches />} />
               <Route path="/skills" element={<Skills />} />
               <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/marketplace" element={<Marketplace />} />
+              <Route path="/tutorials" element={<Tutorials />} />
             </Routes>
           </Router>
         </AuthProvider>
