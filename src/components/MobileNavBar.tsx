@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Home, BookOpen, ShoppingBag, User, CreditCard, Bell, Settings, MessageCircle, Shield, Search } from "lucide-react";
@@ -15,23 +16,10 @@ const MobileNavBar = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [secureNavigation, setSecureNavigation] = useState(true);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const notificationButtonRef = useRef<HTMLButtonElement>(null);
   const { user } = useAuth();
   const location = useLocation();
   const { visible } = useScrollNavigation();
-
-  // Check if device is mobile
-  useEffect(() => {
-    const checkIfMobile = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-    };
-    
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
 
   // Close menu when route changes
   useEffect(() => {
@@ -51,11 +39,6 @@ const MobileNavBar = () => {
       toast.info("Please sign in to view notifications");
     }
   };
-
-  // Only show on mobile devices
-  if (!isMobile) {
-    return null;
-  }
   
   return (
     <>
