@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
@@ -11,12 +12,12 @@ import VerifiedBadge from '@/components/profile/VerifiedBadge';
 import { Settings, Calendar, Trophy } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+
 const Profile = () => {
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const [selectedGender, setSelectedGender] = useState('prefer-not-to-say');
   const [isEditing, setIsEditing] = useState(false);
+
   if (!user) {
     return <div className="relative min-h-screen bg-black">
         <div className="animated-pattern-container"></div>
@@ -27,27 +28,18 @@ const Profile = () => {
         </div>
       </div>;
   }
-  const mockCourses = [{
-    id: 1,
-    title: "My JavaScript Course",
-    author: user.name || "You",
-    likes: 45,
-    comments: 12,
-    views: 890
-  }, {
-    id: 2,
-    title: "React Basics Tutorial",
-    author: user.name || "You",
-    likes: 78,
-    comments: 23,
-    views: 1540
-  }];
+
+  // Use empty array for courses - no mock data
+  const userCourses: any[] = [];
+
   const handleProfilePictureChange = (url: string) => {
     console.log('Profile picture changed:', url);
   };
+
   const handleCoverPictureChange = (url: string) => {
     console.log('Cover picture changed:', url);
   };
+
   return <div className="relative bg-black min-h-screen">
       {/* Animated background pattern */}
       <div className="animated-pattern-container"></div>
@@ -83,7 +75,7 @@ const Profile = () => {
                     
                     <div className="flex-1 text-center md:text-left my-[15px] py-[14px]">
                       <div className="flex flex-col md:flex-row md:items-center gap-2 mb-3">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white">{user.name || "Your Name"}</h1>
+                        <h1 className="text-3xl md:text-4xl font-bold text-white">{user.name || user.email || "Your Name"}</h1>
                         {user.verificationStatus === "verified" && <VerifiedBadge size="md" />}
                       </div>
                       
@@ -97,22 +89,22 @@ const Profile = () => {
                         </div>
                       </div>
                       
-                      {/* Stats Grid */}
+                      {/* Stats Grid - Empty/Zero states */}
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                         <div className="text-center p-3 bg-forest/50 rounded-lg border border-mint/10">
-                          <p className="text-2xl font-bold text-mint">1,234</p>
+                          <p className="text-2xl font-bold text-mint">0</p>
                           <p className="text-white/60 text-xs">Karma</p>
                         </div>
                         <div className="text-center p-3 bg-forest/50 rounded-lg border border-mint/10">
-                          <p className="text-2xl font-bold text-white">56</p>
+                          <p className="text-2xl font-bold text-white">0</p>
                           <p className="text-white/60 text-xs">Followers</p>
                         </div>
                         <div className="text-center p-3 bg-forest/50 rounded-lg border border-mint/10">
-                          <p className="text-2xl font-bold text-white">89</p>
+                          <p className="text-2xl font-bold text-white">0</p>
                           <p className="text-white/60 text-xs">Following</p>
                         </div>
                         <div className="text-center p-3 bg-forest/50 rounded-lg border border-mint/10">
-                          <p className="text-2xl font-bold text-white">12</p>
+                          <p className="text-2xl font-bold text-white">0</p>
                           <p className="text-white/60 text-xs">Posts</p>
                         </div>
                       </div>
@@ -144,17 +136,16 @@ const Profile = () => {
                         About
                       </h3>
                       <p className="text-white/80 text-sm leading-relaxed mb-4">
-                        Welcome to my profile! I'm passionate about learning and sharing knowledge with the community.
+                        Welcome to your profile! Add some information about yourself to let others know who you are.
                       </p>
                     </Card>
 
                     {/* Skills Section */}
                     <Card className="bg-forest-light/95 backdrop-blur-sm border border-mint/20 p-6">
                       <h3 className="text-lg font-semibold text-white mb-4">Skills & Expertise</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {['JavaScript', 'React', 'Node.js', 'Python', 'CSS'].map((skill, index) => <Badge key={index} variant="secondary" className="bg-mint/20 text-mint hover:bg-mint/30 border border-mint/30">
-                            {skill}
-                          </Badge>)}
+                      <div className="text-center py-4">
+                        <p className="text-white/60 text-sm">No skills added yet</p>
+                        <p className="text-white/40 text-xs mt-1">Add your skills to showcase your expertise</p>
                       </div>
                     </Card>
                   </div>}
@@ -162,7 +153,7 @@ const Profile = () => {
               
               {/* Main Content Area */}
               <div className="xl:col-span-3">
-                <ProfileTabs courses={mockCourses} />
+                <ProfileTabs courses={userCourses} />
               </div>
             </div>
           </div>
@@ -173,4 +164,5 @@ const Profile = () => {
       <MobileNavBar />
     </div>;
 };
+
 export default Profile;
