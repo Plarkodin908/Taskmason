@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import RefinedPageLayout from "@/components/layout/RefinedPageLayout";
 import HeaderSection from "@/components/tutorials/HeaderSection";
 import TabsSection from "@/components/tutorials/TabsSection";
 import ResourceDialog from "@/components/tutorials/ResourceDialog";
@@ -25,7 +26,7 @@ const Tutorials = () => {
   };
   
   return (
-    <div className="container mx-auto px-4 py-8">
+    <RefinedPageLayout title="Posts & Resources" backUrl="/dashboard">
       <HeaderSection 
         onAddResource={handleAddResource}
         searchQuery={searchQuery}
@@ -73,7 +74,7 @@ const Tutorials = () => {
         onOpenChange={(open) => !open && setActiveDialog(null)}
         onSubmit={handleSubmitResource}
       />
-    </div>
+    </RefinedPageLayout>
   );
 };
 

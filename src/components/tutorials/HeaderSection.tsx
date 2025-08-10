@@ -14,7 +14,6 @@ const HeaderSection = ({ onAddResource, searchQuery, onSearchChange }: HeaderSec
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <h1 className="text-4xl font-bold text-white">Posts & Resources</h1>
         <div className="flex gap-2">
           <Button 
             className="bg-mint hover:bg-mint/90 text-forest flex items-center gap-2 hover-scale transition-transform" 
