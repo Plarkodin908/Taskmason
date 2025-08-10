@@ -72,8 +72,8 @@ const Marketplace = () => {
         <SkillSidebar />
         
         <div className="flex-1">
-          <div className="container mx-auto px-4 py-8 has-mobile-nav relative">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div className="container mx-auto px-4 pt-20 pb-8 has-mobile-nav relative">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <MarketplaceHeader />
               {!isMobile && (
                 <div className="flex gap-2">
@@ -96,7 +96,7 @@ const Marketplace = () => {
               )}
             </div>
             
-            <div className="flex flex-col md:flex-row gap-4 mb-8">
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
               <SearchBar 
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
