@@ -1,13 +1,10 @@
-
 import { useState } from "react";
 import { toast } from "sonner";
 import RefinedPageLayout from "@/components/layout/RefinedPageLayout";
-import HeaderSection from "@/components/tutorials/HeaderSection";
-import TabsSection from "@/components/tutorials/TabsSection";
+import TutorialFeed from "@/components/tutorials/TutorialFeed";
 import ResourceDialog from "@/components/tutorials/ResourceDialog";
 
 const Tutorials = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
   
   const handleAddResource = (type: string) => {
@@ -20,22 +17,25 @@ const Tutorials = () => {
     });
     setActiveDialog(null);
   };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
   
   return (
-    <RefinedPageLayout title="Posts & Resources" backUrl="/dashboard">
-      <HeaderSection 
-        onAddResource={handleAddResource}
-        searchQuery={searchQuery}
-        onSearchChange={handleSearchChange}
+    <RefinedPageLayout title="Tutorials" backUrl="/dashboard">
+      <div className="flex justify-center items-center min-h-[80vh]">
+        <TutorialFeed 
+          tutorials={[]} // Empty array will show mock data
+          onAddResource={handleAddResource}
+        />
+      </div>
+      
+      {/* Resource Dialog for video creation */}
+      <ResourceDialog
+        type="video"
+        isOpen={activeDialog === "video"}
+        onOpenChange={(open) => !open && setActiveDialog(null)}
+        onSubmit={handleSubmitResource}
       />
       
-      <TabsSection onResourceAdd={handleAddResource} />
-      
-      {/* Resource Dialog for Post */}
+      {/* Keep other dialogs for different resource types */}
       <ResourceDialog
         type="Post"
         isOpen={activeDialog === "Post"}
@@ -43,34 +43,9 @@ const Tutorials = () => {
         onSubmit={handleSubmitResource}
       />
       
-      {/* Resource Dialog for Resource */}
       <ResourceDialog
         type="Resource"
         isOpen={activeDialog === "Resource"}
-        onOpenChange={(open) => !open && setActiveDialog(null)}
-        onSubmit={handleSubmitResource}
-      />
-      
-      {/* Resource Dialog for posts tab */}
-      <ResourceDialog
-        type="posts"
-        isOpen={activeDialog === "posts"}
-        onOpenChange={(open) => !open && setActiveDialog(null)}
-        onSubmit={handleSubmitResource}
-      />
-      
-      {/* Resource Dialog for articles tab */}
-      <ResourceDialog
-        type="articles"
-        isOpen={activeDialog === "articles"}
-        onOpenChange={(open) => !open && setActiveDialog(null)}
-        onSubmit={handleSubmitResource}
-      />
-      
-      {/* Resource Dialog for videos tab */}
-      <ResourceDialog
-        type="videos"
-        isOpen={activeDialog === "videos"}
         onOpenChange={(open) => !open && setActiveDialog(null)}
         onSubmit={handleSubmitResource}
       />
