@@ -21,10 +21,7 @@ const Tutorials = () => {
   return (
     <RefinedPageLayout title="Tutorials" backUrl="/dashboard">
       <div className="flex justify-center items-center min-h-[80vh]">
-        <TutorialFeed 
-          tutorials={[]} // Empty array will show mock data
-          onAddResource={handleAddResource}
-        />
+        <TutorialFeed />
       </div>
       
       {/* Resource Dialog for video creation */}
