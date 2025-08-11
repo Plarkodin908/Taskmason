@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect } from "react";
-import { Heart, MessageCircle, Share, Bookmark, Play, Pause } from "lucide-react";
+import { Heart, MessageCircle, Share, Bookmark, Play, Pause, Plus, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BackpackIcon from "../icons/BackpackIcon";
@@ -33,49 +33,8 @@ interface TutorialFeedProps {
 const TutorialFeed = ({ tutorials, onAddResource }: TutorialFeedProps) => {
   const [currentTutorial, setCurrentTutorial] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showRealContent, setShowRealContent] = useState(false);
   const feedRef = useRef<HTMLDivElement>(null);
-
-  // Mock data for demonstration
-  const mockTutorials: Tutorial[] = [
-    {
-      id: "1",
-      title: "Learn React Hooks in 60 seconds",
-      description: "Quick tutorial on useState and useEffect hooks with practical examples",
-      author: {
-        name: "Sarah Chen",
-        avatar: "/lovable-uploads/placeholder.svg",
-        username: "@sarahcodes"
-      },
-      thumbnail: "/lovable-uploads/placeholder.svg",
-      duration: "1:23",
-      likes: 1247,
-      comments: 89,
-      shares: 34,
-      isLiked: false,
-      isBookmarked: false,
-      type: 'video'
-    },
-    {
-      id: "2", 
-      title: "CSS Grid Layout Masterclass",
-      description: "Master CSS Grid with this comprehensive guide covering all properties and real-world examples",
-      author: {
-        name: "Alex Morgan",
-        avatar: "/lovable-uploads/placeholder.svg",
-        username: "@alexdesigns"
-      },
-      thumbnail: "/lovable-uploads/placeholder.svg",
-      duration: "3:45",
-      likes: 892,
-      comments: 156,
-      shares: 67,
-      isLiked: true,
-      isBookmarked: true,
-      type: 'video'
-    }
-  ];
-
-  const displayTutorials = tutorials.length > 0 ? tutorials : mockTutorials;
 
   const handleLike = (id: string) => {
     toast.success("Liked!");
@@ -97,6 +56,12 @@ const TutorialFeed = ({ tutorials, onAddResource }: TutorialFeedProps) => {
     setIsPlaying(!isPlaying);
   };
 
+  const handleExplore = () => {
+    setShowRealContent(true);
+    // In a real app, this would fetch content from Supabase
+    toast.info("Exploring real user content...");
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       if (feedRef.current) {
@@ -114,15 +79,94 @@ const TutorialFeed = ({ tutorials, onAddResource }: TutorialFeedProps) => {
     }
   }, []);
 
+  // Show empty state when no tutorials are available
+  if (tutorials.length === 0 && !showRealContent) {
+    return (
+      <div className="relative h-[80vh] w-full max-w-md mx-auto bg-forest-light rounded-2xl overflow-hidden">
+        <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+          <div className="bg-forest/50 p-8 rounded-full mb-6">
+            <Play className="h-12 w-12 text-mint" />
+          </div>
+          
+          <h2 className="text-2xl font-bold text-white mb-4">
+            No Tutorials Yet
+          </h2>
+          
+          <p className="text-white/70 mb-8 leading-relaxed">
+            Be the first to share your knowledge with the SKILL SWAP community!
+          </p>
+          
+          <div className="flex flex-col gap-3 w-full max-w-xs">
+            <Button
+              onClick={() => onAddResource('video')}
+              className="bg-mint hover:bg-mint/90 text-forest font-medium py-3 rounded-full shadow-lg flex items-center gap-2"
+            >
+              <Plus className="h-5 w-5" />
+              Create Tutorial
+            </Button>
+            
+            <Button
+              onClick={handleExplore}
+              variant="outline"
+              className="border-mint/30 text-mint hover:bg-mint/10 font-medium py-3 rounded-full flex items-center gap-2"
+            >
+              <Compass className="h-5 w-5" />
+              Explore Content
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show message when exploring but no real content available
+  if (showRealContent && tutorials.length === 0) {
+    return (
+      <div className="relative h-[80vh] w-full max-w-md mx-auto bg-forest-light rounded-2xl overflow-hidden">
+        <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+          <div className="bg-forest/50 p-8 rounded-full mb-6">
+            <Compass className="h-12 w-12 text-mint" />
+          </div>
+          
+          <h2 className="text-2xl font-bold text-white mb-4">
+            No Content Available
+          </h2>
+          
+          <p className="text-white/70 mb-8 leading-relaxed">
+            There's no user-generated content available right now. Why not create the first one?
+          </p>
+          
+          <div className="flex flex-col gap-3 w-full max-w-xs">
+            <Button
+              onClick={() => onAddResource('video')}
+              className="bg-mint hover:bg-mint/90 text-forest font-medium py-3 rounded-full shadow-lg flex items-center gap-2"
+            >
+              <Plus className="h-5 w-5" />
+              Create Tutorial
+            </Button>
+            
+            <Button
+              onClick={() => setShowRealContent(false)}
+              variant="outline"
+              className="border-mint/30 text-mint hover:bg-mint/10 font-medium py-3 rounded-full"
+            >
+              Back
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render tutorials feed when content is available
   return (
     <div className="relative h-[80vh] w-full max-w-md mx-auto bg-forest-light rounded-2xl overflow-hidden">
-      {/* Feed Container */}
       <div 
         ref={feedRef}
         className="h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {displayTutorials.map((tutorial, index) => (
+        {tutorials.map((tutorial, index) => (
           <div 
             key={tutorial.id}
             className="relative h-full w-full snap-start flex-shrink-0"
@@ -259,7 +303,7 @@ const TutorialFeed = ({ tutorials, onAddResource }: TutorialFeedProps) => {
 
             {/* Progress Indicators */}
             <div className="absolute top-4 right-4 flex flex-col gap-1">
-              {displayTutorials.map((_, i) => (
+              {tutorials.map((_, i) => (
                 <div
                   key={i}
                   className={`w-1 h-8 rounded-full transition-colors ${
@@ -270,16 +314,6 @@ const TutorialFeed = ({ tutorials, onAddResource }: TutorialFeedProps) => {
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Create Content Button */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-        <Button
-          onClick={() => onAddResource('video')}
-          className="bg-mint hover:bg-mint/90 text-forest font-medium px-6 py-2 rounded-full shadow-lg"
-        >
-          Create Tutorial
-        </Button>
       </div>
     </div>
   );
