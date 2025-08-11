@@ -8,11 +8,9 @@ import { toast } from "sonner";
 import UserSearch from "./UserSearch";
 import NotificationDropdown from "./notifications/NotificationDropdown";
 import { useScrollNavigation } from "@/hooks/useScrollNavigation";
+
 const Navbar = () => {
-  const {
-    user,
-    signOut
-  } = useAuth();
+  const { user, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [secureNavigation, setSecureNavigation] = useState(true);
@@ -21,9 +19,7 @@ const Navbar = () => {
   const notificationButtonRef = useRef<HTMLButtonElement>(null);
   const isVerified = user?.verificationStatus === "verified";
   const location = useLocation();
-  const {
-    visible
-  } = useScrollNavigation();
+  const { visible } = useScrollNavigation();
 
   // Trigger shine animation on mount
   useEffect(() => {
@@ -52,6 +48,7 @@ const Navbar = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+
   const handleNotificationsClick = () => {
     if (user) {
       setIsNotificationOpen(!isNotificationOpen);
@@ -59,16 +56,24 @@ const Navbar = () => {
       toast.info("Please sign in to view notifications");
     }
   };
+
   const toggleSecureNavigation = () => {
     setSecureNavigation(!secureNavigation);
     toast.success(secureNavigation ? "Standard navigation mode enabled" : "Secure navigation mode enabled");
   };
-  return <nav className={`fixed top-0 left-0 w-full z-[70] transition-all duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? "bg-gray-900/95 backdrop-blur-lg shadow-lg" : "bg-transparent"}`}>
+
+  return (
+    <nav className={`fixed top-0 left-0 w-full z-[70] transition-all duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? "bg-gray-900/95 backdrop-blur-lg shadow-lg" : "bg-transparent"}`}>
       <div className="container mx-auto md:py-4 bg-gray-900/90 backdrop-blur-sm px-[16px] py-px">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="mr-6">
               <div className="flex items-center gap-3">
+                <img 
+                  src="/lovable-uploads/67d1f40f-f60d-4221-9678-1e516ed84424.png" 
+                  alt="Taskmason Logo" 
+                  className="w-8 h-8 md:w-10 md:h-10"
+                />
                 <h1 className={`text-lg md:text-xl font-bold text-gray-100 ${showShine ? 'shine-animation' : ''}`}>
                   TASK<span className="text-purple-400">MASON</span>
                 </h1>
@@ -84,7 +89,8 @@ const Navbar = () => {
             {/* User Search Component */}
             <UserSearch />
             
-            {user ? <>
+            {user ? (
+              <>
                 <div className="relative">
                   <button ref={notificationButtonRef} onClick={handleNotificationsClick} className="p-1 md:p-2 rounded-full hover:bg-white/5 transition-colors relative">
                     <Bell className="h-4 w-4 md:h-5 md:w-5 text-white" />
@@ -102,7 +108,9 @@ const Navbar = () => {
                     {isVerified && <VerifiedBadge className="absolute -bottom-1 -right-1" />}
                   </div>
                 </Link>
-              </> : <div className="hidden md:flex items-center space-x-3">
+              </>
+            ) : (
+              <div className="hidden md:flex items-center space-x-3">
                 <Link to="/auth/sign-in">
                   <Button variant="outline" className="border-gray-600/30 text-gray-400 hover:bg-gray-700/10">
                     Sign In
@@ -113,7 +121,8 @@ const Navbar = () => {
                     Sign Up
                   </Button>
                 </Link>
-              </div>}
+              </div>
+            )}
             
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-1 md:p-2 rounded-full hover:bg-white/5 transition-colors md:hidden">
               {isMobileMenuOpen ? <X className="h-5 w-5 text-white" /> : <Menu className="h-5 w-5 text-white" />}
@@ -122,7 +131,8 @@ const Navbar = () => {
         </div>
         
         {/* Mobile Menu */}
-        {isMobileMenuOpen && <div className="md:hidden py-3 border-t border-white/10 mt-2 animate-fade-in">
+        {isMobileMenuOpen && (
+          <div className="md:hidden py-3 border-t border-white/10 mt-2 animate-fade-in">
             <div className="flex flex-col space-y-3">
               <div className="flex items-center justify-between">
                 <span className="mx-0 text-base font-normal text-slate-50">Secure Navigation</span>
@@ -131,7 +141,8 @@ const Navbar = () => {
                 </button>
               </div>
               
-              {!user && <div className="flex space-x-2 mt-2">
+              {!user && (
+                <div className="flex space-x-2 mt-2">
                   <Link to="/auth/sign-in" className="flex-1">
                     <Button variant="outline" className="w-full border-gray-600/30 hover:bg-gray-700/10 text-base text-gray-200">
                       Sign In
@@ -142,10 +153,14 @@ const Navbar = () => {
                       Sign Up
                     </Button>
                   </Link>
-                </div>}
+                </div>
+              )}
             </div>
-          </div>}
+          </div>
+        )}
       </div>
-    </nav>;
+    </nav>
+  );
 };
+
 export default Navbar;
