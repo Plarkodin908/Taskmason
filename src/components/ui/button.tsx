@@ -10,12 +10,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl hover:scale-105",
-        destructive: "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg hover:shadow-xl",
-        outline: "border border-slate-600 bg-slate-800/50 hover:bg-slate-700/50 hover:border-slate-500 text-slate-200 backdrop-blur-sm",
-        secondary: "bg-slate-800 hover:bg-slate-700 text-slate-200 shadow-md hover:shadow-lg",
-        ghost: "hover:bg-slate-800/50 hover:text-white text-slate-300",
-        link: "text-indigo-400 underline-offset-4 hover:underline hover:text-indigo-300",
+        default: "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl hover:scale-105 border border-indigo-500/20",
+        destructive: "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg hover:shadow-xl border border-red-500/20",
+        outline: "border-2 border-slate-300 dark:border-slate-600 bg-white/90 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:border-slate-400 dark:hover:border-slate-500 text-slate-900 dark:text-slate-200 backdrop-blur-sm font-semibold shadow-sm hover:shadow-md",
+        secondary: "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-200 shadow-md hover:shadow-lg border border-slate-200 dark:border-slate-700 font-semibold",
+        ghost: "hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white text-slate-700 dark:text-slate-300 font-semibold",
+        link: "text-indigo-600 dark:text-indigo-400 underline-offset-4 hover:underline hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold",
       },
       size: {
         default: "h-11 px-6 py-3",
