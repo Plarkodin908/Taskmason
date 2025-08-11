@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -43,6 +44,9 @@ const Index = () => {
       <div className="animated-pattern-container"></div>
       <div className="animated-pattern-overlay"></div>
       
+      {/* Enhanced overlay for better text readability */}
+      <div className="fixed inset-0 bg-black/20 dark:bg-black/40 pointer-events-none z-0"></div>
+      
       <SEOHead 
         title="Taskmason - Community-Driven Learning Platform" 
         description="Exchange skills that match your coding success with ease using our innovative learning marketplace." 
@@ -78,12 +82,17 @@ const Index = () => {
         <Features />
         
         {/* Additional Features Carousel Section */}
-        <section className="py-16 px-4 backdrop-blur-sm">
-          <div className="container mx-auto">
+        <section className="py-16 px-4 relative">
+          <div className="absolute inset-0 bg-black/30 dark:bg-black/20 backdrop-blur-sm"></div>
+          <div className="container mx-auto relative z-10">
             <ScrollReveal>
               <div className="text-center max-w-2xl mx-auto mb-8">
-                <h2 className="text-3xl font-bold mb-4 text-white">Discover What Makes Us Different</h2>
-                <p className="text-white/80">Explore our innovative features that transform how you learn and grow.</p>
+                <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white drop-shadow-lg">
+                  Discover What Makes Us Different
+                </h2>
+                <p className="text-gray-700 dark:text-white/80 drop-shadow-md">
+                  Explore our innovative features that transform how you learn and grow.
+                </p>
               </div>
               <FeaturesCarousel variant="section" className="mt-8" />
             </ScrollReveal>
@@ -102,27 +111,32 @@ const Index = () => {
         <Testimonials />
         
         {/* Action Buttons */}
-        <section className="py-16 px-4 backdrop-blur-sm">
-          <div className="container mx-auto">
+        <section className="py-16 px-4 relative">
+          <div className="absolute inset-0 bg-black/30 dark:bg-black/20 backdrop-blur-sm"></div>
+          <div className="container mx-auto relative z-10">
             <ScrollReveal>
               <div className="text-center max-w-2xl mx-auto mb-8">
-                <h2 className="text-3xl font-bold mb-4 text-white">Ready to Start Your Journey?</h2>
-                <p className="text-white/80">Join our community today and accelerate your learning with expert guidance and support.</p>
+                <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white drop-shadow-lg">
+                  Ready to Start Your Journey?
+                </h2>
+                <p className="text-gray-700 dark:text-white/80 drop-shadow-md">
+                  Join our community today and accelerate your learning with expert guidance and support.
+                </p>
               </div>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link to="/marketplace">
-                  <Button className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 text-white px-6 py-6 text-lg">
+                  <Button className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 text-white px-6 py-6 text-lg shadow-xl">
                     <span>Explore Courses</span>
                     <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
                   </Button>
                 </Link>
                 <Link to="/tutorials">
-                  <Button variant="outline" className="border-gray-600 hover:bg-gray-800/10 px-6 py-6 text-lg text-slate-50">
+                  <Button variant="outline" className="border-gray-600 hover:bg-gray-800/10 px-6 py-6 text-lg text-gray-900 dark:text-slate-50 bg-white/90 dark:bg-transparent backdrop-blur-sm shadow-xl">
                     View Tutorials
                   </Button>
                 </Link>
                 <Link to="/community">
-                  <Button className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 text-white px-6 py-6 text-lg">
+                  <Button className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 text-white px-6 py-6 text-lg shadow-xl">
                     <span>Join Community</span>
                     <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
                   </Button>
