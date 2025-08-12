@@ -3,12 +3,13 @@
   width: 100%;
   margin: 0 auto;
   text-align: center;
+  background-color: #ffffff;
 }
 
 .skill-exchange-theme {
   min-height: 100vh;
   position: relative;
-  background-color: #09090b;
+  background-color: #ffffff;
   position: relative;
   width: 100%;
 }

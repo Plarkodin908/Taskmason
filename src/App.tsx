@@ -1,114 +1,94 @@
 
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Toaster } from 'sonner';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from './contexts/AuthContext';
-import Index from './pages/Index';
-import Pricing from './pages/Pricing';
-import Dashboard from './pages/Dashboard';
-import Settings from './pages/Settings';
-import Profile from './pages/Profile';
-import PlanDetails from './pages/PlanDetails';
-import PaymentPage from './pages/PaymentPage';
-import ImportContent from './pages/ImportContent';
-import CalendarPage from './pages/CalendarPage';
-import Achievements from './pages/Achievements';
-import Activity from './pages/Activity';
-import Matches from './pages/Matches';
-import Skills from "@/pages/Skills";
-import Wishlist from "@/pages/Wishlist";
-import Marketplace from "./pages/Marketplace";
-import Tutorials from "./pages/Tutorials";
-import SignIn from './pages/auth/SignIn';
-import SignUp from './pages/auth/SignUp';
+import { Suspense, lazy } from "react";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { Helmet } from "react-helmet";
+import Loading from "@/components/ui/loading";
+import "./App.css";
 
-// Error Boundary Component
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean; error?: Error }
-> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
+const queryClient = new QueryClient();
 
-  static getDerivedStateFromError(error: Error) {
-    console.log('Error caught by boundary:', error);
-    return { hasError: true, error };
-  }
+// Lazy load pages for better performance
+const Index = lazy(() => import("./pages/Index"));
+const Features = lazy(() => import("./pages/Features"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Company = lazy(() => import("./pages/Company"));
+const Legal = lazy(() => import("./pages/Legal"));
+const SignIn = lazy(() => import("./pages/auth/SignIn"));
+const SignUp = lazy(() => import("./pages/auth/SignUp"));
+const Profile = lazy(() => import("./pages/Profile"));
+const ProfileDetail = lazy(() => import("./pages/ProfileDetail"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Marketplace = lazy(() => import("./pages/Marketplace"));
+const AddCourse = lazy(() => import("./pages/AddCourse"));
+const Tutorials = lazy(() => import("./pages/Tutorials"));
+const Community = lazy(() => import("./pages/Community"));
+const Messages = lazy(() => import("./pages/Messages"));
+const Notifications = lazy(() => import("./pages/Notifications"));
+const Skills = lazy(() => import("./pages/Skills"));
+const Matches = lazy(() => import("./pages/Matches"));
+const Activity = lazy(() => import("./pages/Activity"));
+const Achievements = lazy(() => import("./pages/Achievements"));
+const CalendarPage = lazy(() => import("./pages/CalendarPage"));
+const Wishlist = lazy(() => import("./pages/Wishlist"));
+const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+const PlanDetails = lazy(() => import("./pages/PlanDetails"));
+const ImportContent = lazy(() => import("./pages/ImportContent"));
+const MatchActionPage = lazy(() => import("./pages/matches/MatchActionPage"));
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.log('Error boundary caught error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
-            <p className="mb-4">Error: {this.state.error?.message}</p>
-            <button 
-              onClick={() => this.setState({ hasError: false })}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Try again
-            </button>
-          </div>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-
-function App() {
-  console.log('App component rendering...');
-  
-  // Create QueryClient inside the component to ensure React context is available
-  const [queryClient] = React.useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: 1,
-        refetchOnWindowFocus: false,
-      },
-    },
-  }));
-  
+const App = () => {
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
         <AuthProvider>
-          <Toaster />
-          <Router>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/auth/signin" element={<SignIn />} />
-              <Route path="/auth/signup" element={<SignUp />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/profile/:username?" element={<Profile />} />
-              <Route path="/plan/:planId" element={<PlanDetails />} />
-              <Route path="/payment/:planId" element={<PaymentPage />} />
-              <Route path="/import" element={<ImportContent />} />
-              <Route path="/calendar" element={<CalendarPage />} />
-              <Route path="/achievements" element={<Achievements />} />
-              <Route path="/activity" element={<Activity />} />
-              <Route path="/matches" element={<Matches />} />
-              <Route path="/matches/:action" element={<Matches />} />
-              <Route path="/skills" element={<Skills />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/tutorials" element={<Tutorials />} />
-            </Routes>
-          </Router>
+          <BrowserRouter>
+            <div className="min-h-screen bg-white text-gray-900">
+              <Helmet>
+                <html className="" />
+                <body className="bg-white text-gray-900" />
+              </Helmet>
+              <Suspense fallback={<Loading />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/features" element={<Features />} />
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/company" element={<Company />} />
+                  <Route path="/legal" element={<Legal />} />
+                  <Route path="/auth/sign-in" element={<SignIn />} />
+                  <Route path="/auth/sign-up" element={<SignUp />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile/:userId" element={<ProfileDetail />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/add-course" element={<AddCourse />} />
+                  <Route path="/tutorials" element={<Tutorials />} />
+                  <Route path="/community" element={<Community />} />
+                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route path="/skills" element={<Skills />} />
+                  <Route path="/matches" element={<Matches />} />
+                  <Route path="/activity" element={<Activity />} />
+                  <Route path="/achievements" element={<Achievements />} />
+                  <Route path="/calendar" element={<CalendarPage />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
+                  <Route path="/payment" element={<PaymentPage />} />
+                  <Route path="/plan/:planId" element={<PlanDetails />} />
+                  <Route path="/import" element={<ImportContent />} />
+                  <Route path="/matches/:action" element={<MatchActionPage />} />
+                </Routes>
+              </Suspense>
+              <Toaster />
+            </div>
+          </BrowserRouter>
         </AuthProvider>
-      </QueryClientProvider>
-    </ErrorBoundary>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
