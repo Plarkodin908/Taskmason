@@ -30,21 +30,21 @@
   
   body {
     @apply text-slate-900 bg-white relative pb-16;
-    /* Enhanced lighter professional gradient background */
+    /* Enhanced lighter professional gradient background for light mode */
     background: 
       radial-gradient(
         circle at 20% 20%,
-        rgba(99, 102, 241, 0.03) 0%,
+        rgba(99, 102, 241, 0.08) 0%,
         transparent 60%
       ),
       radial-gradient(
         circle at 80% 80%,
-        rgba(139, 92, 246, 0.03) 0%,
+        rgba(139, 92, 246, 0.08) 0%,
         transparent 60%
       ),
       radial-gradient(
         circle at 40% 60%,
-        rgba(168, 85, 247, 0.02) 0%,
+        rgba(168, 85, 247, 0.06) 0%,
         transparent 50%
       ),
       linear-gradient(
@@ -58,6 +58,34 @@
     min-height: 100vh;
     font-display: swap;
     overscroll-behavior: none;
+  }
+
+  /* Dark mode styles */
+  .dark body {
+    @apply text-white bg-slate-900;
+    background: 
+      radial-gradient(
+        circle at 20% 20%,
+        rgba(99, 102, 241, 0.15) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        rgba(139, 92, 246, 0.15) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        circle at 40% 60%,
+        rgba(168, 85, 247, 0.12) 0%,
+        transparent 50%
+      ),
+      linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #1e293b 30%,
+        #334155 60%,
+        #475569 100%
+      );
   }
 
   /* Optimize image loading */
