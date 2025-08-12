@@ -16,6 +16,7 @@ const Hero = () => {
   const { stats, isLoading } = useSiteStats();
   
   const formatNumber = (num: number) => {
+    if (num === 0) return "0";
     if (num >= 1000) {
       return `${(num / 1000).toFixed(1)}k+`;
     }
