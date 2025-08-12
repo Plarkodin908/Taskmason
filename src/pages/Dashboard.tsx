@@ -11,6 +11,16 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Empty data to show empty states
+  const emptyStats = [];
+  const emptyActivities = [];
+  const defaultPlan = {
+    name: "Free" as const,
+    expires: "Never",
+    features: []
+  };
+  const emptyAchievements = [];
+
   return (
     <DashboardLayout sidebar={null}>
       <div className="space-y-6">
@@ -27,12 +37,12 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <UserStatsCard />
-            <ActivityFeed />
+            <UserStatsCard stats={emptyStats} />
+            <ActivityFeed activities={emptyActivities} />
           </div>
           <div className="space-y-6">
-            <UserPlanCard />
-            <AchievementsCard />
+            <UserPlanCard plan={defaultPlan} />
+            <AchievementsCard achievements={emptyAchievements} />
           </div>
         </div>
       </div>
