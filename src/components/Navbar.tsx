@@ -64,7 +64,7 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-[70] transition-all duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? "bg-gray-900/95 backdrop-blur-lg shadow-lg" : "bg-transparent"}`}>
-      <div className="container mx-auto md:py-4 bg-gray-900/90 backdrop-blur-sm px-[16px] py-px">
+      <div className="container mx-auto md:py-4 bg-gray-900/90 backdrop-blur-md px-[16px] py-px">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="mr-6">
