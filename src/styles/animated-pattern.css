@@ -1,5 +1,5 @@
 
-/* Animated Pattern Background - Light and Dark Mode Compatible */
+/* Animated Pattern Background - Dark Mode */
 .animated-pattern-container {
   position: absolute;
   top: 0;
@@ -7,18 +7,11 @@
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.06) 0%, transparent 70%);
-  animation: gentle-float 20s ease-in-out infinite;
-  z-index: -2;
-}
-
-.dark .animated-pattern-container {
-  background: 
     radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+  animation: gentle-float 20s ease-in-out infinite;
+  z-index: -2;
 }
 
 .animated-pattern-overlay {
@@ -27,26 +20,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 2px,
-      rgba(99, 102, 241, 0.03) 2px,
-      rgba(99, 102, 241, 0.03) 4px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 2px,
-      rgba(139, 92, 246, 0.02) 2px,
-      rgba(139, 92, 246, 0.02) 4px
-    );
-  animation: pattern-shift 30s linear infinite;
-  z-index: -1;
-}
-
-.dark .animated-pattern-overlay {
   background: 
     repeating-linear-gradient(
       45deg,
@@ -62,6 +35,8 @@
       rgba(139, 92, 246, 0.06) 2px,
       rgba(139, 92, 246, 0.06) 4px
     );
+  animation: pattern-shift 30s linear infinite;
+  z-index: -1;
 }
 
 @keyframes gentle-float {
@@ -88,33 +63,21 @@
   }
 }
 
-/* Enhanced floating shapes for better visibility in light mode */
+/* Enhanced floating shapes for dark mode */
 .float-3d {
   animation: float-gentle 6s ease-in-out infinite;
-  filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.2));
-}
-
-.dark .float-3d {
   filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.4));
 }
 
 .float-3d-delayed {
   animation: float-gentle 8s ease-in-out infinite;
   animation-delay: 2s;
-  filter: drop-shadow(0 4px 8px rgba(139, 92, 246, 0.2));
-}
-
-.dark .float-3d-delayed {
   filter: drop-shadow(0 4px 8px rgba(139, 92, 246, 0.4));
 }
 
 .float-3d-slow {
   animation: float-gentle 10s ease-in-out infinite;
   animation-delay: 4s;
-  filter: drop-shadow(0 4px 8px rgba(168, 85, 247, 0.2));
-}
-
-.dark .float-3d-slow {
   filter: drop-shadow(0 4px 8px rgba(168, 85, 247, 0.4));
 }
 

@@ -3,15 +3,14 @@
   width: 100%;
   margin: 0 auto;
   text-align: center;
-  background-color: #ffffff;
+  background-color: #0f172a;
 }
 
 .skill-exchange-theme {
   min-height: 100vh;
   position: relative;
-  background-color: #ffffff;
-  position: relative;
-  width: 100%;
+  background-color: #0f172a;
+  color: #f8fafc;
 }
 
 .animate-fade-in {
