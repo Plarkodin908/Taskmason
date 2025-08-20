@@ -9,7 +9,6 @@ import SchemaMarkup from "@/components/SEO/SchemaMarkup";
 import { useAuth } from "@/contexts/AuthContext";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
-import Stats from "@/components/Stats";
 import DashboardDemo from "@/components/DashboardDemo";
 import Testimonials from "@/components/Testimonials";
 import { useEffect } from "react";
@@ -98,11 +97,6 @@ const Index = () => {
             </ScrollReveal>
           </div>
         </section>
-        
-        {/* Stats Section */}
-        <ScrollReveal>
-          <Stats />
-        </ScrollReveal>
         
         {/* Dashboard Demo Section */}
         <DashboardDemo />
