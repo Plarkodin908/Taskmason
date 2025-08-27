@@ -13,10 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("account");
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [skills, setSkills] = useState<string[]>([]);
   
   const [formData, setFormData] = useState({
@@ -36,7 +38,7 @@ const Settings = () => {
     marketingEmails: false,
     publicProfile: true,
     showActivity: true,
-    theme: "dark",
+    theme: theme,
     language: "en",
     fontSize: "medium",
     highContrast: false,
@@ -103,10 +105,10 @@ const Settings = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-forest pt-24 pb-16">
+      <div className="min-h-screen bg-background pt-24 pb-16 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h1 className="font-bold text-white mb-8 text-4xl text-center">Settings</h1>
+            <h1 className="font-bold text-foreground mb-8 text-4xl text-center">Settings</h1>
             
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
@@ -114,17 +116,17 @@ const Settings = () => {
               </div>
               
               <div className="lg:col-span-3">
-                <Card className="bg-forest-light/50 backdrop-blur-sm border border-mint/10">
+                <Card className="bg-card/50 backdrop-blur-sm border border-border">
                   <CardContent className="p-6">
                     {renderContent()}
                     
                     {activeTab !== "data" && (
                       <>
-                        <Separator className="bg-mint/10 my-6" />
+                        <Separator className="bg-border my-6" />
                         <div className="flex justify-end">
                           <Button 
                             onClick={handleSave} 
-                            className="bg-mint hover:bg-mint/90 text-forest font-medium"
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
                           >
                             Save Changes
                           </Button>

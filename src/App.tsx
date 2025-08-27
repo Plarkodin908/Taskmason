@@ -1,10 +1,10 @@
-
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { Helmet } from "react-helmet";
 import Loading from "@/components/ui/loading";
 import "./App.css";
@@ -44,48 +44,51 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <AuthProvider>
-          <BrowserRouter>
-            <div className="min-h-screen bg-white text-gray-900">
-              <Helmet>
-                <html className="" />
-                <body className="bg-white text-gray-900" />
-              </Helmet>
-              <Suspense fallback={<Loading />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/features" element={<Features />} />
-                  <Route path="/pricing" element={<Pricing />} />
-                  <Route path="/company" element={<Company />} />
-                  <Route path="/legal" element={<Legal />} />
-                  <Route path="/auth/sign-in" element={<SignIn />} />
-                  <Route path="/auth/sign-up" element={<SignUp />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/profile/:userId" element={<ProfileDetail />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/marketplace" element={<Marketplace />} />
-                  <Route path="/add-course" element={<AddCourse />} />
-                  <Route path="/tutorials" element={<Tutorials />} />
-                  <Route path="/community" element={<Community />} />
-                  <Route path="/messages" element={<Messages />} />
-                  <Route path="/notifications" element={<Notifications />} />
-                  <Route path="/skills" element={<Skills />} />
-                  <Route path="/matches" element={<Matches />} />
-                  <Route path="/activity" element={<Activity />} />
-                  <Route path="/achievements" element={<Achievements />} />
-                  <Route path="/calendar" element={<CalendarPage />} />
-                  <Route path="/wishlist" element={<Wishlist />} />
-                  <Route path="/payment" element={<PaymentPage />} />
-                  <Route path="/plan/:planId" element={<PlanDetails />} />
-                  <Route path="/import" element={<ImportContent />} />
-                  <Route path="/matches/:action" element={<MatchActionPage />} />
-                </Routes>
-              </Suspense>
-              <Toaster />
-            </div>
-          </BrowserRouter>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <BrowserRouter>
+              <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+                <Helmet>
+                  <html className="" />
+                  <body className="bg-background text-foreground" />
+                  <meta name="theme-color" content="#0f172a" />
+                </Helmet>
+                <Suspense fallback={<Loading />}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/features" element={<Features />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/company" element={<Company />} />
+                    <Route path="/legal" element={<Legal />} />
+                    <Route path="/auth/sign-in" element={<SignIn />} />
+                    <Route path="/auth/sign-up" element={<SignUp />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile/:userId" element={<ProfileDetail />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/marketplace" element={<Marketplace />} />
+                    <Route path="/add-course" element={<AddCourse />} />
+                    <Route path="/tutorials" element={<Tutorials />} />
+                    <Route path="/community" element={<Community />} />
+                    <Route path="/messages" element={<Messages />} />
+                    <Route path="/notifications" element={<Notifications />} />
+                    <Route path="/skills" element={<Skills />} />
+                    <Route path="/matches" element={<Matches />} />
+                    <Route path="/activity" element={<Activity />} />
+                    <Route path="/achievements" element={<Achievements />} />
+                    <Route path="/calendar" element={<CalendarPage />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/payment" element={<PaymentPage />} />
+                    <Route path="/plan/:planId" element={<PlanDetails />} />
+                    <Route path="/import" element={<ImportContent />} />
+                    <Route path="/matches/:action" element={<MatchActionPage />} />
+                  </Routes>
+                </Suspense>
+                <Toaster />
+              </div>
+            </BrowserRouter>
+          </AuthProvider>
+        </ThemeProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

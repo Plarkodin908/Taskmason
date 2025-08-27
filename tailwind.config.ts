@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,20 +19,49 @@ export default {
     },
     extend: {
       colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        // Legacy colors for backwards compatibility
         black: "#000000",
         divine: {
-          DEFAULT: "#E2E8F0", // Changed to a more serious gray
+          DEFAULT: "#E2E8F0",
         },
-        primary: {
-          DEFAULT: "#4A5568",
+        mint: "#E2E8F0",
+        forest: {
+          DEFAULT: "hsl(var(--background))",
+          light: "hsl(var(--card))",
         },
-        "primary-purple": "#4A5568", // Changed to slate gray
-        "secondary-purple": "#2D3748", // Changed to darker slate
-        "dark-purple": "#1A202C", // Changed to very dark slate
-        "light-purple": "#A0AEC0", // Changed to light slate
-        "pink-accent": "#718096", // Changed to medium slate
-        mint: "#E2E8F0", // Changed to light gray
-        forest: "#2D3748", // Changed to dark slate
       },
       fontFamily: {
         sans: ["Inter var", "system-ui", "sans-serif"],

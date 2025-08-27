@@ -65,8 +65,8 @@ const SettingsSidebar = ({
             className={`
               w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200
               ${activeTab === item.id 
-                ? 'bg-mint/20 text-mint border border-mint/30' 
-                : 'text-white/70 hover:text-white hover:bg-white/5'
+                ? 'bg-primary/20 text-primary border border-primary/30' 
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }
             `}
           >
