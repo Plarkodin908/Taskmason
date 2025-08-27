@@ -37,24 +37,23 @@ const SkillsSettings = ({ skills, onSkillsChange }: SkillsSettingsProps) => {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium text-white mb-4">Your Skills</h3>
-        <p className="text-white/60 text-sm mb-4">Add skills you want to teach or learn from others</p>
+        <h3 className="text-lg font-medium text-foreground mb-4">Your Skills</h3>
+        <p className="text-muted-foreground text-sm mb-4">Add skills you want to teach or learn from others</p>
         
         <div className="flex gap-2 mb-4">
           <Input
             value={newSkill}
             onChange={(e) => setNewSkill(e.target.value)}
             placeholder="Add a skill..."
-            className="bg-forest-light border-mint/20 text-white"
-            onKeyPress={(e) => e.key === 'Enter' && addSkill()}
+            onKeyDown={(e) => e.key === 'Enter' && addSkill()}
           />
-          <Button onClick={addSkill} className="bg-mint hover:bg-mint/90 text-forest">
+          <Button onClick={addSkill} aria-label="Add skill">
             <Plus className="h-4 w-4" />
           </Button>
         </div>
 
         <div className="mb-4">
-          <Label className="text-white text-sm">Popular Skills</Label>
+          <Label className="text-foreground text-sm">Popular Skills</Label>
           <div className="flex flex-wrap gap-2 mt-2">
             {SKILL_CATEGORIES.map(skill => (
               <Button
@@ -62,7 +61,7 @@ const SkillsSettings = ({ skills, onSkillsChange }: SkillsSettingsProps) => {
                 variant="outline"
                 size="sm"
                 onClick={() => setNewSkill(skill)}
-                className="border-mint/20 text-mint hover:bg-mint/10 text-xs"
+                className="border-border text-foreground hover:bg-accent/20 text-xs"
               >
                 {skill}
               </Button>
@@ -72,16 +71,18 @@ const SkillsSettings = ({ skills, onSkillsChange }: SkillsSettingsProps) => {
 
         {skills.length > 0 && (
           <div>
-            <Label className="text-white text-sm">Your Skills</Label>
+            <Label className="text-foreground text-sm">Your Skills</Label>
             <div className="flex flex-wrap gap-2 mt-2">
               {skills.map(skill => (
-                <div key={skill} className="flex items-center gap-1 bg-mint/20 px-3 py-1 rounded-full">
-                  <span className="text-white text-sm">{skill}</span>
+                <div key={skill} className="flex items-center gap-1 bg-accent px-3 py-1 rounded-full">
+                  <span className="text-accent-foreground text-sm">{skill}</span>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => removeSkill(skill)}
-                    className="h-4 w-4 p-0 text-white/60 hover:text-white"
+                    className="h-4 w-4 p-0 text-muted-foreground hover:text-foreground"
+                    aria-label={`Remove ${skill}`}
+                    title={`Remove ${skill}`}
                   >
                     <X className="h-3 w-3" />
                   </Button>

@@ -12,12 +12,12 @@ const NotificationSettings = ({ preferences, onPreferenceChange }: NotificationS
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium text-white mb-4">Notification Preferences</h3>
+        <h3 className="text-lg font-medium text-foreground mb-4">Notification Preferences</h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white">Email Notifications</Label>
-              <p className="text-sm text-white/60">Receive notifications via email</p>
+              <Label className="text-foreground">Email Notifications</Label>
+              <p className="text-sm text-muted-foreground">Receive notifications via email</p>
             </div>
             <Switch 
               checked={preferences.emailNotifications} 
@@ -26,8 +26,8 @@ const NotificationSettings = ({ preferences, onPreferenceChange }: NotificationS
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white">Push Notifications</Label>
-              <p className="text-sm text-white/60">Receive browser notifications</p>
+              <Label className="text-foreground">Push Notifications</Label>
+              <p className="text-sm text-muted-foreground">Receive browser notifications</p>
             </div>
             <Switch 
               checked={preferences.pushNotifications} 
@@ -36,8 +36,8 @@ const NotificationSettings = ({ preferences, onPreferenceChange }: NotificationS
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white">Marketing Emails</Label>
-              <p className="text-sm text-white/60">Receive updates and promotional content</p>
+              <Label className="text-foreground">Marketing Emails</Label>
+              <p className="text-sm text-muted-foreground">Receive updates and promotional content</p>
             </div>
             <Switch 
               checked={preferences.marketingEmails} 

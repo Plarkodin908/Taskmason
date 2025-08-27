@@ -12,12 +12,12 @@ const PrivacySettings = ({ preferences, onPreferenceChange }: PrivacySettingsPro
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium text-white mb-4">Account Privacy</h3>
+        <h3 className="text-lg font-medium text-foreground mb-4">Account Privacy</h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white">Public Profile</Label>
-              <p className="text-sm text-white/60">Make your profile visible to other users</p>
+              <Label className="text-foreground">Public Profile</Label>
+              <p className="text-sm text-muted-foreground">Make your profile visible to other users</p>
             </div>
             <Switch 
               checked={preferences.publicProfile} 
@@ -26,8 +26,8 @@ const PrivacySettings = ({ preferences, onPreferenceChange }: PrivacySettingsPro
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white">Show Activity</Label>
-              <p className="text-sm text-white/60">Display your recent activity to others</p>
+              <Label className="text-foreground">Show Activity</Label>
+              <p className="text-sm text-muted-foreground">Display your recent activity to others</p>
             </div>
             <Switch 
               checked={preferences.showActivity} 
