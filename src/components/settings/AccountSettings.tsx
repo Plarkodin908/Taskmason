@@ -37,55 +37,55 @@ const AccountSettings = ({ formData, onInputChange }: AccountSettingsProps) => {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium text-white mb-4">Public Profile Information</h3>
+        <h3 className="text-lg font-medium text-foreground mb-4">Public Profile Information</h3>
         <div className="grid gap-4">
           <div>
-            <Label htmlFor="name" className="text-white">Full Name</Label>
+            <Label htmlFor="name" className="text-foreground">Full Name</Label>
             <Input 
               id="name" 
               value={formData.name || ""} 
               onChange={e => onInputChange("name", e.target.value)} 
-              className="bg-forest-light border-mint/20 text-white" 
+              className="bg-card border-border text-foreground" 
             />
           </div>
           <div>
-            <Label htmlFor="email" className="text-white">Email</Label>
+            <Label htmlFor="email" className="text-foreground">Email</Label>
             <Input 
               id="email" 
               type="email" 
               value={formData.email || ""} 
               onChange={e => onInputChange("email", e.target.value)} 
-              className="bg-forest-light border-mint/20 text-white" 
+              className="bg-card border-border text-foreground" 
             />
           </div>
           <div>
-            <Label htmlFor="bio" className="text-white">Bio</Label>
+            <Label htmlFor="bio" className="text-foreground">Bio</Label>
             <Textarea 
               id="bio" 
               value={formData.bio || ""} 
               onChange={e => onInputChange("bio", e.target.value)} 
-              className="bg-forest-light border-mint/20 text-white" 
+              className="bg-card border-border text-foreground" 
               placeholder="Tell us about yourself..." 
             />
           </div>
           <div>
-            <Label htmlFor="location" className="text-white">Location</Label>
+            <Label htmlFor="location" className="text-foreground">Location</Label>
             <Popover open={locationOpen} onOpenChange={setLocationOpen}>
               <PopoverTrigger asChild>
                 <Button 
                   variant="outline" 
                   role="combobox" 
                   aria-expanded={locationOpen} 
-                  className="w-full justify-between bg-forest-light border-mint/20 text-white hover:bg-forest hover:text-white"
+                  className="w-full justify-between bg-card border-border text-foreground hover:bg-accent hover:text-foreground"
                 >
                   {formData.location || "Select location..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-full p-0 bg-forest-light border-mint/20">
-                <Command className="bg-forest-light">
-                  <CommandInput placeholder="Search location..." className="text-white" />
-                  <CommandEmpty className="text-white/60">No location found.</CommandEmpty>
+              <PopoverContent className="w-full p-0 bg-card border-border">
+                <Command className="bg-card">
+                  <CommandInput placeholder="Search location..." className="text-foreground" />
+                  <CommandEmpty className="text-muted-foreground">No location found.</CommandEmpty>
                   <CommandGroup>
                     <CommandList>
                       {LOCATIONS.map(location => (
@@ -96,7 +96,7 @@ const AccountSettings = ({ formData, onInputChange }: AccountSettingsProps) => {
                             onInputChange("location", currentValue === formData.location ? "" : currentValue);
                             setLocationOpen(false);
                           }} 
-                          className="text-white hover:bg-mint/10"
+                          className="text-foreground hover:bg-accent"
                         >
                           <Check className={cn("mr-2 h-4 w-4", formData.location === location ? "opacity-100" : "opacity-0")} />
                           {location}
@@ -109,38 +109,38 @@ const AccountSettings = ({ formData, onInputChange }: AccountSettingsProps) => {
             </Popover>
           </div>
           <div>
-            <Label htmlFor="website" className="text-white">Website</Label>
+            <Label htmlFor="website" className="text-foreground">Website</Label>
             <Input 
               id="website" 
               value={formData.website || ""} 
               onChange={e => onInputChange("website", e.target.value)} 
-              className="bg-forest-light border-mint/20 text-white" 
+              className="bg-card border-border text-foreground" 
               placeholder="https://" 
             />
           </div>
         </div>
       </div>
 
-      <Separator className="bg-mint/10" />
+      <Separator className="bg-border" />
 
       <div>
-        <h3 className="text-lg font-medium text-white mb-4">Change Password</h3>
+        <h3 className="text-lg font-medium text-foreground mb-4">Change Password</h3>
         <div className="grid gap-4 max-w-md">
           <div>
-            <Label htmlFor="currentPassword" className="text-white">Current Password</Label>
+            <Label htmlFor="currentPassword" className="text-foreground">Current Password</Label>
             <div className="relative">
               <Input 
                 id="currentPassword" 
                 type={showPassword ? "text" : "password"} 
                 value={formData.currentPassword || ""} 
                 onChange={e => onInputChange("currentPassword", e.target.value)} 
-                className="bg-forest-light border-mint/20 text-white pr-10" 
+                className="bg-card border-border text-foreground pr-10" 
               />
               <Button 
                 type="button" 
                 variant="ghost" 
                 size="sm" 
-                className="absolute right-0 top-0 h-full px-3 text-white/60 hover:text-white" 
+                className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground" 
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -148,28 +148,28 @@ const AccountSettings = ({ formData, onInputChange }: AccountSettingsProps) => {
             </div>
           </div>
           <div>
-            <Label htmlFor="newPassword" className="text-white">New Password</Label>
+            <Label htmlFor="newPassword" className="text-foreground">New Password</Label>
             <Input 
               id="newPassword" 
               type="password" 
               value={formData.newPassword || ""} 
               onChange={e => onInputChange("newPassword", e.target.value)} 
-              className="bg-forest-light border-mint/20 text-white" 
+              className="bg-card border-border text-foreground" 
             />
           </div>
           <div>
-            <Label htmlFor="confirmPassword" className="text-white">Confirm New Password</Label>
+            <Label htmlFor="confirmPassword" className="text-foreground">Confirm New Password</Label>
             <Input 
               id="confirmPassword" 
               type="password" 
               value={formData.confirmPassword || ""} 
               onChange={e => onInputChange("confirmPassword", e.target.value)} 
-              className="bg-forest-light border-mint/20 text-white" 
+              className="bg-card border-border text-foreground" 
             />
           </div>
           <Button 
             onClick={handlePasswordChange} 
-            className="bg-mint hover:bg-mint/90 w-fit text-violet-50"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground w-fit"
           >
             Update Password
           </Button>

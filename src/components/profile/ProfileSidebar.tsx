@@ -82,22 +82,22 @@ const ProfileSidebar = ({
   };
 
   return (
-    <Card className="bg-forest-light border border-mint/10">
+    <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="text-mint">Edit Profile</CardTitle>
+        <CardTitle className="text-foreground">Edit Profile</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Profile Picture Upload */}
         <div className="flex flex-col items-center space-y-4">
           <Avatar className="h-24 w-24">
             <AvatarImage src={profilePicture} alt="Profile" />
-            <AvatarFallback className="bg-forest text-mint">
+            <AvatarFallback className="bg-secondary text-secondary-foreground">
               {user?.name?.substring(0, 2) || "UN"}
             </AvatarFallback>
           </Avatar>
           <div className="flex space-x-2">
             <label htmlFor="profile-upload" className="cursor-pointer">
-              <Button variant="outline" className="border-mint/20 text-mint hover:bg-mint/10" asChild>
+              <Button variant="outline" className="border-border text-foreground hover:bg-accent" asChild>
                 <span>
                   <Camera className="h-4 w-4 mr-2" />
                   Profile
@@ -113,7 +113,7 @@ const ProfileSidebar = ({
             />
             
             <label htmlFor="cover-upload" className="cursor-pointer">
-              <Button variant="outline" className="border-mint/20 text-mint hover:bg-mint/10" asChild>
+              <Button variant="outline" className="border-border text-foreground hover:bg-accent" asChild>
                 <span>
                   <Image className="h-4 w-4 mr-2" />
                   Cover
@@ -149,7 +149,7 @@ const ProfileSidebar = ({
         {/* Save Button */}
         <Button 
           onClick={handleSaveChanges}
-          className="w-full bg-mint hover:bg-mint/90 text-forest"
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           Save Changes
         </Button>
