@@ -14,34 +14,37 @@ const NotificationSettings = ({ preferences, onPreferenceChange }: NotificationS
       <div>
         <h3 className="text-lg font-medium text-foreground mb-4">Notification Preferences</h3>
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between p-4 bg-accent/50 rounded-lg border border-border hover:bg-accent/70 transition-colors">
             <div>
-              <Label className="text-foreground">Email Notifications</Label>
+              <Label className="text-foreground font-semibold">Email Notifications</Label>
               <p className="text-sm text-muted-foreground">Receive notifications via email</p>
             </div>
             <Switch 
               checked={preferences.emailNotifications} 
-              onCheckedChange={checked => onPreferenceChange("emailNotifications", checked)} 
+              onCheckedChange={checked => onPreferenceChange("emailNotifications", checked)}
+              className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary"
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between p-4 bg-accent/50 rounded-lg border border-border hover:bg-accent/70 transition-colors">
             <div>
-              <Label className="text-foreground">Push Notifications</Label>
+              <Label className="text-foreground font-semibold">Push Notifications</Label>
               <p className="text-sm text-muted-foreground">Receive browser notifications</p>
             </div>
             <Switch 
               checked={preferences.pushNotifications} 
-              onCheckedChange={checked => onPreferenceChange("pushNotifications", checked)} 
+              onCheckedChange={checked => onPreferenceChange("pushNotifications", checked)}
+              className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary"
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between p-4 bg-accent/50 rounded-lg border border-border hover:bg-accent/70 transition-colors">
             <div>
-              <Label className="text-foreground">Marketing Emails</Label>
+              <Label className="text-foreground font-semibold">Marketing Emails</Label>
               <p className="text-sm text-muted-foreground">Receive updates and promotional content</p>
             </div>
             <Switch 
               checked={preferences.marketingEmails} 
-              onCheckedChange={checked => onPreferenceChange("marketingEmails", checked)} 
+              onCheckedChange={checked => onPreferenceChange("marketingEmails", checked)}
+              className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary"
             />
           </div>
         </div>
