@@ -108,7 +108,7 @@ const Settings = () => {
       <div className="min-h-screen bg-background pt-24 pb-16 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h1 className="font-bold text-foreground mb-8 text-4xl text-center">Settings</h1>
+            <h1 className="font-bold text-foreground mb-8 text-4xl text-center drop-shadow-sm">Settings</h1>
             
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
@@ -116,17 +116,19 @@ const Settings = () => {
               </div>
               
               <div className="lg:col-span-3">
-                <Card className="bg-card/50 backdrop-blur-sm border border-border">
-                  <CardContent className="p-6">
-                    {renderContent()}
+                <Card className="bg-card border border-border shadow-lg hover:shadow-xl transition-all duration-300">
+                  <CardContent className="p-8">
+                    <div className="text-foreground">
+                      {renderContent()}
+                    </div>
                     
                     {activeTab !== "data" && (
                       <>
-                        <Separator className="bg-border my-6" />
+                        <Separator className="bg-border my-8" />
                         <div className="flex justify-end">
                           <Button 
                             onClick={handleSave} 
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-3 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
                           >
                             Save Changes
                           </Button>
