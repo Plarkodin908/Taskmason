@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import UserSearch from "./UserSearch";
 import NotificationDropdown from "./notifications/NotificationDropdown";
 import { useScrollNavigation } from "@/hooks/useScrollNavigation";
+import HomeButton from "./HomeButton";
 
 const Navbar = () => {
   const { user, signOut } = useAuth();
@@ -67,18 +68,7 @@ const Navbar = () => {
       <div className="container mx-auto md:py-4 bg-transparent backdrop-blur-xl px-[16px] py-px">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Link to="/" className="mr-6">
-              <div className="flex items-center gap-3">
-                <img 
-                  src="/lovable-uploads/67d1f40f-f60d-4221-9678-1e516ed84424.png" 
-                  alt="Taskmason Logo" 
-                  className="w-8 h-8 md:w-10 md:h-10"
-                />
-                <h1 className={`text-lg md:text-xl font-bold text-gray-100 ${showShine ? 'shine-animation' : ''}`}>
-                  TASK<span className="text-purple-400">MASON</span>
-                </h1>
-              </div>
-            </Link>
+            <HomeButton />
           </div>
           
           <div className="flex items-center space-x-3">

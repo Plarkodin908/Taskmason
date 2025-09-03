@@ -5,6 +5,7 @@
 
 /* Import custom styles */
 @import './base.css';
+@import './sections.css';
 @import './backgrounds.css';
 @import './buttons.css';
 @import './cards.css';

@@ -81,15 +81,15 @@ const Index = () => {
         <Features />
         
         {/* Additional Features Carousel Section */}
-        <section className="py-16 px-4 relative">
+        <section className="content-section section-container relative">
           <div className="absolute inset-0 bg-black/30 dark:bg-black/20 backdrop-blur-sm"></div>
           <div className="container mx-auto relative z-10">
             <ScrollReveal>
               <div className="text-center max-w-2xl mx-auto mb-8">
-                <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white drop-shadow-lg">
+                <h2 className="section-title text-center">
                   Discover What Makes Us Different
                 </h2>
-                <p className="text-gray-700 dark:text-white/80 drop-shadow-md">
+                <p className="section-subtitle text-center">
                   Explore our innovative features that transform how you learn and grow.
                 </p>
               </div>
@@ -105,15 +105,15 @@ const Index = () => {
         <Testimonials />
         
         {/* Action Buttons */}
-        <section className="py-16 px-4 relative">
+        <section className="content-section section-container relative">
           <div className="absolute inset-0 bg-black/30 dark:bg-black/20 backdrop-blur-sm"></div>
           <div className="container mx-auto relative z-10">
             <ScrollReveal>
               <div className="text-center max-w-2xl mx-auto mb-8">
-                <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white drop-shadow-lg">
+                <h2 className="section-title text-center">
                   Ready to Start Your Journey?
                 </h2>
-                <p className="text-gray-700 dark:text-white/80 drop-shadow-md">
+                <p className="section-subtitle text-center">
                   Join our community today and accelerate your learning with expert guidance and support.
                 </p>
               </div>

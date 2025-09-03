@@ -24,7 +24,7 @@ const Hero = () => {
   };
   
   return (
-    <section className="relative pt-24 md:pt-32 pb-16 px-4 overflow-hidden transform-3d">
+    <section className="hero-section relative overflow-hidden transform-3d section-container">
       {/* Animated pattern background */}
       <div className="animated-pattern-container"></div>
       <div className="animated-pattern-overlay"></div>
