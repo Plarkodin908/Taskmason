@@ -18,40 +18,40 @@ const Footer = () => {
               Connecting learners and educators through a collaborative platform for knowledge exchange and skill development.
             </p>
             <div className="flex gap-4 pt-2 my-[37px] px-[19px]">
-              <GraduationCap className="h-5 w-5 text-gray-400" />
-              <BookOpen className="h-5 w-5 text-gray-400" />
-              <Users className="h-5 w-5 text-gray-400" />
-              <MessageSquare className="h-5 w-5 text-gray-400" />
+              <GraduationCap className="h-5 w-5 text-white/80" />
+              <BookOpen className="h-5 w-5 text-white/80" />
+              <Users className="h-5 w-5 text-white/80" />
+              <MessageSquare className="h-5 w-5 text-white/80" />
             </div>
           </div>
           
           <div className="py-0 my-0">
             <h4 className="font-medium mb-4 px-[16px] my-[12px] py-0 mx-[22px]">Platform</h4>
             <ul className="space-y-2 py-[6px] my-[10px] mx-[2px] px-[2px]">
-              <li className="py-[3px]"><Link to="/features" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Features</Link></li>
-              <li className="py-[3px]"><Link to="/pricing" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Pricing</Link></li>
-              <li className="py-[3px]"><Link to="/marketplace" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Course Marketplace</Link></li>
-              <li className="my-[3px]"><Link to="/dashboard" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>My Learning</Link></li>
+              <li className="py-[3px]"><Link to="/features" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Features</Link></li>
+              <li className="py-[3px]"><Link to="/pricing" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Pricing</Link></li>
+              <li className="py-[3px]"><Link to="/marketplace" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Course Marketplace</Link></li>
+              <li className="my-[3px]"><Link to="/dashboard" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>My Learning</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-medium mb-4">Company</h4>
             <ul className="space-y-2">
-              <li><Link to="/company" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>About Us</Link></li>
-              <li><Link to="/company" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Team</Link></li>
-              <li><Link to="/company" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Careers</Link></li>
-              <li><Link to="/company" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Contact</Link></li>
+              <li><Link to="/company" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>About Us</Link></li>
+              <li><Link to="/company" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Team</Link></li>
+              <li><Link to="/company" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Careers</Link></li>
+              <li><Link to="/company" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Contact</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-medium mb-4">Legal</h4>
             <ul className="space-y-2">
-              <li><Link to="/legal" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Terms of Service</Link></li>
-              <li><Link to="/legal" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Privacy Policy</Link></li>
-              <li><Link to="/legal" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>Cookie Policy</Link></li>
-              <li><Link to="/legal" className="text-white/60 hover:text-gray-300 transition-colors" onClick={scrollToTop}>FAQ</Link></li>
+              <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Terms of Service</Link></li>
+              <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Privacy Policy</Link></li>
+              <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Cookie Policy</Link></li>
+              <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>FAQ</Link></li>
             </ul>
           </div>
         </div>

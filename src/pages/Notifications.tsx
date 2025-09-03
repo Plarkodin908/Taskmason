@@ -132,12 +132,12 @@ const Notifications = () => {
             <p className="text-white/70 mt-2">Create an account or sign in to see your notifications</p>
             <div className="flex gap-3 mt-6">
               <Link to="/auth/sign-in">
-                <Button variant="outline" className="border-gray-600/30 text-gray-400 hover:bg-gray-700/10">
+                <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
                   Sign In
                 </Button>
               </Link>
               <Link to="/auth/sign-up">
-                <Button className="bg-gray-700 hover:bg-gray-800/90 text-white">
+                <Button className="bg-white/20 hover:bg-white/30 text-white">
                   Sign Up
                 </Button>
               </Link>

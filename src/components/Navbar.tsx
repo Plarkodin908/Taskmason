@@ -73,7 +73,7 @@ const Navbar = () => {
           
           <div className="flex items-center space-x-3">
             <button onClick={toggleSecureNavigation} className="p-2 rounded-full hover:bg-white/5 transition-colors relative hidden md:flex" aria-label={secureNavigation ? "Disable secure navigation" : "Enable secure navigation"} title={secureNavigation ? "Secure navigation active" : "Standard navigation"}>
-              <Shield className={`h-5 w-5 ${secureNavigation ? "text-green-400" : "text-gray-400"}`} />
+              <Shield className={`h-5 w-5 ${secureNavigation ? "text-green-400" : "text-white/60"}`} />
             </button>
 
             {/* User Search Component */}
@@ -102,7 +102,7 @@ const Navbar = () => {
             ) : (
               <div className="hidden md:flex items-center space-x-3">
                 <Link to="/auth/sign-in">
-                  <Button variant="outline" className="border-gray-600/30 text-gray-400 hover:bg-gray-700/10">
+                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
                     Sign In
                   </Button>
                 </Link>
@@ -127,14 +127,14 @@ const Navbar = () => {
               <div className="flex items-center justify-between">
                 <span className="mx-0 text-base font-normal text-slate-50">Secure Navigation</span>
                 <button onClick={toggleSecureNavigation} className="p-2 rounded-full hover:bg-white/5 transition-colors relative">
-                  <Shield className={`h-5 w-5 ${secureNavigation ? "text-green-400" : "text-gray-400"}`} />
+                  <Shield className={`h-5 w-5 ${secureNavigation ? "text-green-400" : "text-white/60"}`} />
                 </button>
               </div>
               
               {!user && (
                 <div className="flex space-x-2 mt-2">
                   <Link to="/auth/sign-in" className="flex-1">
-                    <Button variant="outline" className="w-full border-gray-600/30 hover:bg-gray-700/10 text-base text-gray-200">
+                    <Button variant="outline" className="w-full border-white/30 hover:bg-white/10 text-base text-white">
                       Sign In
                     </Button>
                   </Link>

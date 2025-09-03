@@ -38,7 +38,7 @@ const HomeButton = () => {
           alt="Taskmason Logo" 
           className="w-8 h-8 md:w-10 md:h-10"
         />
-        <h1 className={`text-lg md:text-xl font-bold text-gray-100 ${showShine ? 'shine-animation' : ''}`}>
+        <h1 className={`text-lg md:text-xl font-bold text-white ${showShine ? 'shine-animation' : ''}`}>
           TASK<span className="text-purple-400">MASON</span>
         </h1>
       </div>

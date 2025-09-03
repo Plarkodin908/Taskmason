@@ -50,10 +50,10 @@ const Features = () => {
       <div className="pt-20 pb-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Powerful Features for <span className="text-primary">Learning</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-white/80 max-w-3xl mx-auto">
               Discover all the tools you need to excel in your learning journey and connect with others.
             </p>
           </div>
@@ -62,14 +62,14 @@ const Features = () => {
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <Card key={index} className="p-6 hover:shadow-lg transition-shadow bg-card border-border">
+                <Card key={index} className="p-6 hover:shadow-lg transition-shadow bg-white/10 border-white/20">
                   <div className="flex items-center mb-4">
-                    <div className="p-3 rounded-full bg-primary/10 mr-4">
+                    <div className="p-3 rounded-full bg-primary/20 mr-4">
                       <Icon className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold text-card-foreground">{feature.title}</h3>
+                    <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
                   </div>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <p className="text-white/80">{feature.description}</p>
                 </Card>
               );
             })}
