@@ -68,17 +68,18 @@
 
 /* Card consistency */
 .section-card {
-  background: hsl(var(--card) / 0.95);
-  border: 2px solid hsl(var(--border));
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.75rem;
   padding: 1.5rem;
   backdrop-filter: blur(12px);
   transition: all 0.3s ease;
+  color: white;
 }
 
 .section-card:hover {
-  background: hsl(var(--card));
-  box-shadow: 0 10px 25px hsl(var(--primary) / 0.1);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
   transform: translateY(-2px);
 }
 
@@ -86,7 +87,7 @@
 .section-title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: white;
   margin-bottom: 1rem;
   line-height: 1.2;
 }
@@ -99,7 +100,7 @@
 
 .section-subtitle {
   font-size: 1rem;
-  color: hsl(var(--muted-foreground));
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 2rem;
   line-height: 1.6;
 }

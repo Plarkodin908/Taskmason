@@ -86,10 +86,10 @@ const Index = () => {
           <div className="container mx-auto relative z-10">
             <ScrollReveal>
               <div className="text-center max-w-2xl mx-auto mb-8">
-                <h2 className="section-title text-center">
+                <h2 className="section-title text-center text-white">
                   Discover What Makes Us Different
                 </h2>
-                <p className="section-subtitle text-center">
+                <p className="section-subtitle text-center text-white/80">
                   Explore our innovative features that transform how you learn and grow.
                 </p>
               </div>
@@ -110,10 +110,10 @@ const Index = () => {
           <div className="container mx-auto relative z-10">
             <ScrollReveal>
               <div className="text-center max-w-2xl mx-auto mb-8">
-                <h2 className="section-title text-center">
+                <h2 className="section-title text-center text-white">
                   Ready to Start Your Journey?
                 </h2>
-                <p className="section-subtitle text-center">
+                <p className="section-subtitle text-center text-white/80">
                   Join our community today and accelerate your learning with expert guidance and support.
                 </p>
               </div>
@@ -125,7 +125,7 @@ const Index = () => {
                   </Button>
                 </Link>
                 <Link to="/tutorials">
-                  <Button variant="outline" className="border-gray-600 hover:bg-gray-800/10 px-6 py-6 text-lg text-gray-900 dark:text-slate-50 bg-white/90 dark:bg-transparent backdrop-blur-sm shadow-xl">
+                  <Button variant="outline" className="border-white/30 hover:bg-white/10 px-6 py-6 text-lg text-white bg-transparent backdrop-blur-sm shadow-xl">
                     View Tutorials
                   </Button>
                 </Link>
