@@ -21,13 +21,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 6rem;
+  padding-top: 8rem;
   padding-bottom: 4rem;
 }
 
 @media (min-width: 768px) {
   .hero-section {
-    padding-top: 8rem;
+    padding-top: 10rem;
     padding-bottom: 6rem;
   }
 }
