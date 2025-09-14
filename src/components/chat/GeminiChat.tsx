@@ -54,8 +54,10 @@ const GeminiChat = ({ isOpen = true, onClose }: GeminiChatProps) => {
     setIsLoading(true);
 
     try {
-      // Call Firebase function to communicate with Gemini AI
-      const response = await fetch('/.netlify/functions/gemini-chat', {
+      // Simulate AI response for demo
+      const response = { ok: false }; // Force demo mode
+      if (false) { // Disabled API call
+        await fetch('/.netlify/functions/gemini-chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -39,6 +39,10 @@ const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const PlanDetails = lazy(() => import("./pages/PlanDetails"));
 const ImportContent = lazy(() => import("./pages/ImportContent"));
 const MatchActionPage = lazy(() => import("./pages/matches/MatchActionPage"));
+const CourseDetail = lazy(() => import("./pages/CourseDetail"));
+const EbookDetail = lazy(() => import("./pages/EbookDetail"));
+const CreatorDashboard = lazy(() => import("./pages/CreatorDashboard"));
+const CourseCreation = lazy(() => import("./pages/CourseCreation"));
 
 const App = () => {
   return (
@@ -82,6 +86,10 @@ const App = () => {
                     <Route path="/plan/:planId" element={<PlanDetails />} />
                     <Route path="/import" element={<ImportContent />} />
                     <Route path="/matches/:action" element={<MatchActionPage />} />
+                    <Route path="/course/:id" element={<CourseDetail />} />
+                    <Route path="/ebook/:id" element={<EbookDetail />} />
+                    <Route path="/creator-dashboard" element={<CreatorDashboard />} />
+                    <Route path="/course-creation" element={<CourseCreation />} />
                   </Routes>
                 </Suspense>
                 <Toaster />

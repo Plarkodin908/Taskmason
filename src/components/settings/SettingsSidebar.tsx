@@ -32,7 +32,7 @@ const SettingsSidebar = ({
       icon: Brush
     },
     {
-      id: 'language',
+      id: 'accessibility',
       label: 'Accessibility',
       icon: Accessibility
     },
