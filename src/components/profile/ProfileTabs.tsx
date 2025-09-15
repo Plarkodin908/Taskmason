@@ -17,50 +17,8 @@ interface ProfileTabsProps {
 const ProfileTabs = ({
   courses
 }: ProfileTabsProps) => {
-  const mockPosts = [{
-    id: 1,
-    title: "Just completed my React certification! Here's what I learned",
-    content: "After 3 months of intensive study, I finally got my React certification. The journey was challenging but incredibly rewarding...",
-    upvotes: 342,
-    downvotes: 12,
-    comments: 28,
-    timeAgo: "2 hours ago",
-    category: "Achievement",
-    tags: ["React", "Certification", "Learning"]
-  }, {
-    id: 2,
-    title: "Best practices for responsive design in 2024",
-    content: "Here are some of the most important responsive design principles I've learned this year that have completely changed how I approach mobile-first design...",
-    upvotes: 156,
-    downvotes: 8,
-    comments: 45,
-    timeAgo: "1 day ago",
-    category: "Tutorial",
-    tags: ["CSS", "Responsive", "Mobile"]
-  }, {
-    id: 3,
-    title: "Looking for feedback on my portfolio redesign",
-    content: "I just finished redesigning my portfolio and would love some constructive feedback from the community...",
-    upvotes: 89,
-    downvotes: 3,
-    comments: 19,
-    timeAgo: "3 days ago",
-    category: "Feedback",
-    tags: ["Portfolio", "Design", "Feedback"]
-  }];
-  const mockComments = [{
-    id: 1,
-    content: "Great insights on React patterns! The useState examples were particularly helpful.",
-    upvotes: 23,
-    timeAgo: "1 hour ago",
-    postTitle: "Advanced React Patterns"
-  }, {
-    id: 2,
-    content: "Thanks for sharing this tutorial. The step-by-step approach makes it easy to follow.",
-    upvotes: 15,
-    timeAgo: "4 hours ago",
-    postTitle: "CSS Grid Layout Guide"
-  }];
+  const mockPosts: any[] = [];
+  const mockComments: any[] = [];
   return <Tabs defaultValue="posts" className="animate-fade-in">
       <TabsList className="w-full grid grid-cols-4 mb-6 bg-forest/50 border border-mint/20">
         <TabsTrigger value="posts" className="bg-slate-900 hover:bg-slate-800 text-violet-200">Posts</TabsTrigger>
@@ -70,90 +28,31 @@ const ProfileTabs = ({
       </TabsList>
 
       <TabsContent value="posts" className="space-y-4">
-        {mockPosts.map(post => <Card key={post.id} className="bg-forest-light border border-mint/10 p-6 hover:border-mint/20 transition-colors">
-            <div className="flex gap-4">
-              {/* Reddit-style voting */}
-              <div className="flex flex-col items-center gap-1 min-w-[40px]">
-                <Button variant="ghost" size="sm" className="p-1 h-auto text-green-500 hover:text-green-400 hover:bg-green-500/10">
-                  <ArrowUp className="h-5 w-5" />
-                </Button>
-                <span className="text-white font-medium text-sm">
-                  {(post.upvotes - post.downvotes).toLocaleString()}
-                </span>
-                <Button variant="ghost" size="sm" className="p-1 h-auto text-red-500 hover:text-red-400 hover:bg-red-500/10">
-                  <ArrowDown className="h-5 w-5" />
-                </Button>
-              </div>
-              
-              {/* Post content */}
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="outline" className="border-mint/30 text-mint text-xs">
-                    {post.category}
-                  </Badge>
-                  <span className="text-white/60 text-sm">{post.timeAgo}</span>
-                </div>
-                
-                <h3 className="text-lg font-semibold text-white mb-2 hover:text-mint cursor-pointer">
-                  {post.title}
-                </h3>
-                
-                <p className="text-white/70 text-sm mb-3 line-clamp-2">
-                  {post.content}
-                </p>
-                
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {post.tags.map((tag, index) => <Badge key={index} variant="secondary" className="bg-mint/10 text-mint/80 text-xs">
-                      #{tag}
-                    </Badge>)}
-                </div>
-                
-                {/* Reddit-style action buttons */}
-                <div className="flex items-center gap-4">
-                  <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/5 p-2 h-auto">
-                    <MessageCircle className="h-4 w-4 mr-1" />
-                    {post.comments}
-                  </Button>
-                  <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/5 p-2 h-auto">
-                    <Share2 className="h-4 w-4 mr-1" />
-                    Share
-                  </Button>
-                  <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/5 p-2 h-auto">
-                    <Bookmark className="h-4 w-4 mr-1" />
-                    Save
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Card>)}
+        {mockPosts.length === 0 ? (
+          <Card className="bg-forest-light border border-mint/10 p-8 text-center">
+            <p className="text-white/70">No posts yet. Start sharing your thoughts!</p>
+          </Card>
+        ) : (
+          mockPosts.map(post => (
+            <Card key={post.id} className="bg-forest-light border border-mint/10 p-6 hover:border-mint/20 transition-colors">
+              {/* ... keep existing post content ... */}
+            </Card>
+          ))
+        )}
       </TabsContent>
 
       <TabsContent value="comments" className="space-y-4">
-        {mockComments.map(comment => <Card key={comment.id} className="bg-forest-light border border-mint/10 p-4 hover:border-mint/20 transition-colors">
-            <div className="flex gap-4">
-              <div className="flex flex-col items-center gap-1 min-w-[40px]">
-                <Button variant="ghost" size="sm" className="p-1 h-auto text-green-500 hover:text-green-400 hover:bg-green-500/10">
-                  <ArrowUp className="h-4 w-4" />
-                </Button>
-                <span className="text-white font-medium text-sm">{comment.upvotes}</span>
-                <Button variant="ghost" size="sm" className="p-1 h-auto text-red-500 hover:text-red-400 hover:bg-red-500/10">
-                  <ArrowDown className="h-4 w-4" />
-                </Button>
-              </div>
-              
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-white/60 text-sm">Comment on</span>
-                  <span className="text-mint text-sm font-medium hover:underline cursor-pointer">
-                    {comment.postTitle}
-                  </span>
-                  <span className="text-white/60 text-sm">• {comment.timeAgo}</span>
-                </div>
-                
-                <p className="text-white/80 text-sm">{comment.content}</p>
-              </div>
-            </div>
-          </Card>)}
+        {mockComments.length === 0 ? (
+          <Card className="bg-forest-light border border-mint/10 p-8 text-center">
+            <p className="text-white/70">No comments yet. Join conversations to share your thoughts!</p>
+          </Card>
+        ) : (
+          mockComments.map(comment => (
+            <Card key={comment.id} className="bg-forest-light border border-mint/10 p-4 hover:border-mint/20 transition-colors">
+              {/* ... keep existing comment content ... */}
+            </Card>
+          ))
+        )}
       </TabsContent>
 
       <TabsContent value="courses" className="space-y-6">

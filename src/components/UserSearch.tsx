@@ -11,31 +11,7 @@ interface UserResult {
   role: string;
   verificationStatus: "unverified" | "pending" | "verified";
 }
-const mockUsers: UserResult[] = [{
-  id: "1",
-  name: "Sarah Johnson",
-  avatar: "",
-  role: "Web Designer",
-  verificationStatus: "verified"
-}, {
-  id: "2",
-  name: "Michael Chen",
-  avatar: "",
-  role: "Front-end Developer",
-  verificationStatus: "verified"
-}, {
-  id: "3",
-  name: "Emily Parker",
-  avatar: "",
-  role: "UX Researcher",
-  verificationStatus: "pending"
-}, {
-  id: "4",
-  name: "David Rodriguez",
-  avatar: "",
-  role: "Full-stack Developer",
-  verificationStatus: "unverified"
-}];
+const mockUsers: UserResult[] = [];
 const UserSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,6 +24,7 @@ const UserSearch = () => {
 
       // Simulate API call with a timeout
       const timeoutId = setTimeout(() => {
+        // Search functionality will be connected to backend  
         const filteredUsers = mockUsers.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase()));
         setSearchResults(filteredUsers);
         setIsSearching(false);

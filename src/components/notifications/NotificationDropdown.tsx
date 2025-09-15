@@ -102,7 +102,7 @@ interface NotificationDropdownProps {
 }
 
 const NotificationDropdown = ({ isOpen, onClose, triggerRef }: NotificationDropdownProps) => {
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

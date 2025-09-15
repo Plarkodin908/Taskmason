@@ -54,29 +54,22 @@ const GeminiChat = ({ isOpen = true, onClose }: GeminiChatProps) => {
     setIsLoading(true);
 
     try {
-      // Simulate AI response for demo
-      const response = { ok: false }; // Force demo mode
-      if (false) { // Disabled API call
-        await fetch('/.netlify/functions/gemini-chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: inputText,
-          context: "Taskmason is a community-driven learning platform where users can exchange skills, take courses, connect with mentors, and build their professional network. The platform features a marketplace for courses, community forums, messaging system, achievements, and various membership plans."
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to get response from AI');
-      }
-
-      const data = await response.json();
-
+      // Demo mode - simulate AI response
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
+      
+      const demoResponses = [
+        "Thanks for your interest in Taskmason! We're a learning platform where you can take courses, exchange skills, and connect with mentors.",
+        "Taskmason offers various courses across different categories like cooking, coding, and art. You can browse our marketplace to find courses that interest you.",
+        "As a student, you'll have access to your dashboard where you can track progress, view certificates, and manage your wishlist.",
+        "Creators can build and sell courses on our platform. We handle payments and provide analytics to help you succeed.",
+        "You can pay for courses using traditional payment methods or cryptocurrency. We support multiple currencies for global accessibility."
+      ];
+      
+      const randomResponse = demoResponses[Math.floor(Math.random() * demoResponses.length)];
+      
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: data.response || "I'm sorry, I couldn't process your request right now. Please try again.",
+        text: randomResponse,
         isUser: false,
         timestamp: new Date()
       };
