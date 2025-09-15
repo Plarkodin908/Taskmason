@@ -50,26 +50,22 @@ const Features = () => {
           </p>
         </ScrollReveal>
         
-        <div className="features-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <ScrollReveal key={feature.title} delay={index * 100}>
-              <Card3D 
-                variant="tilt" 
-                glowOnHover
-                className="section-card h-full"
-              >
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 hover:bg-white/15 hover:shadow-lg hover:shadow-primary/20 hover:transform hover:scale-105 transition-all duration-300">
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center float-3d shadow-lg">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center shadow-lg">
                     <feature.icon className="h-8 w-8 text-white" />
                   </div>
-                  <Text3D as="h3" className="text-xl font-semibold text-white">
+                  <h3 className="text-xl font-semibold text-white">
                     {feature.title}
-                  </Text3D>
+                  </h3>
                   <p className="text-white/80 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
-              </Card3D>
+              </div>
             </ScrollReveal>
           ))}
         </div>
