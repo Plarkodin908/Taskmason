@@ -11,6 +11,11 @@ export interface User {
   email: string;
   name: string;
   avatar?: string;
+  coverImage?: string;
+  bio?: string;
+  role?: string;
+  location?: string;
+  website?: string;
   membership: MembershipType;
   completedProfile: boolean;
   verificationStatus: VerificationStatus;
@@ -26,6 +31,7 @@ interface AuthContextType {
   submitVerification: (idImageUrl: string) => Promise<void>;
   updateUserAvatar: (avatarUrl: string) => void;
   updateUserCover: (coverUrl: string) => void;
+  updateUserProfile: (profileData: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -178,6 +184,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('skillNexusUser', JSON.stringify(updatedUser));
   };
 
+  // Update user profile
+  const updateUserProfile = (profileData: Partial<User>) => {
+    if (!user) return;
+    
+    const updatedUser = { ...user, ...profileData };
+    setUser(updatedUser);
+    localStorage.setItem('skillNexusUser', JSON.stringify(updatedUser));
+    toast.success('Profile updated successfully!');
+  };
+
   // Submit verification function
   const submitVerification = async (idImageUrl: string) => {
     if (!user) return;
@@ -217,7 +233,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       upgradeSubscription,
       submitVerification,
       updateUserAvatar,
-      updateUserCover
+      updateUserCover,
+      updateUserProfile
     }}>
       {children}
     </AuthContext.Provider>

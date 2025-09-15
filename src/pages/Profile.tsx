@@ -6,15 +6,14 @@ import SkillSidebar from '@/components/SkillSidebar';
 import MobileNavBar from '@/components/MobileNavBar';
 import ProfileSidebar from '@/components/profile/ProfileSidebar';
 import ProfileTabs from '@/components/profile/ProfileTabs';
-import { Button } from '@/components/ui/button';
+import EditProfileDialog from '@/components/profile/EditProfileDialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import VerifiedBadge from '@/components/profile/VerifiedBadge';
-import { Settings, Calendar, Trophy } from 'lucide-react';
+import { Calendar, Trophy } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, updateUserProfile } = useAuth();
   const [selectedGender, setSelectedGender] = useState('prefer-not-to-say');
   const [isEditing, setIsEditing] = useState(false);
 
@@ -79,7 +78,7 @@ const Profile = () => {
                         {user.verificationStatus === "verified" && <VerifiedBadge size="md" />}
                       </div>
                       
-                      <p className="text-mint text-xl mb-4">Learning Enthusiast</p>
+                      <p className="text-mint text-xl mb-4">{user.role || "Learning Enthusiast"}</p>
                       
                       {/* Contact Info */}
                       <div className="flex flex-wrap justify-center md:justify-start gap-4 text-white/60 text-sm mb-4">
@@ -113,10 +112,17 @@ const Profile = () => {
                   
                   {/* Action Buttons */}
                   <div className="flex flex-col gap-3 min-w-[220px]">
-                    <Button onClick={() => setIsEditing(!isEditing)} className="bg-mint hover:bg-mint/90 text-violet-50">
-                      <Settings className="h-4 w-4 mr-2" />
-                      Edit Profile
-                    </Button>
+                    <EditProfileDialog 
+                      profile={{
+                        name: user.name || '',
+                        role: user.role || 'Learning Enthusiast',
+                        bio: user.bio || '',
+                        location: user.location || '',
+                        website: user.website || '',
+                        avatar: user.avatar || ''
+                      }}
+                      onProfileUpdate={updateUserProfile}
+                    />
                   </div>
                 </div>
               </div>
@@ -136,7 +142,7 @@ const Profile = () => {
                         About
                       </h3>
                       <p className="text-white/80 text-sm leading-relaxed mb-4">
-                        Welcome to your profile! Add some information about yourself to let others know who you are.
+                        {user.bio || "Welcome to your profile! Add some information about yourself to let others know who you are."}
                       </p>
                     </Card>
 
