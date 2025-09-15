@@ -64,8 +64,8 @@ const Sidebar = () => {
           <div className="flex items-center justify-center mb-8">
             <Link to="/" className="flex flex-col items-center hover:opacity-90 transition-opacity" onClick={scrollToTop}>
               <img 
-                src="/lovable-uploads/609db0c7-2e29-405b-ad44-bee4b401e14e.png" 
-                alt="SKILLTRICK Logo" 
+                src="/lovable-uploads/new-logo.png" 
+                alt="Taskmason Logo" 
                 className="h-16 w-auto hover-scale transition-transform"
               />
               <h1 className="text-lg font-bold text-mint mt-2">TASKMASON</h1>

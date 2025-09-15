@@ -14,13 +14,14 @@ export interface User {
   membership: MembershipType;
   completedProfile: boolean;
   verificationStatus: VerificationStatus;
+  role: "student" | "creator";
 }
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
-  signUp: (email: string, password: string, name: string) => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
+  signUp: (email: string, password: string, name: string, role: "student" | "creator") => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
   signOut: () => void;
   upgradeSubscription: (plan: MembershipType) => void;
   submitVerification: (idImageUrl: string) => Promise<void>;
@@ -28,39 +29,34 @@ interface AuthContextType {
   updateUserCover: (coverUrl: string) => void;
 }
 
+interface AuthError {
+  message: string;
+  code?: string;
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock user data for demo purposes
-const mockUsers = [
-  {
-    id: '1',
-    email: 'demo@example.com',
-    password: 'password123',
-    name: 'Demo User',
-    membership: 'Free' as MembershipType,
-    completedProfile: false,
-    verificationStatus: 'unverified' as VerificationStatus
-  }
-];
+const isAuthError = (error: unknown): error is AuthError => {
+  return typeof error === 'object' && error !== null && 'message' in error;
+};
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  console.log('AuthProvider rendering...');
-  
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Check for existing session on component mount
   useEffect(() => {
-    console.log('AuthProvider useEffect running...');
     try {
-      const savedUser = localStorage.getItem('skillNexusUser');
+      const savedUser = localStorage.getItem('taskmasonUser');
       if (savedUser) {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        if (parsedUser && typeof parsedUser === 'object') {
+          setUser(parsedUser);
+        }
       }
-      setIsLoading(false);
-      console.log('AuthProvider initialized successfully');
     } catch (error) {
       console.error('Error initializing AuthProvider:', error);
+    } finally {
       setIsLoading(false);
     }
   }, []);
@@ -69,37 +65,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // In a real app, this would be an API call
-      const foundUser = mockUsers.find(
-        (u) => u.email === email && u.password === password
-      );
+      const response = await new Promise<{user: User, token: string}>(resolve => {
+        setTimeout(() => {
+          resolve({
+            user: {
+              id: '1',
+              email,
+              name: 'Demo User',
+              membership: 'Free',
+              completedProfile: true,
+              verificationStatus: 'unverified',
+              role: 'student'
+            },
+            token: 'demo-token'
+          });
+        }, 1000);
+      });
       
-      if (!foundUser) {
-        throw new Error('Invalid credentials');
-      }
-      
-      const userData: User = {
-        id: foundUser.id,
-        email: foundUser.email,
-        name: foundUser.name,
-        membership: foundUser.membership,
-        completedProfile: foundUser.completedProfile,
-        verificationStatus: foundUser.verificationStatus
-      };
-      
-      setUser(userData);
-      localStorage.setItem('skillNexusUser', JSON.stringify(userData));
+      setUser(response.user);
+      localStorage.setItem('taskmasonUser', JSON.stringify(response.user));
+      localStorage.setItem('taskmasonToken', response.token);
       
       toast.success('Successfully signed in!');
       
-      // Return redirect information instead of navigating
-      if (!foundUser.completedProfile) {
-        return { shouldRedirect: true, redirectTo: '/profile' };
-      } else {
-        return { shouldRedirect: true, redirectTo: '/dashboard' };
-      }
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in');
+      return {
+        shouldRedirect: true,
+        redirectTo: response.user.role === 'creator' ? '/creator-dashboard' : '/dashboard'
+      };
+    } catch (error: unknown) {
+      const errorMessage = isAuthError(error) ? error.message : 'Failed to sign in';
+      toast.error(errorMessage);
       throw error;
     } finally {
       setIsLoading(false);
@@ -107,35 +102,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Sign up function
-  const signUp = async (email: string, password: string, name: string) => {
+  const signUp = async (email: string, password: string, name: string, role: "student" | "creator") => {
     setIsLoading(true);
     try {
-      // In a real app, this would be an API call
-      const exists = mockUsers.some((u) => u.email === email);
+      const response = await new Promise<{user: User, token: string}>(resolve => {
+        setTimeout(() => {
+          resolve({
+            user: {
+              id: '1',
+              email,
+              name,
+              membership: 'Free',
+              completedProfile: false,
+              verificationStatus: 'unverified',
+              role
+            },
+            token: 'demo-token'
+          });
+        }, 1000);
+      });
       
-      if (exists) {
-        throw new Error('User already exists');
-      }
-      
-      const newUser: User = {
-        id: String(mockUsers.length + 1),
-        email,
-        name,
-        membership: 'Free',
-        completedProfile: false,
-        verificationStatus: 'unverified'
-      };
-      
-      // In a real app, we would add this user to the database
-      mockUsers.push({ ...newUser, password, completedProfile: false });
-      
-      setUser(newUser);
-      localStorage.setItem('skillNexusUser', JSON.stringify(newUser));
+      setUser(response.user);
+      localStorage.setItem('taskmasonUser', JSON.stringify(response.user));
+      localStorage.setItem('taskmasonToken', response.token);
       
       toast.success('Account created successfully!');
       return { shouldRedirect: true, redirectTo: '/profile' };
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to create account');
+    } catch (error: unknown) {
+      const errorMessage = isAuthError(error) ? error.message : 'Failed to create account';
+      toast.error(errorMessage);
       throw error;
     } finally {
       setIsLoading(false);
@@ -145,7 +140,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Sign out function
   const signOut = () => {
     setUser(null);
-    localStorage.removeItem('skillNexusUser');
+    localStorage.removeItem('taskmasonUser');
+    localStorage.removeItem('taskmasonToken');
     toast.info('You have been signed out');
   };
 
@@ -155,7 +151,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     const updatedUser = { ...user, membership: plan };
     setUser(updatedUser);
-    localStorage.setItem('skillNexusUser', JSON.stringify(updatedUser));
+    localStorage.setItem('taskmasonUser', JSON.stringify(updatedUser));
     
     toast.success(`Subscription upgraded to ${plan} successfully!`);
   };
@@ -166,7 +162,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     const updatedUser = { ...user, avatar: avatarUrl };
     setUser(updatedUser);
-    localStorage.setItem('skillNexusUser', JSON.stringify(updatedUser));
+    localStorage.setItem('taskmasonUser', JSON.stringify(updatedUser));
   };
   
   // Update user cover image
@@ -175,7 +171,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     const updatedUser = { ...user, coverImage: coverUrl };
     setUser(updatedUser);
-    localStorage.setItem('skillNexusUser', JSON.stringify(updatedUser));
+    localStorage.setItem('taskmasonUser', JSON.stringify(updatedUser));
   };
 
   // Submit verification function
@@ -184,28 +180,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     try {
       setIsLoading(true);
-      // In a real app, this would be an API call to submit the verification request
-      
-      // Update the user's verification status to pending
       const updatedUser = { ...user, verificationStatus: 'pending' as VerificationStatus };
       setUser(updatedUser);
-      localStorage.setItem('skillNexusUser', JSON.stringify(updatedUser));
-      
-      // Update mock user data
-      const userIndex = mockUsers.findIndex(u => u.id === user.id);
-      if (userIndex !== -1) {
-        mockUsers[userIndex].verificationStatus = 'pending';
-      }
+      localStorage.setItem('taskmasonUser', JSON.stringify(updatedUser));
       
       toast.success('Verification request submitted successfully! We will review your submission.');
-    } catch (error) {
-      toast.error('Failed to submit verification request');
+    } catch (error: unknown) {
+      const errorMessage = isAuthError(error) ? error.message : 'Failed to submit verification request';
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
-
-  console.log('AuthProvider rendering with user:', user, 'isLoading:', isLoading);
 
   return (
     <AuthContext.Provider value={{ 

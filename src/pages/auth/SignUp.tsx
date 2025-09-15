@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,63 +5,111 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
-import { ArrowLeft, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, GraduationCap, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 import Loading from "@/components/ui/loading";
 
+interface SignUpFormState {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  showPassword: boolean;
+  showConfirmPassword: boolean;
+  error: string;
+  isCreating: boolean;
+  showRoleSelection: boolean;
+  selectedRole: "student" | "creator" | null;
+}
+
+const useSignUpValidation = () => {
+  const validateForm = (data: {
+    name: string;
+    password: string;
+    confirmPassword: string;
+    selectedRole: string | null;
+  }): string | null => {
+    if (data.name.trim().length < 2) {
+      return "Name must be at least 2 characters long";
+    }
+    
+    if (data.password.length < 6) {
+      return "Password must be at least 6 characters long";
+    }
+    
+    if (data.password !== data.confirmPassword) {
+      return "Passwords do not match";
+    }
+    
+    if (!data.selectedRole) {
+      return "Please select a role";
+    }
+    
+    return null;
+  };
+
+  return { validateForm };
+};
+
 const SignUp = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [isCreating, setIsCreating] = useState(false);
-  const {
-    signUp,
-    isLoading
-  } = useAuth();
   const navigate = useNavigate();
+  const { signUp, isLoading } = useAuth();
+  const { validateForm } = useSignUpValidation();
+  
+  const [formState, setFormState] = useState<SignUpFormState>({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    showPassword: false,
+    showConfirmPassword: false,
+    error: "",
+    isCreating: false,
+    showRoleSelection: false,
+    selectedRole: null
+  });
+
+  const updateFormState = (updates: Partial<SignUpFormState>) => {
+    setFormState(prev => ({ ...prev, ...updates }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    updateFormState({ error: "" });
     
-    // Basic form validation
-    if (name.trim().length < 2) {
-      setError("Name must be at least 2 characters long");
-      return;
-    }
-    
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long");
-      return;
-    }
-    
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
+    const validationError = validateForm({
+      name: formState.name,
+      password: formState.password,
+      confirmPassword: formState.confirmPassword,
+      selectedRole: formState.selectedRole
+    });
+
+    if (validationError) {
+      updateFormState({ error: validationError });
       return;
     }
     
     try {
-      setIsCreating(true);
-      // Show earth loader for a bit longer to demonstrate the animation
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      await signUp(email, password, name);
-      toast.success("Account created successfully!");
-    } catch (error: any) {
-      setError(error.message || "Failed to create account");
+      updateFormState({ isCreating: true });
+      
+      if (formState.selectedRole) {
+        await signUp(formState.email, formState.password, formState.name, formState.selectedRole);
+        toast.success("Account created successfully!");
+        navigate(formState.selectedRole === 'student' ? '/dashboard' : '/creator-dashboard');
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      toast.error(errorMessage);
+      updateFormState({ error: errorMessage });
     } finally {
-      setIsCreating(false);
+      updateFormState({ isCreating: false });
     }
   };
 
-  const toggleShowPassword = () => setShowPassword(!showPassword);
-  const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+  const toggleShowPassword = () => updateFormState({ showPassword: !formState.showPassword });
+  const toggleShowConfirmPassword = () => updateFormState({ showConfirmPassword: !formState.showConfirmPassword });
 
-  // Show earth loader during account creation
-  if (isCreating || isLoading) {
+  if (formState.isCreating || isLoading) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
         <Loading variant="earth" text="Creating your account..." />
@@ -70,19 +117,78 @@ const SignUp = () => {
     );
   }
 
+  if (formState.showRoleSelection) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <Card className="bg-forest-light border-mint/20 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold text-white">Choose Your Role</CardTitle>
+              <CardDescription className="text-white/70">
+                Select how you want to use Taskmason
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <p className="text-white">Welcome {formState.name}! Please select your role:</p>
+              
+              <div className="space-y-4">
+                <button
+                  onClick={() => updateFormState({ selectedRole: "student" })}
+                  className={`w-full p-4 rounded-lg border-2 transition-all ${
+                    formState.selectedRole === "student"
+                      ? "border-mint bg-mint/10"
+                      : "border-mint/20 hover:border-mint/40"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <GraduationCap className="h-8 w-8 text-mint" />
+                    <div className="text-left">
+                      <h3 className="text-lg font-semibold text-white">I'm a Student</h3>
+                      <p className="text-white/70 text-sm">
+                        Learn new skills and take courses from expert creators
+                      </p>
+                    </div>
+                  </div>
+                </button>
+                
+                <button
+                  onClick={() => updateFormState({ selectedRole: "creator" })}
+                  className={`w-full p-4 rounded-lg border-2 transition-all ${
+                    formState.selectedRole === "creator"
+                      ? "border-mint bg-mint/10"
+                      : "border-mint/20 hover:border-mint/40"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <BookOpen className="h-8 w-8 text-mint" />
+                    <div className="text-left">
+                      <h3 className="text-lg font-semibold text-white">I'm a Creator</h3>
+                      <p className="text-white/70 text-sm">
+                        Create and sell courses to share your knowledge
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              </div>
+              
+              <Button
+                onClick={handleSubmit}
+                disabled={!formState.selectedRole || isLoading}
+                className="w-full bg-mint hover:bg-mint/90 text-forest font-medium"
+              >
+                {isLoading ? "Creating Account..." : "Continue"}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left side - Login Form */}
       <div className="w-full md:w-1/2 bg-slate-900 flex items-center justify-center p-4 md:p-8">
         <div className="w-full max-w-md">
-          <div className="mb-6 flex md:hidden justify-center">
-            <img 
-              src="/lovable-uploads/609db0c7-2e29-405b-ad44-bee4b401e14e.png" 
-              alt="SKILL NEXUS Logo" 
-              className="h-16 w-auto"
-            />
-          </div>
-          
           <Link to="/" className="inline-flex items-center text-white/70 hover:text-mint mb-6 transition-colors">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
@@ -92,11 +198,14 @@ const SignUp = () => {
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-white">Create Account</CardTitle>
               <CardDescription className="text-white/70">
-                Join Skill Nexus to connect with experts and showcase your skills
+                Join Taskmason to connect with experts and showcase your skills
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                updateFormState({ showRoleSelection: true });
+              }} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-white">Full Name</Label>
                   <div className="relative">
@@ -104,8 +213,8 @@ const SignUp = () => {
                     <Input 
                       id="name" 
                       placeholder="John Doe" 
-                      value={name} 
-                      onChange={e => setName(e.target.value)} 
+                      value={formState.name} 
+                      onChange={e => updateFormState({ name: e.target.value })}
                       required 
                       className="bg-slate-950 border-mint/20 text-white pl-10" 
                     />
@@ -120,8 +229,8 @@ const SignUp = () => {
                       id="email" 
                       type="email" 
                       placeholder="your@email.com" 
-                      value={email} 
-                      onChange={e => setEmail(e.target.value)} 
+                      value={formState.email} 
+                      onChange={e => updateFormState({ email: e.target.value })}
                       required 
                       className="bg-slate-950 border-mint/20 text-white pl-10" 
                     />
@@ -134,10 +243,10 @@ const SignUp = () => {
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
                     <Input 
                       id="password" 
-                      type={showPassword ? "text" : "password"} 
-                      placeholder="••••••••" 
-                      value={password} 
-                      onChange={e => setPassword(e.target.value)} 
+                      type={formState.showPassword ? "text" : "password"}
+                      placeholder="########" 
+                      value={formState.password} 
+                      onChange={e => updateFormState({ password: e.target.value })}
                       required 
                       className="bg-slate-950 border-mint/20 text-white pl-10 pr-10" 
                     />
@@ -146,7 +255,7 @@ const SignUp = () => {
                       onClick={toggleShowPassword}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70"
                     >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {formState.showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
@@ -157,10 +266,10 @@ const SignUp = () => {
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
                     <Input 
                       id="confirm-password" 
-                      type={showConfirmPassword ? "text" : "password"} 
-                      placeholder="••••••••" 
-                      value={confirmPassword} 
-                      onChange={e => setConfirmPassword(e.target.value)} 
+                      type={formState.showConfirmPassword ? "text" : "password"}
+                      placeholder="########" 
+                      value={formState.confirmPassword} 
+                      onChange={e => updateFormState({ confirmPassword: e.target.value })}
                       required 
                       className="bg-slate-950 border-mint/20 text-white pl-10 pr-10" 
                     />
@@ -169,14 +278,14 @@ const SignUp = () => {
                       onClick={toggleShowConfirmPassword}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70"
                     >
-                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {formState.showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
                 
-                {error && (
+                {formState.error && (
                   <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-md text-sm">
-                    {error}
+                    {formState.error}
                   </div>
                 )}
                 
@@ -208,15 +317,9 @@ const SignUp = () => {
         </div>
       </div>
       
-      {/* Right side - Illustration */}
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-indigo-950 to-slate-900 p-8 items-center justify-center">
         <div className="max-w-md">
-          <img 
-            src="/lovable-uploads/609db0c7-2e29-405b-ad44-bee4b401e14e.png" 
-            alt="SKILL NEXUS Logo" 
-            className="h-24 w-auto mb-8"
-          />
-          <h1 className="text-4xl font-bold text-white mb-6">Join Skill Nexus Today</h1>
+          <h1 className="text-4xl font-bold text-white mb-6">Join Taskmason Today</h1>
           <p className="text-lg text-white/80 mb-6">
             Take your skills to the next level by joining our community of experts and learners.
           </p>

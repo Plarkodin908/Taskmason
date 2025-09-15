@@ -7,14 +7,8 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEO/SEOHead";
 import SchemaMarkup from "@/components/SEO/SchemaMarkup";
 import { useAuth } from "@/contexts/AuthContext";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import DashboardDemo from "@/components/DashboardDemo";
-import Testimonials from "@/components/Testimonials";
 import { useEffect } from "react";
-import ScrollReveal from "@/components/ScrollReveal";
 import MobileNavBar from "@/components/MobileNavBar";
-import FeaturesCarousel from "@/components/FeaturesCarousel";
 
 const Index = () => {
   const { user } = useAuth();
@@ -57,10 +51,10 @@ const Index = () => {
           "@context": "https://schema.org",
           "@type": "WebSite",
           "name": "Taskmason",
-          "url": "https://taskmason.example.com/",
+          "url": "https://www.taskmaso-n.web.app/",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://taskmason.example.com/marketplace?q={search_term_string}",
+            "target": "https://www.taskmaso-n.web.app/marketplace?q={search_term_string}",
             "query-input": "required name=search_term_string"
           },
           "sameAs": [
@@ -74,69 +68,37 @@ const Index = () => {
       <Navbar />
       
       <main className="relative z-10">
-        {/* Hero Section */}
-        <Hero />
-        
-        {/* Feature Highlights with Icons and Descriptions */}
-        <Features />
-        
-        {/* Additional Features Carousel Section */}
-        <section className="content-section section-container relative">
+        {/* Hero Section - Simplified to match requirements */}
+        <section className="content-section section-container relative min-h-[80vh] flex items-center">
           <div className="absolute inset-0 bg-black/30 dark:bg-black/20 backdrop-blur-sm"></div>
-          <div className="container mx-auto relative z-10">
-            <ScrollReveal>
-              <div className="text-center max-w-2xl mx-auto mb-8">
-                <h2 className="section-title text-center text-white">
-                  Discover What Makes Us Different
-                </h2>
-                <p className="section-subtitle text-center text-white/80">
-                  Explore our innovative features that transform how you learn and grow.
-                </p>
-              </div>
-              <FeaturesCarousel variant="section" className="mt-8" />
-            </ScrollReveal>
-          </div>
-        </section>
-        
-        {/* Dashboard Demo Section */}
-        <DashboardDemo />
-        
-        {/* Testimonials Section */}
-        <Testimonials />
-        
-        {/* Action Buttons */}
-        <section className="content-section section-container relative">
-          <div className="absolute inset-0 bg-black/30 dark:bg-black/20 backdrop-blur-sm"></div>
-          <div className="container mx-auto relative z-10">
-            <ScrollReveal>
-              <div className="text-center max-w-2xl mx-auto mb-8">
-                <h2 className="section-title text-center text-white">
-                  Ready to Start Your Journey?
-                </h2>
-                <p className="section-subtitle text-center text-white/80">
-                  Join our community today and accelerate your learning with expert guidance and support.
-                </p>
-              </div>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link to="/marketplace">
-                  <Button className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 text-white px-6 py-6 text-lg shadow-xl">
-                    <span>Explore Courses</span>
-                    <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+          <div className="container mx-auto relative z-10 text-center px-4">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              Unlock Your Potential
+            </h1>
+            <p className="text-xl text-white/80 max-w-2xl mx-auto mb-10">
+              Connect with experts, learn new skills, and grow your career with our community-driven learning platform.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/marketplace">
+                <Button className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-8 py-6 text-lg shadow-xl">
+                  <span>Explore Courses</span>
+                  <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                </Button>
+              </Link>
+              {!user ? (
+                <Link to="/auth/sign-up">
+                  <Button variant="outline" className="border-white/30 hover:bg-white/10 px-8 py-6 text-lg text-white bg-transparent backdrop-blur-sm shadow-xl">
+                    <span>Join Free</span>
                   </Button>
                 </Link>
-                <Link to="/tutorials">
-                  <Button variant="outline" className="border-white/30 hover:bg-white/10 px-6 py-6 text-lg text-white bg-transparent backdrop-blur-sm shadow-xl">
-                    View Tutorials
+              ) : (
+                <Link to="/dashboard">
+                  <Button variant="outline" className="border-white/30 hover:bg-white/10 px-8 py-6 text-lg text-white bg-transparent backdrop-blur-sm shadow-xl">
+                    <span>Go to Dashboard</span>
                   </Button>
                 </Link>
-                <Link to="/community">
-                  <Button className="bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 text-white px-6 py-6 text-lg shadow-xl">
-                    <span>Join Community</span>
-                    <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                  </Button>
-                </Link>
-              </div>
-            </ScrollReveal>
+              )}
+            </div>
           </div>
         </section>
       </main>

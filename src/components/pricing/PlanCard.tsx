@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, X } from "lucide-react";
@@ -20,6 +19,7 @@ type PlanCardProps = {
   billingPeriod: "monthly" | "annual";
   onSubscribe: (plan: string) => void;
   currentPlan: string;
+  paddleId?: string;
 };
 
 const PlanCard = ({
@@ -36,7 +36,8 @@ const PlanCard = ({
   getAnnualDiscount,
   billingPeriod,
   onSubscribe,
-  currentPlan
+  currentPlan,
+  paddleId
 }: PlanCardProps) => {
   const navigate = useNavigate();
 
@@ -51,11 +52,14 @@ const PlanCard = ({
       return;
     }
     
-    // For paid plans, navigate to payment page
+    // For paid plans, navigate to payment page with Paddle ID
     const params = new URLSearchParams();
     params.append("plan", name);
     params.append("price", price);
     params.append("period", period);
+    if (paddleId) {
+      params.append("paddleId", paddleId);
+    }
     
     navigate(`/payment?${params.toString()}`);
   };

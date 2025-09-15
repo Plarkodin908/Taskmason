@@ -96,7 +96,7 @@ const ImportContent = () => {
               <div>
                 <label className="block text-white font-medium mb-2">URL</label>
                 <Input 
-                  placeholder="https://example.com"
+                  placeholder="https://www.taskmaso-n.web.app"
                   type="url"
                   className="bg-forest border-mint/20 text-white"
                 />

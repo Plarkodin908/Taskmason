@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 type PaymentMethodSelectorProps = {
@@ -118,6 +117,33 @@ const PaymentMethodSelector = ({ selectedMethod, onChange }: PaymentMethodSelect
           type="radio"
           checked={selectedMethod === 'credit'}
           onChange={() => onChange('credit')}
+        />
+      </label>
+      
+      {/* Crypto Payment Option */}
+      <label className="inline-flex justify-between w-full items-center rounded-lg p-2 border border-transparent has-[:checked]:border-yellow-500 has-[:checked]:text-yellow-500 has-[:checked]:bg-yellow-500/10 has-[:checked]:font-bold hover:bg-dark-purple/50 transition-all cursor-pointer has-[:checked]:transition-all has-[:checked]:duration-500 duration-500 relative [&_p]:has-[:checked]:translate-y-0 [&_p]:has-[:checked]:transition-transform [&_p]:has-[:checked]:duration-500 [&_p]:has-[:checked]:opacity-100 overflow-hidden">
+        <div className="inline-flex items-center justify-center gap-2 relative">
+          <svg
+            fill="currentColor"
+            height="32"
+            width="32"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            className="text-yellow-500"
+          >
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          <p className="font-semibold absolute inset-0 w-full whitespace-nowrap -translate-y-[110%] translate-x-full top-1 left-2 transition-all duration-700 opacity-0 text-yellow-500">
+            Crypto (USDT)
+          </p>
+        </div>
+        <input
+          className="checked:text-yellow-500 checked:ring-0 checked:ring-current focus:ring-0 focus:ring-current"
+          value="crypto"
+          name="payment"
+          type="radio"
+          checked={selectedMethod === 'crypto'}
+          onChange={() => onChange('crypto')}
         />
       </label>
     </div>

@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Download, Star, Users, FileText, Globe } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import CryptoPaymentModal from '@/components/payment/CryptoPaymentModal';
 
 const EbookDetail = () => {
   const { id } = useParams();
@@ -20,7 +21,8 @@ const EbookDetail = () => {
     author: {
       name: "David Rodriguez",
       avatar: "/lovable-uploads/67d1f40f-f60d-4221-9678-1e516ed84424.png",
-      bio: "JavaScript expert and technical author with 10+ years of experience. Author of 5 programming books."
+      bio: "JavaScript expert and technical author with 10+ years of experience. Author of 5 programming books.",
+      walletAddress: "TXYZ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ" // Author's wallet address
     },
     price: 24.99,
     pages: 340,
@@ -90,6 +92,11 @@ const EbookDetail = () => {
     setShowCrypto(true);
   };
 
+  const handleCryptoPaymentSuccess = () => {
+    // In a real app, this would update the UI to show the ebook content
+    navigate('/dashboard/my-ebooks');
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -108,7 +115,7 @@ const EbookDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
-              {/* E-book Header */}
+              {/* Ebook Header */}
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
                   {ebook.title}
@@ -261,7 +268,7 @@ const EbookDetail = () => {
                 </div>
               </Card>
             </div>
-
+            
             {/* Sidebar */}
             <div className="space-y-6">
               {/* E-book Cover & Purchase */}
@@ -329,43 +336,19 @@ const EbookDetail = () => {
               </Card>
             </div>
           </div>
-
-          {/* Crypto Payment Modal */}
-          {showCrypto && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <Card className="bg-card border-border p-6 max-w-md w-full">
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold text-white mb-2">Pay with Crypto</h3>
-                  <p className="text-gray-400">Send exactly ${ebook.price} USDT (TRC20) to:</p>
-                </div>
-                
-                <div className="bg-gray-800 p-4 rounded mb-4">
-                  <p className="text-xs text-gray-300 break-all font-mono">
-                    TQn9Y2khEsLMWwZHZHj6NeR8kZCKtDTK7k
-                  </p>
-                </div>
-                
-                <div className="text-center mb-6">
-                  <p className="text-sm text-gray-400">
-                    Your payment will be confirmed automatically within 60 seconds
-                  </p>
-                </div>
-                
-                <div className="flex gap-3">
-                  <Button onClick={() => setShowCrypto(false)} variant="outline" className="flex-1">
-                    Cancel
-                  </Button>
-                  <Button className="flex-1 bg-green-600 hover:bg-green-700">
-                    I've Sent Payment
-                  </Button>
-                </div>
-              </Card>
-            </div>
-          )}
         </div>
       </div>
-
+      
       <Footer />
+      
+      <CryptoPaymentModal 
+        isOpen={showCrypto}
+        onClose={() => setShowCrypto(false)}
+        amount={ebook.price}
+        currency="USDT"
+        creatorWalletAddress={ebook.author.walletAddress}
+        onPaymentSuccess={handleCryptoPaymentSuccess}
+      />
     </div>
   );
 };

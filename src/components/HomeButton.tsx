@@ -34,7 +34,7 @@ const HomeButton = () => {
     <Link to="/" onClick={handleHomeClick} className="mr-6">
       <div className="flex items-center gap-3">
         <img 
-          src="/lovable-uploads/67d1f40f-f60d-4221-9678-1e516ed84424.png" 
+          src="/lovable-uploads/new-logo.png" 
           alt="Taskmason Logo" 
           className="w-8 h-8 md:w-10 md:h-10"
         />

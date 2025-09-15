@@ -1,4 +1,3 @@
-
 import { Check, X, Info } from "lucide-react";
 import { PlanFeature } from "./types";
 
@@ -7,6 +6,15 @@ type FeatureComparisonProps = {
 };
 
 const FeatureComparison = ({ features }: FeatureComparisonProps) => {
+  // Define all possible plan types for comparison
+  const planTypes = [
+    { key: "free", name: "Free" },
+    { key: "standard", name: "Standard" },
+    { key: "premium", name: "Premium" },
+    { key: "pro", name: "Pro" },
+    { key: "expert", name: "Expert" }
+  ];
+
   return (
     <section className="py-16 px-4 bg-forest/30">
       <div className="container mx-auto max-w-6xl">
@@ -22,10 +30,11 @@ const FeatureComparison = ({ features }: FeatureComparisonProps) => {
             <thead>
               <tr>
                 <th className="text-left p-4 border-b border-mint/10">Feature</th>
-                <th className="text-center p-4 border-b border-mint/10 min-w-[100px]">Free</th>
-                <th className="text-center p-4 border-b border-mint/10 min-w-[100px]">Lite</th>
-                <th className="text-center p-4 border-b border-mint/10 bg-mint/5 min-w-[120px]">Pro Learner</th>
-                <th className="text-center p-4 border-b border-mint/10 min-w-[100px]">Educator</th>
+                {planTypes.map((plan) => (
+                  <th key={plan.key} className="text-center p-4 border-b border-mint/10 min-w-[100px]">
+                    {plan.name}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -42,18 +51,15 @@ const FeatureComparison = ({ features }: FeatureComparisonProps) => {
                       </span>
                     )}
                   </td>
-                  <td className="text-center p-4 border-b border-mint/10">
-                    {feature.free ? <Check className="h-5 w-5 text-mint mx-auto" /> : <X className="h-5 w-5 text-white/40 mx-auto" />}
-                  </td>
-                  <td className="text-center p-4 border-b border-mint/10">
-                    {feature.lite ? <Check className="h-5 w-5 text-mint mx-auto" /> : <X className="h-5 w-5 text-white/40 mx-auto" />}
-                  </td>
-                  <td className="text-center p-4 border-b border-mint/10 bg-mint/5">
-                    {feature.pro ? <Check className="h-5 w-5 text-mint mx-auto" /> : <X className="h-5 w-5 text-white/40 mx-auto" />}
-                  </td>
-                  <td className="text-center p-4 border-b border-mint/10">
-                    {feature.educator ? <Check className="h-5 w-5 text-mint mx-auto" /> : <X className="h-5 w-5 text-white/40 mx-auto" />}
-                  </td>
+                  {planTypes.map((plan) => (
+                    <td key={plan.key} className="text-center p-4 border-b border-mint/10">
+                      {feature[plan.key as keyof PlanFeature] ? (
+                        <Check className="h-5 w-5 text-mint mx-auto" />
+                      ) : (
+                        <X className="h-5 w-5 text-white/40 mx-auto" />
+                      )}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>

@@ -17,6 +17,7 @@ const Features = lazy(() => import("./pages/Features"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Company = lazy(() => import("./pages/Company"));
 const Legal = lazy(() => import("./pages/Legal"));
+const Contact = lazy(() => import("./pages/Contact"));
 const SignIn = lazy(() => import("./pages/auth/SignIn"));
 const SignUp = lazy(() => import("./pages/auth/SignUp"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -64,6 +65,7 @@ const App = () => {
                     <Route path="/pricing" element={<Pricing />} />
                     <Route path="/company" element={<Company />} />
                     <Route path="/legal" element={<Legal />} />
+                    <Route path="/contact" element={<Contact />} />
                     <Route path="/auth/sign-in" element={<SignIn />} />
                     <Route path="/auth/sign-up" element={<SignUp />} />
                     <Route path="/profile" element={<Profile />} />

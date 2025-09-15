@@ -1,4 +1,3 @@
-
 export interface ChatUser {
   name: string;
   avatar: string;
@@ -21,6 +20,6 @@ export interface Message {
   chatId?: number;
 }
 
-// Return empty arrays - completely clean, no sample data
+// In a real app, these would fetch from Strapi
 export const getSampleChats = (): Chat[] => [];
 export const getSampleMessages = (): Message[] => [];

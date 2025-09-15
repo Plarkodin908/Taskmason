@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { GraduationCap, BookOpen, Users, MessageSquare, Mail, Phone } from "lucide-react";
+
 const Footer = () => {
   const scrollToTop = () => {
     window.scrollTo({
@@ -7,7 +8,9 @@ const Footer = () => {
       behavior: "smooth"
     });
   };
-  return <footer className="px-4 border-t border-white/10 bg-black/50 backdrop-blur-md relative z-10 py-[98px]">
+
+  return (
+    <footer className="px-4 border-t border-white/10 bg-black/50 backdrop-blur-md relative z-10 py-[98px]">
       <div className="container mx-auto rounded-sm">
         <div className="grid md:grid-cols-4 gap-12">
           <div className="space-y-4">
@@ -41,30 +44,34 @@ const Footer = () => {
               <li><Link to="/company" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>About Us</Link></li>
               <li><Link to="/company" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Team</Link></li>
               <li><Link to="/company" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Careers</Link></li>
-              <li><Link to="/company" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Contact</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-medium mb-4">Legal</h4>
             <ul className="space-y-2">
-              <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Terms of Service</Link></li>
               <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Privacy Policy</Link></li>
+              <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Terms of Service</Link></li>
+              <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Refund Policy</Link></li>
               <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>Cookie Policy</Link></li>
-              <li><Link to="/legal" className="text-white/60 hover:text-white transition-colors" onClick={scrollToTop}>FAQ</Link></li>
             </ul>
           </div>
         </div>
         
         <div className="border-t border-white/10 mt-16 pt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex items-center gap-2 text-white/60">
-            
-          </div>
-          <div className="md:col-span-2 text-center text-white/60 pt-4">
-            <p className="px-0 my-[51px] py-[86px]">&copy; {new Date().getFullYear()} TASKMASON. All rights reserved.</p>
+          <div className="flex flex-col items-start md:items-center gap-2 text-white/60">
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link to="/legal" className="text-white/60 hover:text-white transition-colors text-sm" onClick={scrollToTop}>Privacy Policy</Link>
+              <Link to="/legal" className="text-white/60 hover:text-white transition-colors text-sm" onClick={scrollToTop}>Terms of Service</Link>
+              <Link to="/legal" className="text-white/60 hover:text-white transition-colors text-sm" onClick={scrollToTop}>Refund Policy</Link>
+              <Link to="/legal" className="text-white/60 hover:text-white transition-colors text-sm" onClick={scrollToTop}>Contact</Link>
+            </div>
+            <p className="text-center w-full text-white/60 pt-2 text-sm">&copy; {new Date().getFullYear()} TASKMASON. All rights reserved.</p>
           </div>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;
