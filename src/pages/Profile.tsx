@@ -53,7 +53,14 @@ const Profile = () => {
         <div className="flex-1">
           {/* Cover Section */}
           <div className="relative pt-16">
-            <div className="h-56 md:h-64 bg-gradient-to-br from-mint/20 via-forest/40 to-mint/10 relative overflow-hidden">
+            <div 
+              className={`h-56 md:h-64 relative overflow-hidden ${
+                user.coverImage 
+                  ? 'bg-cover bg-center' 
+                  : 'bg-gradient-to-br from-mint/20 via-forest/40 to-mint/10'
+              }`}
+              style={user.coverImage ? { backgroundImage: `url(${user.coverImage})` } : {}}
+            >
               <div className="absolute inset-0 bg-gradient-to-br from-mint/30 via-forest-light/60 to-forest/80" />
               <div className="absolute inset-0 bg-black/20" />
             </div>
@@ -119,7 +126,8 @@ const Profile = () => {
                         bio: user.bio || '',
                         location: user.location || '',
                         website: user.website || '',
-                        avatar: user.avatar || ''
+                        avatar: user.avatar || '',
+                        coverImage: user.coverImage || ''
                       }}
                       onProfileUpdate={updateUserProfile}
                     />

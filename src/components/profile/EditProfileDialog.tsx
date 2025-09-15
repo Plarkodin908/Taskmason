@@ -18,6 +18,7 @@ interface EditProfileDialogProps {
     location?: string;
     website?: string;
     avatar?: string;
+    coverImage?: string;
   };
   onProfileUpdate: (updatedProfile: any) => void;
 }
@@ -30,7 +31,8 @@ const EditProfileDialog = ({ profile, onProfileUpdate }: EditProfileDialogProps)
     bio: profile.bio,
     location: profile.location || '',
     website: profile.website || '',
-    avatar: profile.avatar || ''
+    avatar: profile.avatar || '',
+    coverImage: profile.coverImage || ''
   });
   const { user } = useAuth();
 
@@ -45,6 +47,18 @@ const EditProfileDialog = ({ profile, onProfileUpdate }: EditProfileDialogProps)
       reader.onload = event => {
         const imageUrl = event.target?.result as string;
         setFormData(prev => ({ ...prev, avatar: imageUrl }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = event => {
+        const imageUrl = event.target?.result as string;
+        setFormData(prev => ({ ...prev, coverImage: imageUrl }));
       };
       reader.readAsDataURL(file);
     }
@@ -73,6 +87,34 @@ const EditProfileDialog = ({ profile, onProfileUpdate }: EditProfileDialogProps)
         </DialogHeader>
         
         <div className="space-y-4">
+          {/* Cover Image Upload */}
+          <div className="space-y-2">
+            <Label className="text-white">Cover Image</Label>
+            <div className="relative">
+              <div 
+                className="h-32 w-full rounded-lg bg-gradient-to-br from-mint/20 via-forest/40 to-mint/10 bg-cover bg-center relative overflow-hidden"
+                style={formData.coverImage ? { backgroundImage: `url(${formData.coverImage})` } : {}}
+              >
+                <div className="absolute inset-0 bg-black/20" />
+                <label htmlFor="cover-upload" className="absolute inset-0 flex items-center justify-center cursor-pointer hover:bg-black/30 transition-all">
+                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10" size="sm" asChild>
+                    <span>
+                      <Camera className="h-4 w-4 mr-2" />
+                      Change Cover
+                    </span>
+                  </Button>
+                </label>
+              </div>
+              <input
+                id="cover-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleCoverChange}
+              />
+            </div>
+          </div>
+
           {/* Avatar Upload */}
           <div className="flex flex-col items-center space-y-2">
             <Avatar className="h-24 w-24">
