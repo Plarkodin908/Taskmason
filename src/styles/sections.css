@@ -17,12 +17,12 @@
 
 /* Consistent hero section height */
 .hero-section {
-  min-height: 100vh;
+  min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 6rem;
-  padding-bottom: 4rem;
+  padding-top: 4rem;
+  padding-bottom: 3rem;
 }
 
 @media (min-width: 768px) {
@@ -85,7 +85,7 @@
 
 /* Text consistency */
 .section-title {
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: white;
   margin-bottom: 1rem;
@@ -94,12 +94,12 @@
 
 @media (min-width: 768px) {
   .section-title {
-    font-size: 2.25rem;
+    font-size: 1.875rem;
   }
 }
 
 .section-subtitle {
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 2rem;
   line-height: 1.6;
@@ -107,6 +107,6 @@
 
 @media (min-width: 768px) {
   .section-subtitle {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
 }

@@ -85,9 +85,16 @@
   }
   
   /* Force dark mode styles */
+html {
+  color-scheme: dark;
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
   html {
-    color-scheme: dark;
+    font-size: 16px;
   }
+}
   
   body.dark,
   .dark body,

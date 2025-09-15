@@ -38,11 +38,11 @@ const Hero = () => {
       <div className="container mx-auto relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
           <ScrollReveal direction="left" className="w-full md:w-1/2 space-y-6">
-            <Text3D as="h1" variant="glow" className="text-3xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-2xl">
+            <Text3D as="h1" variant="glow" className="text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-2xl">
               Unlock Your <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Potential</span>
             </Text3D>
             
-            <p className="text-md md:text-lg text-white/90 max-w-lg drop-shadow-lg font-medium">
+            <p className="text-sm md:text-base text-white/90 max-w-lg drop-shadow-lg font-medium">
               Connect with experts, share your skills, and grow together in our community-driven learning platform.
             </p>
             
