@@ -1,46 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { toast } from "sonner";
-
-// Define user types and membership levels
-export type MembershipType = "Free" | "Lite" | "Pro Learner" | "Educator";
-
-export type VerificationStatus = "unverified" | "pending" | "verified";
-
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  avatar?: string;
-  coverImage?: string;
-  bio?: string;
-  role?: string;
-  location?: string;
-  website?: string;
-  membership: MembershipType;
-  completedProfile: boolean;
-  verificationStatus: VerificationStatus;
-  role: "student" | "creator";
-}
-
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
-  signUp: (email: string, password: string, name: string, role: "student" | "creator") => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
-  signOut: () => void;
-  upgradeSubscription: (plan: MembershipType) => void;
-  submitVerification: (idImageUrl: string) => Promise<void>;
-  updateUserAvatar: (avatarUrl: string) => void;
-  updateUserCover: (coverUrl: string) => void;
-  updateUserProfile: (profileData: Partial<User>) => void;
-}
-
-interface AuthError {
-  message: string;
-  code?: string;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext, AuthContextType, User, MembershipType, VerificationStatus, AuthError } from './auth-context';
 
 const isAuthError = (error: unknown): error is AuthError => {
   return typeof error === 'object' && error !== null && 'message' in error;
@@ -186,7 +146,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     const updatedUser = { ...user, ...profileData };
     setUser(updatedUser);
-    localStorage.setItem('skillNexusUser', JSON.stringify(updatedUser));
+    localStorage.setItem('taskmasonUser', JSON.stringify(updatedUser));
     toast.success('Profile updated successfully!');
   };
 
@@ -227,10 +187,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export { AuthContext };
+  export type { AuthContextType, User, MembershipType, VerificationStatus };
+

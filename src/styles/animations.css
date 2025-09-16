@@ -224,8 +224,6 @@
   }
 }
 
-@layer utilities {
-  .animate-slide-in-top {
-    animation: slide-in-top 0.3s both;
-  }
+.animate-slide-in-top {
+  animation: slide-in-top 0.3s both;
 }

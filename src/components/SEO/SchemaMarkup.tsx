@@ -14,23 +14,23 @@ const SchemaMarkup = ({ type, data = {} }: SchemaMarkupProps) => {
     website: {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Skill Nexus - Connect, Learn, Grow",
-      "url": "https://skillnexus.example.com/",
+      "name": "Taskmason - Connect, Learn, Grow",
+      "url": "https://www.taskmaso-n.web.com/",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://skillnexus.example.com/search?q={search_term_string}",
+        "target": "https://www.taskmaso-n.web.com/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     },
     organization: {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Skill Nexus",
-      "url": "https://skillnexus.example.com/",
-      "logo": "https://skillnexus.example.com/logo.png",
+      "name": "Taskmason",
+      "url": "https://www.taskmaso-n.web.com/",
+      "logo": "https://www.taskmaso-n.web.com/lovable-uploads/taskmason-logo.png",
       "sameAs": [
-        "https://twitter.com/skillnexus",
-        "https://www.linkedin.com/company/skillnexus"
+        "https://twitter.com/taskmason",
+        "https://www.linkedin.com/company/taskmason"
       ]
     },
     course: {
@@ -40,8 +40,8 @@ const SchemaMarkup = ({ type, data = {} }: SchemaMarkupProps) => {
       "description": "Learn web development from basics to advanced concepts",
       "provider": {
         "@type": "Organization",
-        "name": "Skill Nexus",
-        "sameAs": "https://skillnexus.example.com/"
+        "name": "Taskmason",
+        "sameAs": "https://www.taskmaso-n.web.com/"
       }
     },
     article: {
@@ -54,10 +54,10 @@ const SchemaMarkup = ({ type, data = {} }: SchemaMarkupProps) => {
       },
       "publisher": {
         "@type": "Organization",
-        "name": "Skill Nexus",
+        "name": "Taskmason",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://skillnexus.example.com/logo.png"
+          "url": "https://www.taskmaso-n.web.com/lovable-uploads/taskmason-logo.png"
         }
       },
       "datePublished": "2023-06-12",
