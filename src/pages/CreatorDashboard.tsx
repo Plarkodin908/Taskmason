@@ -1,391 +1,371 @@
-import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, DollarSign, Users, Eye, MessageSquare, TrendingUp, FileText, Video } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { toast } from 'sonner';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { 
+  BookOpen, 
+  Video, 
+  Users, 
+  DollarSign, 
+  TrendingUp, 
+  Download, 
+  Eye, 
+  MessageCircle, 
+  Heart,
+  Plus,
+  BarChart3,
+  FileText
+} from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { useAuth } from '@/contexts/AuthContext';
+import strapiApi from '@/services/strapiApi';
 
 const CreatorDashboard = () => {
-  const navigate = useNavigate();
   const { user } = useAuth();
-  const [selectedPayout, setSelectedPayout] = useState('wise');
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<'courses' | 'ebooks'>('courses');
+  const [courses, setCourses] = useState<any[]>([]);
+  const [ebooks, setEbooks] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>({
+    totalCourses: 0,
+    totalEbooks: 0,
+    totalStudents: 0,
+    totalRevenue: 0,
+    monthlyGrowth: 0
+  });
+  const [loading, setLoading] = useState(true);
 
-  // Mock data for creator
-  const creatorStats = {
-    totalEarnings: 2847.50,
-    pendingPayout: 847.25,
-    totalStudents: 1247,
-    totalViews: 15623,
-    avgCompletion: 78
-  };
-
-  const myCourses = [
-    {
-      id: 1,
-      title: "Complete React Development Course",
-      status: "Published",
-      students: 1247,
-      earnings: 1899.50,
-      rating: 4.8,
-      views: 5234,
-      completionRate: 82
-    },
-    {
-      id: 2,
-      title: "JavaScript Fundamentals",
-      status: "Published", 
-      students: 892,
-      earnings: 948.00,
-      rating: 4.6,
-      views: 3421,
-      completionRate: 75
-    },
-    {
-      id: 3,
-      title: "Advanced CSS Techniques",
-      status: "Pending Review",
-      students: 0,
-      earnings: 0,
-      rating: 0,
-      views: 0,
-      completionRate: 0
+  useEffect(() => {
+    if (!user) {
+      navigate('/auth/sign-in');
+      return;
     }
-  ];
 
-  const messages = [
-    {
-      id: 1,
-      student: "Alex Chen",
-      course: "Complete React Development Course",
-      message: "Hi! I'm having trouble with the useEffect hook in lesson 5...",
-      time: "2 hours ago",
-      unread: true
-    },
-    {
-      id: 2,
-      student: "Sarah Johnson",
-      course: "JavaScript Fundamentals",
-      message: "Thank you for the great course! Could you recommend...",
-      time: "1 day ago",
-      unread: false
-    }
-  ];
+    const fetchData = async () => {
+      try {
+        // Fetch creator's courses
+        const coursesResponse: any = await strapiApi.getCourses();
+        setCourses(coursesResponse.data || []);
+        
+        // Fetch creator's ebooks
+        const ebooksResponse: any = await strapiApi.getEbooks();
+        setEbooks(ebooksResponse.data || []);
+        
+        // Calculate earnings data
+        const coursePurchases = coursesResponse.data?.flatMap((course: any) => course.purchases || []) || [];
+        const ebookPurchases = ebooksResponse.data?.flatMap((ebook: any) => ebook.purchases || []) || [];
+        const allPurchases = [...coursePurchases, ...ebookPurchases];
+        
+        const totalEarnings = allPurchases.reduce((sum, purchase) => sum + (purchase.amount || 0), 0);
+        const monthlyEarnings = allPurchases
+          .filter(purchase => {
+            const purchaseDate = new Date(purchase.createdAt);
+            const now = new Date();
+            return purchaseDate.getMonth() === now.getMonth() && 
+                   purchaseDate.getFullYear() === now.getFullYear();
+          })
+          .reduce((sum, purchase) => sum + (purchase.amount || 0), 0);
+        
+        const totalStudents = new Set(allPurchases.map(p => p.users_permissions_user?.id)).size;
+        
+        setStats({
+          totalCourses: coursesResponse.data?.length || 0,
+          totalEbooks: ebooksResponse.data?.length || 0,
+          totalStudents,
+          totalRevenue: totalEarnings,
+          monthlyGrowth: monthlyEarnings
+        });
+      } catch (error) {
+        console.error('Error fetching creator data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleCreateCourse = () => {
-    if (user && user.membership === "Educator") {
-      navigate("/course-creation");
-    } else {
-      toast.info("Creating courses requires an Educator membership", {
-        description: "Upgrade your plan to unlock this feature",
-        action: {
-          label: "View Plans",
-          onClick: () => navigate("/pricing")
-        }
-      });
-      navigate("/pricing");
-    }
-  };
+    fetchData();
+  }, [user, navigate]);
 
-  const handleRequestPayout = () => {
-    toast.success("Payout request submitted!", {
-      description: `$${creatorStats.pendingPayout} will be transferred to your ${selectedPayout} account within 3-5 business days.`
-    });
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Published':
-        return 'bg-green-900/50 text-green-200';
-      case 'Pending Review':
-        return 'bg-yellow-900/50 text-yellow-200';
-      case 'Draft':
-        return 'bg-gray-900/50 text-gray-200';
-      default:
-        return 'bg-gray-900/50 text-gray-200';
-    }
-  };
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <p className="text-white">Please sign in to access the creator dashboard.</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background">
       <Navbar />
       
-      <div className="pt-20 pb-16">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
-              <h1 className="text-3xl font-bold text-white">
-                Welcome, {user?.name || user?.email?.split('@')[0] || 'Creator'}!
-              </h1>
-              <p className="text-gray-400 mt-1">Manage your courses and track your earnings</p>
-            </div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-white">Creator Dashboard</h1>
+            <p className="text-white/70">Manage your content and track your earnings</p>
+          </div>
+          <div className="flex gap-3 mt-4 md:mt-0">
             <Button 
-              onClick={handleCreateCourse}
-              className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+              onClick={() => navigate('/course-creation')}
+              className="bg-primary-purple hover:bg-primary-purple/90"
             >
-              <Plus className="h-4 w-4" />
-              Create New Course
+              <Plus className="h-4 w-4 mr-2" />
+              Create Course
+            </Button>
+            <Button 
+              variant="outline"
+              onClick={() => navigate('/ebook-creation')}
+              className="border-primary-purple/30 text-white hover:bg-primary-purple/10"
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              Create Ebook
             </Button>
           </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-            <Card className="bg-card border-border p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-600/20 rounded-lg">
-                  <DollarSign className="h-6 w-6 text-green-400" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-400">Total Earnings</p>
-                  <p className="text-2xl font-bold text-white">${creatorStats.totalEarnings.toLocaleString()}</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="bg-card border-border p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-600/20 rounded-lg">
-                  <DollarSign className="h-6 w-6 text-blue-400" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-400">Pending Payout</p>
-                  <p className="text-2xl font-bold text-white">${creatorStats.pendingPayout.toLocaleString()}</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="bg-card border-border p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-600/20 rounded-lg">
-                  <Users className="h-6 w-6 text-purple-400" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-400">Total Students</p>
-                  <p className="text-2xl font-bold text-white">{creatorStats.totalStudents.toLocaleString()}</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="bg-card border-border p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-600/20 rounded-lg">
-                  <Eye className="h-6 w-6 text-orange-400" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-400">Total Views</p>
-                  <p className="text-2xl font-bold text-white">{creatorStats.totalViews.toLocaleString()}</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="bg-card border-border p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-teal-600/20 rounded-lg">
-                  <TrendingUp className="h-6 w-6 text-teal-400" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-400">Avg Completion</p>
-                  <p className="text-2xl font-bold text-white">{creatorStats.avgCompletion}%</p>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          <Tabs defaultValue="courses" className="space-y-6">
-            <TabsList className="bg-card border border-border">
-              <TabsTrigger value="courses" className="text-white">My Courses</TabsTrigger>
-              <TabsTrigger value="earnings" className="text-white">Earnings</TabsTrigger>
-              <TabsTrigger value="messages" className="text-white">Messages</TabsTrigger>
-              <TabsTrigger value="analytics" className="text-white">Analytics</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="courses" className="space-y-6">
-              <div className="grid gap-6">
-                {myCourses.map((course) => (
-                  <Card key={course.id} className="bg-card border-border p-6">
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-xl font-semibold text-white">{course.title}</h3>
-                          <Badge className={getStatusColor(course.status)}>
-                            {course.status}
-                          </Badge>
-                        </div>
+        </div>
+        
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+          <Card className="bg-dark-purple border-primary-purple/30">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-white/70">Total Earnings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">${stats.totalRevenue.toFixed(2)}</div>
+              <p className="text-xs text-white/60">All time</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-dark-purple border-primary-purple/30">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-white/70">Monthly Earnings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">${stats.monthlyGrowth.toFixed(2)}</div>
+              <p className="text-xs text-white/60">This month</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-dark-purple border-primary-purple/30">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-white/70">Total Students</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">{stats.totalStudents}</div>
+              <p className="text-xs text-white/60">Active learners</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-dark-purple border-primary-purple/30">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-white/70">Courses</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">{stats.totalCourses}</div>
+              <p className="text-xs text-white/60">Published</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-dark-purple border-primary-purple/30">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-white/70">E-books</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">{stats.totalEbooks}</div>
+              <p className="text-xs text-white/60">Published</p>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* Content Sections */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Courses */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-white">Your Courses</h2>
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate('/course-creation')}
+                className="text-primary-purple hover:text-primary-purple/90 hover:bg-primary-purple/10"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                New Course
+              </Button>
+            </div>
+            
+            <div className="space-y-4">
+              {courses.length > 0 ? (
+                courses.map(course => (
+                  <Card key={course.id} className="bg-dark-purple border-primary-purple/30">
+                    <CardContent className="p-4">
+                      <div className="flex gap-4">
+                        {course.thumbnail ? (
+                          <img 
+                            src={course.thumbnail.url} 
+                            alt={course.title} 
+                            className="h-16 w-16 rounded object-cover"
+                          />
+                        ) : (
+                          <div className="h-16 w-16 rounded bg-primary-purple/20 flex items-center justify-center">
+                            <Video className="h-6 w-6 text-primary-purple" />
+                          </div>
+                        )}
                         
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                          <div>
-                            <p className="text-gray-400">Students</p>
-                            <p className="text-white font-medium">{course.students.toLocaleString()}</p>
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between">
+                            <h3 className="font-semibold text-white">{course.title}</h3>
+                            <Badge 
+                              variant={course.status === "Published" ? "default" : "secondary"}
+                              className={
+                                course.status === "Published" ? "bg-mint/20 text-mint" : 
+                                course.status === "Draft" ? "bg-yellow-500/20 text-yellow-500" : 
+                                "bg-blue-500/20 text-blue-500"
+                              }
+                            >
+                              {course.status}
+                            </Badge>
                           </div>
-                          <div>
-                            <p className="text-gray-400">Earnings</p>
-                            <p className="text-white font-medium">${course.earnings.toLocaleString()}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-400">Rating</p>
-                            <p className="text-white font-medium">{course.rating > 0 ? `★ ${course.rating}` : 'N/A'}</p>
-                          </div>
-                          <div>
-                            <p className="text-gray-400">Completion</p>
-                            <p className="text-white font-medium">{course.completionRate}%</p>
+                          
+                          <p className="text-sm text-white/70 mt-1 line-clamp-2">
+                            {course.description}
+                          </p>
+                          
+                          <div className="flex items-center justify-between mt-3">
+                            <div className="flex items-center gap-4 text-sm text-white/70">
+                              <span>${course.price.toFixed(2)}</span>
+                              <span>{course.purchases?.length || 0} students</span>
+                            </div>
+                            
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => navigate(`/course/${course.id}`)}
+                              className="text-primary-purple hover:text-primary-purple/90 hover:bg-primary-purple/10"
+                            >
+                              View
+                            </Button>
                           </div>
                         </div>
                       </div>
-                      
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="text-white border-gray-600">
-                          Edit
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-white border-gray-600">
-                          View
-                        </Button>
-                      </div>
-                    </div>
+                    </CardContent>
                   </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="earnings" className="space-y-6">
-              <Card className="bg-card border-border p-6">
-                <h3 className="text-xl font-semibold text-white mb-6">Payout Settings</h3>
-                
-                <div className="space-y-4 mb-6">
-                  <div>
-                    <label className="text-sm font-medium text-gray-300 mb-2 block">
-                      Payout Method
-                    </label>
-                    <div className="space-y-2">
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="radio"
-                          name="payout"
-                          value="wise"
-                          checked={selectedPayout === 'wise'}
-                          onChange={(e) => setSelectedPayout(e.target.value)}
-                          className="text-blue-600"
-                        />
-                        <span className="text-white">Wise (International Transfer)</span>
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="radio"
-                          name="payout"
-                          value="payeer"
-                          checked={selectedPayout === 'payeer'}
-                          onChange={(e) => setSelectedPayout(e.target.value)}
-                          className="text-blue-600"
-                        />
-                        <span className="text-white">Payeer</span>
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="radio"  
-                          name="payout"
-                          value="crypto"
-                          checked={selectedPayout === 'crypto'}
-                          onChange={(e) => setSelectedPayout(e.target.value)}
-                          className="text-blue-600"
-                        />
-                        <span className="text-white">Crypto (USDT)</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-gray-700">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-gray-300">Pending Amount:</span>
-                      <span className="text-2xl font-bold text-white">${creatorStats.pendingPayout}</span>
-                    </div>
-                    
+                ))
+              ) : (
+                <Card className="bg-dark-purple border-primary-purple/30">
+                  <CardContent className="p-8 text-center">
+                    <Video className="h-12 w-12 text-white/30 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-white mb-1">No courses yet</h3>
+                    <p className="text-white/70 mb-4">Create your first course to start sharing knowledge</p>
                     <Button 
-                      onClick={handleRequestPayout}
-                      className="w-full bg-green-600 hover:bg-green-700"
-                      disabled={creatorStats.pendingPayout < 50}
+                      onClick={() => navigate('/course-creation')}
+                      className="bg-primary-purple hover:bg-primary-purple/90"
                     >
-                      Request Payout
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create Course
                     </Button>
-                    
-                    {creatorStats.pendingPayout < 50 && (
-                      <p className="text-sm text-gray-400 mt-2 text-center">
-                        Minimum payout amount is $50
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="messages" className="space-y-6">
-              <div className="space-y-4">
-                {messages.map((message) => (
-                  <Card key={message.id} className="bg-card border-border p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                        <MessageSquare className="h-5 w-5 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-white">{message.student}</h4>
-                          {message.unread && (
-                            <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                          )}
-                          <span className="text-gray-400 text-sm ml-auto">{message.time}</span>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
+          
+          {/* E-books */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-white">Your E-books</h2>
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate('/ebook-creation')}
+                className="text-primary-purple hover:text-primary-purple/90 hover:bg-primary-purple/10"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                New E-book
+              </Button>
+            </div>
+            
+            <div className="space-y-4">
+              {ebooks.length > 0 ? (
+                ebooks.map(ebook => (
+                  <Card key={ebook.id} className="bg-dark-purple border-primary-purple/30">
+                    <CardContent className="p-4">
+                      <div className="flex gap-4">
+                        {ebook.CoverImage ? (
+                          <img 
+                            src={ebook.CoverImage.url} 
+                            alt={ebook.title} 
+                            className="h-16 w-16 rounded object-cover"
+                          />
+                        ) : (
+                          <div className="h-16 w-16 rounded bg-primary-purple/20 flex items-center justify-center">
+                            <FileText className="h-6 w-6 text-primary-purple" />
+                          </div>
+                        )}
+                        
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between">
+                            <h3 className="font-semibold text-white">{ebook.title}</h3>
+                            <Badge 
+                              variant="secondary"
+                              className={
+                                ebook.access === "Free" ? "bg-green-500/20 text-green-500" : 
+                                ebook.access === "Paid" ? "bg-blue-500/20 text-blue-500" : 
+                                "bg-purple-500/20 text-purple-500"
+                              }
+                            >
+                              {ebook.access}
+                            </Badge>
+                          </div>
+                          
+                          <p className="text-sm text-white/70 mt-1 line-clamp-2">
+                            {ebook.description}
+                          </p>
+                          
+                          <div className="flex items-center justify-between mt-3">
+                            <div className="flex items-center gap-4 text-sm text-white/70">
+                              <span>{ebook.purchases?.length || 0} readers</span>
+                            </div>
+                            
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => navigate(`/ebook/${ebook.id}`)}
+                              className="text-primary-purple hover:text-primary-purple/90 hover:bg-primary-purple/10"
+                            >
+                              View
+                            </Button>
+                          </div>
                         </div>
-                        <p className="text-sm text-gray-400 mb-2">Course: {message.course}</p>
-                        <p className="text-gray-300">{message.message}</p>
-                        <Button size="sm" variant="outline" className="mt-3 text-white border-gray-600">
-                          Reply
-                        </Button>
                       </div>
-                    </div>
+                    </CardContent>
                   </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="analytics" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-card border-border p-6">
-                  <h3 className="text-lg font-semibold text-white mb-4">Course Performance</h3>
-                  <div className="space-y-4">
-                    {myCourses.filter(c => c.status === 'Published').map((course) => (
-                      <div key={course.id} className="flex justify-between items-center">
-                        <span className="text-gray-300">{course.title}</span>
-                        <div className="text-right">
-                          <p className="text-white font-medium">{course.views} views</p>
-                          <p className="text-sm text-gray-400">{course.completionRate}% completion</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                ))
+              ) : (
+                <Card className="bg-dark-purple border-primary-purple/30">
+                  <CardContent className="p-8 text-center">
+                    <FileText className="h-12 w-12 text-white/30 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-white mb-1">No e-books yet</h3>
+                    <p className="text-white/70 mb-4">Create your first e-book to share your knowledge</p>
+                    <Button 
+                      onClick={() => navigate('/ebook-creation')}
+                      className="bg-primary-purple hover:bg-primary-purple/90"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create E-book
+                    </Button>
+                  </CardContent>
                 </Card>
-
-                <Card className="bg-card border-border p-6">
-                  <h3 className="text-lg font-semibold text-white mb-4">Recent Activity</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-green-400 rounded-full" />
-                      <span className="text-gray-300 text-sm">New student enrolled in React Course</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                      <span className="text-gray-300 text-sm">Received 5-star review</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-yellow-400 rounded-full" />
-                      <span className="text-gray-300 text-sm">Course completion milestone reached</span>
-                    </div>
-                  </div>
-                </Card>
-              </div>
-            </TabsContent>
-          </Tabs>
+              )}
+            </div>
+          </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 };

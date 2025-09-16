@@ -5,178 +5,153 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CreditCard, Lock, QrCode } from "lucide-react";
-import PaymentMethodSelector from '@/components/payment/PaymentMethodSelector';
-import PaymentForm from '@/components/payment/PaymentForm';
+import { CreditCard, Lock, QrCode, Wallet } from "lucide-react";
+import PaymentMethodSelector from "@/components/payment/PaymentMethodSelector";
+import PaymentForm from "@/components/payment/PaymentForm";
+import CryptoPaymentModal from "@/components/payment/CryptoPaymentModal";
+import { toast } from "@/hooks/use-toast";
 
 const PaymentPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [selectedMethod, setSelectedMethod] = useState('credit');
-  const [paymentCompleted, setPaymentCompleted] = useState(false);
-  const [planInfo, setPlanInfo] = useState({
-    name: '',
-    price: '',
-    paddleId: ''
+  const [selectedMethod, setSelectedMethod] = useState('card');
+  const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
+  const [paymentData, setPaymentData] = useState({
+    amount: 0,
+    currency: 'USD',
+    productId: '',
+    productType: 'course' as 'course' | 'ebook',
+    userId: ''
   });
 
-  // Get plan information from location state
+  // Get payment data from location state
   useEffect(() => {
     if (location.state) {
-      setPlanInfo({
-        name: (location.state as any).plan || '',
-        price: (location.state as any).price || '',
-        paddleId: (location.state as any).paddleId || ''
+      setPaymentData(location.state as typeof paymentData);
+    } else {
+      // Redirect if no payment data
+      toast({
+        title: "Payment Error",
+        description: "Invalid payment request",
+        variant: "destructive",
       });
+      navigate("/");
     }
-    
-    // Also check URL parameters for backward compatibility
-    const searchParams = new URLSearchParams(location.search);
-    if (searchParams.has('plan')) {
-      setPlanInfo({
-        name: searchParams.get('plan') || '',
-        price: searchParams.get('price') || '',
-        paddleId: searchParams.get('paddleId') || ''
-      });
-    }
-  }, [location]);
+  }, [location.state, navigate]);
 
   const handlePaymentSuccess = () => {
-    setPaymentCompleted(true);
+    toast({
+      title: "Payment Successful",
+      description: "Your payment has been processed successfully!",
+    });
+    navigate("/dashboard");
   };
 
-  const handlePaddlePayment = () => {
-    if (planInfo.paddleId) {
-      // In a real implementation, this would initialize Paddle checkout
-      alert(`In a real implementation, this would redirect to Paddle checkout with ID: ${planInfo.paddleId}`);
-      handlePaymentSuccess();
-    } else {
-      // Fallback to standard payment form
-      setSelectedMethod('credit');
-    }
+  const handleCryptoPayment = () => {
+    setIsCryptoModalOpen(true);
   };
-
-  if (paymentCompleted) {
-    return (
-      <div className="min-h-screen bg-background">
-        <RefinedPageLayout title="Payment Complete" backUrl="/pricing">
-          <div className="max-w-2xl mx-auto">
-            <Card className="p-8 bg-card border-border text-center">
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Lock className="h-8 w-8 text-green-500" />
-                </div>
-                <h2 className="text-2xl font-bold text-card-foreground mb-2">Payment Successful!</h2>
-                <p className="text-muted-foreground">
-                  Your payment has been processed successfully. You now have access to all premium features.
-                </p>
-              </div>
-
-              <div className="bg-muted/20 p-4 rounded-lg mb-6">
-                <div className="flex justify-between mb-2">
-                  <span className="text-muted-foreground">Transaction ID:</span>
-                  <span className="text-foreground font-mono">TX123456789</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-muted-foreground">Amount:</span>
-                  <span className="text-foreground">{planInfo.price}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Plan:</span>
-                  <span className="text-foreground">{planInfo.name}</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="flex-1" onClick={() => navigate('/dashboard')}>
-                  Go to Dashboard
-                </Button>
-                <Button variant="outline" className="flex-1" onClick={() => navigate('/')}>
-                  Back to Home
-                </Button>
-              </div>
-            </Card>
-          </div>
-        </RefinedPageLayout>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-background">
-      <RefinedPageLayout title="Payment" backUrl="/pricing">
-        <div className="max-w-2xl mx-auto">
-          <Card className="p-8 bg-card border-border">
-            <div className="text-center mb-8">
-              <CreditCard className="h-12 w-12 mx-auto text-primary mb-4" />
-              <h2 className="text-2xl font-bold text-card-foreground mb-2">
-                {planInfo.name ? `Complete Your ${planInfo.name} Payment` : "Complete Your Payment"}
-              </h2>
-              <p className="text-muted-foreground">Secure checkout with 256-bit SSL encryption</p>
-            </div>
+    <RefinedPageLayout title="Secure Payment">
+      <div className="max-w-4xl mx-auto py-8 px-4">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">Complete Your Purchase</h1>
+          <p className="text-white/70">
+            Securely pay for your {paymentData.productType} using your preferred payment method
+          </p>
+        </div>
 
-            {planInfo.paddleId ? (
-              <div className="mb-8 text-center">
-                <p className="text-muted-foreground mb-6">
-                  You have selected the {planInfo.name} plan for {planInfo.price}. 
-                  Click below to proceed with payment through Paddle.
-                </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Payment Details */}
+          <Card className="bg-dark-purple border-primary-purple/30 p-6">
+            <h2 className="text-xl font-bold text-white mb-4">Order Summary</h2>
+            
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-2 border-b border-primary-purple/20">
+                <span className="text-white/80">Product</span>
+                <span className="text-white font-medium capitalize">{paymentData.productType}</span>
+              </div>
+              
+              <div className="flex justify-between items-center py-2 border-b border-primary-purple/20">
+                <span className="text-white/80">Price</span>
+                <span className="text-white font-medium">{paymentData.currency} {paymentData.amount.toFixed(2)}</span>
+              </div>
+              
+              <div className="flex justify-between items-center py-2 border-b border-primary-purple/20">
+                <span className="text-white/80">Fees</span>
+                <span className="text-white font-medium">{paymentData.currency} 0.00</span>
+              </div>
+              
+              <div className="flex justify-between items-center pt-4">
+                <span className="text-white font-bold">Total</span>
+                <span className="text-xl font-bold text-primary-purple">
+                  {paymentData.currency} {paymentData.amount.toFixed(2)}
+                </span>
+              </div>
+            </div>
+            
+            <div className="mt-6 p-4 bg-primary-purple/10 rounded-lg border border-primary-purple/20">
+              <div className="flex items-center gap-2 text-primary-purple">
+                <Lock className="h-4 w-4" />
+                <span className="text-sm font-medium">Secure Payment</span>
+              </div>
+              <p className="text-white/70 text-xs mt-1">
+                Your payment information is encrypted and securely processed.
+              </p>
+            </div>
+          </Card>
+
+          {/* Payment Methods */}
+          <Card className="bg-dark-purple border-primary-purple/30 p-6">
+            <h2 className="text-xl font-bold text-white mb-4">Payment Method</h2>
+            
+            <div className="space-y-4">
+              <PaymentMethodSelector 
+                selectedMethod={selectedMethod} 
+                onChange={setSelectedMethod} 
+              />
+              
+              {selectedMethod === 'crypto' ? (
                 <Button 
-                  onClick={handlePaddlePayment}
-                  className="bg-primary hover:bg-primary/90 w-full max-w-xs mx-auto"
+                  onClick={handleCryptoPayment}
+                  className="w-full bg-primary-purple hover:bg-primary-purple/90 text-white flex items-center justify-center gap-2"
                 >
-                  Pay with Paddle
+                  <QrCode className="h-4 w-4" />
+                  Pay with Cryptocurrency
                 </Button>
-                <p className="text-xs text-muted-foreground mt-4">
-                  You will be redirected to Paddle's secure payment page.
+              ) : (
+                <PaymentForm 
+                  selectedMethod={selectedMethod}
+                  amount={paymentData.amount}
+                  currency={paymentData.currency}
+                  productId={paymentData.productId}
+                  productType={paymentData.productType}
+                  userId={paymentData.userId}
+                  onPaymentSuccess={handlePaymentSuccess}
+                />
+              )}
+              
+              <div className="text-center text-xs text-white/50 pt-4">
+                <p>
+                  By completing your purchase, you agree to our Terms of Service and Privacy Policy.
                 </p>
               </div>
-            ) : (
-              <>
-                <div className="mb-8">
-                  <PaymentMethodSelector 
-                    selectedMethod={selectedMethod} 
-                    onChange={setSelectedMethod} 
-                  />
-                </div>
-
-                <div className="mb-6">
-                  <PaymentForm 
-                    selectedMethod={selectedMethod} 
-                    onPaymentSuccess={handlePaymentSuccess} 
-                  />
-                </div>
-              </>
-            )}
-
-            <div className="bg-muted/20 p-4 rounded-lg">
-              <div className="flex justify-between mb-2">
-                <span className="text-muted-foreground">Plan:</span>
-                <span className="text-foreground">{planInfo.name || 'Custom'}</span>
-              </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-muted-foreground">Subtotal:</span>
-                <span className="text-foreground">{planInfo.price || '$0.00'}</span>
-              </div>
-              <div className="flex justify-between mb-2">
-                <span className="text-muted-foreground">Tax:</span>
-                <span className="text-foreground">$0.00</span>
-              </div>
-              <div className="border-t pt-2 mt-2">
-                <div className="flex justify-between">
-                  <span className="font-semibold text-foreground">Total:</span>
-                  <span className="font-semibold text-foreground">{planInfo.price || '$0.00'}</span>
-                </div>
-              </div>
             </div>
-
-            <p className="text-xs text-muted-foreground text-center mt-6">
-              Your payment information is secure and encrypted. We never store your card details.
-            </p>
           </Card>
         </div>
-      </RefinedPageLayout>
-    </div>
+      </div>
+      
+      <CryptoPaymentModal
+        isOpen={isCryptoModalOpen}
+        onClose={() => setIsCryptoModalOpen(false)}
+        amount={paymentData.amount}
+        currency={paymentData.currency}
+        productId={paymentData.productId}
+        productType={paymentData.productType}
+        userId={paymentData.userId}
+        onPaymentSuccess={handlePaymentSuccess}
+      />
+    </RefinedPageLayout>
   );
 };
 

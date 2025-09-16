@@ -10,11 +10,10 @@ interface CryptoPaymentModalProps {
   onClose: () => void;
   amount: number;
   currency: string;
+  productId: string;
+  productType: 'course' | 'ebook';
+  userId: string;
   onPaymentSuccess: () => void;
-  creatorWalletAddress: string;
-  productId?: string;
-  productType?: 'course' | 'ebook';
-  userId?: string;
 }
 
 const CryptoPaymentModal = ({ 
@@ -22,78 +21,104 @@ const CryptoPaymentModal = ({
   onClose, 
   amount, 
   currency, 
-  onPaymentSuccess,
-  creatorWalletAddress,
-  productId,
-  productType = 'course',
-  userId
+  productId, 
+  productType,
+  userId,
+  onPaymentSuccess
 }: CryptoPaymentModalProps) => {
-  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
-  const [paymentStatus, setPaymentStatus] = useState<'pending' | 'confirmed' | 'expired'>('pending');
+  const [paymentInfo, setPaymentInfo] = useState<CryptoPaymentResponse | null>(null);
+  const [isCreatingPayment, setIsCreatingPayment] = useState(false);
+  const [transactionStatus, setTransactionStatus] = useState<TransactionStatus>('pending');
+  const [timeRemaining, setTimeRemaining] = useState(0);
   const [copied, setCopied] = useState(false);
-  const [paymentData, setPaymentData] = useState<CryptoPaymentResponse | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [checkingStatus, setCheckingStatus] = useState(false);
 
-  // Generate payment address when modal opens
   useEffect(() => {
-    if (isOpen && !paymentData) {
-      generatePaymentAddress();
+    if (isOpen && !paymentInfo && !isCreatingPayment) {
+      createPayment();
     }
   }, [isOpen]);
 
-  // Timer effect
   useEffect(() => {
-    if (!isOpen || paymentStatus !== 'pending' || !paymentData) return;
-
-    const endTime = paymentData.expirationTime;
-    const updateTimer = () => {
-      const now = Date.now();
-      const timeRemaining = Math.max(0, Math.floor((endTime - now) / 1000));
-      
-      if (timeRemaining <= 0) {
-        setPaymentStatus('expired');
-        return;
-      }
-      
-      setTimeLeft(timeRemaining);
-    };
-
-    updateTimer(); // Initial update
-    const timer = setInterval(updateTimer, 1000);
-
-    return () => clearInterval(timer);
-  }, [isOpen, paymentStatus, paymentData]);
-
-  const generatePaymentAddress = async () => {
-    if (!productId || !userId) {
-      // Fallback to static address if no product/user data
-      setTimeLeft(15 * 60);
-      return;
+    let timer: NodeJS.Timeout;
+    if (paymentInfo && timeRemaining > 0) {
+      timer = setTimeout(() => {
+        setTimeRemaining(prev => prev - 1);
+      }, 1000);
+    } else if (timeRemaining <= 0 && paymentInfo) {
+      // Payment expired
+      toast({
+        title: "Payment Expired",
+        description: "The payment window has expired. Please try again.",
+        variant: "destructive",
+      });
+      onClose();
     }
+    return () => clearTimeout(timer);
+  }, [timeRemaining, paymentInfo]);
 
-    setLoading(true);
+  useEffect(() => {
+    let statusCheckTimer: NodeJS.Timeout;
+    if (paymentInfo && transactionStatus === 'pending') {
+      // Check transaction status every 30 seconds
+      statusCheckTimer = setTimeout(() => {
+        checkTransactionStatus();
+      }, 30000);
+    } else if (transactionStatus === 'confirmed') {
+      toast({
+        title: "Payment Confirmed",
+        description: "Your payment has been confirmed. Thank you!",
+      });
+      onPaymentSuccess();
+      onClose();
+    } else if (transactionStatus === 'failed') {
+      toast({
+        title: "Payment Failed",
+        description: "The transaction failed. Please try again or use another payment method.",
+        variant: "destructive",
+      });
+    }
+    return () => clearTimeout(statusCheckTimer);
+  }, [transactionStatus, paymentInfo]);
+
+  const createPayment = async () => {
+    setIsCreatingPayment(true);
     try {
-      const paymentInfo = await cryptoPaymentService.generatePaymentAddress({
+      const response = await cryptoPaymentService.createPayment({
         amount,
         currency,
         productId,
         productType,
         userId
       });
-      
-      setPaymentData(paymentInfo);
-      setTimeLeft(Math.floor((paymentInfo.expirationTime - Date.now()) / 1000));
+      setPaymentInfo(response);
+      setTimeRemaining(Math.floor((response.expirationTime - Date.now()) / 1000));
     } catch (error) {
       toast({
+        title: "Payment Error",
+        description: "Failed to create payment. Please try again.",
         variant: "destructive",
-        title: "Error",
-        description: "Failed to generate payment address. Please try again.",
       });
-      console.error("Failed to generate payment address:", error);
+      onClose();
     } finally {
-      setLoading(false);
+      setIsCreatingPayment(false);
     }
+  };
+
+  const checkTransactionStatus = async () => {
+    if (!paymentInfo) return;
+    
+    try {
+      const statusResponse = await cryptoPaymentService.getTransactionStatus(paymentInfo.transactionId);
+      setTransactionStatus(statusResponse.status);
+    } catch (error) {
+      console.error('Error checking transaction status:', error);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const formatTime = (seconds: number) => {
@@ -102,203 +127,143 @@ const CryptoPaymentModal = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    toast({
-      title: "Copied to clipboard",
-      description: "Wallet address copied successfully",
-    });
-    setTimeout(() => setCopied(false), 2000);
+  const handleRetry = () => {
+    setPaymentInfo(null);
+    setTransactionStatus('pending');
+    setTimeRemaining(0);
+    createPayment();
   };
-
-  const checkPaymentStatus = async () => {
-    if (!paymentData) return;
-
-    setCheckingStatus(true);
-    try {
-      const status: TransactionStatus = await cryptoPaymentService.checkPaymentStatus(
-        paymentData.transactionId
-      );
-
-      if (status.status === 'confirmed') {
-        // Confirm payment in our system
-        const confirmed = await cryptoPaymentService.confirmPayment(paymentData.transactionId);
-        if (confirmed) {
-          setPaymentStatus('confirmed');
-          toast({
-            title: "Payment Confirmed",
-            description: "Your payment has been confirmed. You now have access to the content.",
-          });
-          setTimeout(() => {
-            onPaymentSuccess();
-            onClose();
-          }, 2000);
-        }
-      } else if (status.status === 'failed') {
-        toast({
-          variant: "destructive",
-          title: "Payment Failed",
-          description: "Your payment could not be processed. Please try again or contact support.",
-        });
-      } else {
-        toast({
-          title: "Payment Not Detected",
-          description: "We haven't detected your payment yet. Please make sure you've sent the exact amount.",
-        });
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to check payment status. Please try again.",
-      });
-      console.error("Failed to check payment status:", error);
-    } finally {
-      setCheckingStatus(false);
-    }
-  };
-
-  const handlePaymentConfirmation = () => {
-    // In a real implementation, this would check with backend
-    if (productId && userId) {
-      checkPaymentStatus();
-    } else {
-      // For demo purposes, simulate a successful payment
-      setPaymentStatus('confirmed');
-      toast({
-        title: "Payment Confirmed",
-        description: "Your payment has been confirmed. You now have access to the content.",
-      });
-      setTimeout(() => {
-        onPaymentSuccess();
-        onClose();
-      }, 2000);
-    }
-  };
-
-  if (loading) {
-    return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md bg-dark-purple border-primary-purple/30">
-          <div className="flex flex-col items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-primary-purple mb-4" />
-            <p className="text-white">Generating payment address...</p>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md bg-dark-purple border-primary-purple/30">
+      <DialogContent className="sm:max-w-md bg-dark-purple border-primary-purple/30 text-white">
         <DialogHeader>
-          <DialogTitle className="text-primary-purple flex items-center gap-2">
-            <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
-              <span className="text-black text-xs font-bold">USDT</span>
-            </div>
-            Pay with Crypto
+          <DialogTitle className="text-xl font-bold flex items-center gap-2">
+            {isCreatingPayment ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Creating Payment
+              </>
+            ) : transactionStatus === 'confirmed' ? (
+              <>
+                <CheckCircle className="h-5 w-5 text-green-500" />
+                Payment Confirmed
+              </>
+            ) : (
+              "Crypto Payment"
+            )}
           </DialogTitle>
         </DialogHeader>
-
-        {paymentStatus === 'confirmed' ? (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="h-8 w-8 text-green-500" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">Payment Confirmed!</h3>
-            <p className="text-gray-400 mb-6">
-              Your payment has been confirmed. You now have access to the content.
-            </p>
-            <Button onClick={onClose} className="w-full bg-primary-purple hover:bg-primary-purple/90">
-              Continue to Content
-            </Button>
+        
+        {isCreatingPayment ? (
+          <div className="flex flex-col items-center justify-center py-8">
+            <Loader2 className="h-12 w-12 animate-spin text-primary-purple mb-4" />
+            <p className="text-white/80">Creating secure payment...</p>
           </div>
-        ) : paymentStatus === 'expired' ? (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-red-500 text-2xl">!</span>
+        ) : paymentInfo ? (
+          <div className="space-y-6 py-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary-purple">
+                {amount} {currency}
+              </div>
+              <p className="text-white/70 text-sm mt-1">
+                Send exactly this amount to the address below
+              </p>
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Payment Expired</h3>
-            <p className="text-gray-400 mb-6">
-              This payment request has expired. Please try again.
-            </p>
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={onClose} className="flex-1">
-                Close
-              </Button>
-              <Button onClick={generatePaymentAddress} className="flex-1">
-                Generate New Address
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            <div className="bg-yellow-500/10 p-4 rounded-lg border border-yellow-500/30">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300">Amount to send:</span>
-                <span className="text-xl font-bold text-yellow-500">
-                  {amount.toFixed(2)} {currency}
+            
+            <div className="bg-dark-purple/50 rounded-lg p-4 border border-primary-purple/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-white/70 text-sm">Time Remaining</span>
+                <span className="font-mono text-red-400">
+                  {formatTime(timeRemaining)}
                 </span>
               </div>
-              <p className="text-gray-400 text-sm">TRC20 Network</p>
+              
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-white/70 text-sm">Status</span>
+                <span className={`font-medium ${
+                  transactionStatus === 'confirmed' ? 'text-green-500' : 
+                  transactionStatus === 'failed' ? 'text-red-500' : 'text-yellow-500'
+                }`}>
+                  {transactionStatus === 'pending' ? 'Waiting for payment' : 
+                   transactionStatus === 'confirmed' ? 'Confirmed' : 'Failed'}
+                </span>
+              </div>
+              
+              <div className="flex flex-col space-y-4">
+                <div>
+                  <label className="block text-white/70 text-sm mb-1">Send to Address</label>
+                  <div className="flex items-center gap-2">
+                    <code className="flex-1 bg-black/30 p-2 rounded text-xs break-all">
+                      {paymentInfo.paymentAddress}
+                    </code>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => copyToClipboard(paymentInfo.paymentAddress)}
+                      className="border-primary-purple/30 text-white hover:bg-primary-purple/10"
+                    >
+                      {copied ? <CheckCircle className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-white/70 text-sm mb-1">QR Code</label>
+                  <div className="flex justify-center">
+                    <img 
+                      src={paymentInfo.qrCodeUrl} 
+                      alt="Payment QR Code" 
+                      className="w-32 h-32 bg-white p-2 rounded"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300">Send to:</span>
+            
+            <div className="text-center text-xs text-white/50">
+              <p>
+                Payment must be received within {formatTime(timeRemaining)} to secure your purchase.
+                Do not close this window until payment is confirmed.
+              </p>
+            </div>
+            
+            {transactionStatus === 'failed' && (
+              <div className="flex gap-2">
                 <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => copyToClipboard(paymentData?.paymentAddress || creatorWalletAddress)}
-                  className="text-yellow-500 hover:text-yellow-400"
+                  onClick={handleRetry}
+                  className="flex-1 bg-primary-purple hover:bg-primary-purple/90"
                 >
-                  <Copy className="h-4 w-4 mr-1" />
-                  {copied ? 'Copied!' : 'Copy'}
+                  Try Again
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={onClose}
+                  className="flex-1 border-primary-purple/30 text-white hover:bg-primary-purple/10"
+                >
+                  Cancel
                 </Button>
               </div>
-              <div className="bg-gray-900 p-3 rounded-lg border border-gray-700 break-all">
-                <p className="text-yellow-500 font-mono text-sm">
-                  {paymentData?.paymentAddress || creatorWalletAddress}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Time remaining:</span>
-              <span className="text-red-500 font-bold text-lg">{formatTime(timeLeft)}</span>
-            </div>
-
-            <div className="bg-gray-900 p-4 rounded-lg border border-gray-700 flex justify-center">
-              <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32" />
-            </div>
-
-            <p className="text-gray-400 text-sm text-center">
-              After sending the payment, your transaction will be confirmed automatically within 60 seconds.
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-8">
+            <p className="text-white/80 text-center">
+              Failed to create payment. Please try again.
             </p>
-
-            <div className="flex gap-3">
+            <div className="flex gap-2 mt-4">
+              <Button 
+                onClick={handleRetry}
+                className="bg-primary-purple hover:bg-primary-purple/90"
+              >
+                Retry
+              </Button>
               <Button 
                 variant="outline" 
                 onClick={onClose}
-                className="flex-1"
+                className="border-primary-purple/30 text-white hover:bg-primary-purple/10"
               >
                 Cancel
-              </Button>
-              <Button 
-                onClick={handlePaymentConfirmation}
-                disabled={checkingStatus}
-                className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-gray-900"
-              >
-                {checkingStatus ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    Checking...
-                  </>
-                ) : (
-                  "I've Sent the Payment"
-                )}
               </Button>
             </div>
           </div>

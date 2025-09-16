@@ -1,95 +1,120 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Download, Star, Users, FileText, Globe } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Download, 
+  Star, 
+  Users, 
+  FileText, 
+  Globe,
+  BookOpen,
+  Lock,
+  CreditCard
+} from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CryptoPaymentModal from '@/components/payment/CryptoPaymentModal';
+import { useAuth } from '@/contexts/AuthContext';
+import strapiApi from '@/services/strapiApi';
+import { toast } from 'sonner';
 
 const EbookDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [showCrypto, setShowCrypto] = useState(false);
+  const { user } = useAuth();
+  const [ebook, setEbook] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
 
-  // Mock ebook data
-  const ebook = {
-    id: 1,
-    title: "Complete Guide to Modern JavaScript",
-    author: {
-      name: "David Rodriguez",
-      avatar: "/lovable-uploads/67d1f40f-f60d-4221-9678-1e516ed84424.png",
-      bio: "JavaScript expert and technical author with 10+ years of experience. Author of 5 programming books.",
-      walletAddress: "TXYZ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ" // Author's wallet address
-    },
-    price: 24.99,
-    pages: 340,
-    fileSize: "8.5 MB",
-    format: "PDF",
-    language: "English",
-    rating: 4.9,
-    downloads: 2847,
-    cover: "/lovable-uploads/79bf9c55-24c6-4feb-84ff-310a64214018.png",
-    description: "Master modern JavaScript with this comprehensive guide covering ES6+, async programming, modules, and best practices.",
-    summary: "This comprehensive JavaScript guide takes you from fundamentals to advanced concepts. Learn ES6+ features, async/await, modules, testing, and modern development practices. Includes practical examples and real-world projects.",
-    whatYouLearn: [
-      "ES6+ features and modern syntax",
-      "Asynchronous programming with Promises and async/await",
-      "Module systems and bundling",
-      "Testing with Jest and other frameworks",
-      "Performance optimization techniques",
-      "Best practices and design patterns"
-    ],
-    whoIsFor: [
-      "Beginner to intermediate JavaScript developers",
-      "Frontend developers wanting to modernize their skills",
-      "Backend developers learning Node.js",
-      "Anyone preparing for JavaScript interviews"
-    ],
-    tableOfContents: [
-      "Chapter 1: JavaScript Fundamentals",
-      "Chapter 2: ES6+ Features",
-      "Chapter 3: Asynchronous Programming",
-      "Chapter 4: Working with APIs",
-      "Chapter 5: Module Systems",
-      "Chapter 6: Testing Your Code",
-      "Chapter 7: Performance & Optimization",
-      "Chapter 8: Modern Development Workflow"
-    ],
-    reviews: [
-      {
-        id: 1,
-        user: "Alex Thompson",
-        avatar: "/lovable-uploads/971a0525-9509-4c96-9f90-66e481b188bc.png",
-        rating: 5,
-        comment: "Incredibly detailed and well-structured. This book helped me land my current job!",
-        date: "1 week ago"
-      },
-      {
-        id: 2,
-        user: "Lisa Chang",
-        avatar: "/lovable-uploads/aaa9c8ad-47c0-4ec1-b299-8b47f30da290.png",
-        rating: 5,
-        comment: "The examples are practical and the explanations are clear. Highly recommended!",
-        date: "3 weeks ago"
+  useEffect(() => {
+    const fetchEbook = async () => {
+      if (!id) {
+        setError('Ebook ID is missing');
+        setLoading(false);
+        return;
       }
-    ]
+
+      try {
+        setLoading(true);
+        const response = await strapiApi.getEbook(id);
+        setEbook(response.data);
+        
+        // Check if user has access to the ebook
+        if (user) {
+          if (response.data.access === "Free") {
+            setHasAccess(true);
+          } else if (response.data.access === "Premium" && user.membership !== "Free") {
+            setHasAccess(true);
+          } else {
+            // Check if user has purchased this ebook
+            // In a real app, you would check the user's purchases
+            setHasAccess(false);
+          }
+        } else {
+          setHasAccess(response.data.access === "Free");
+        }
+      } catch (err) {
+        setError('Failed to load ebook details');
+        console.error('Error fetching ebook:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEbook();
+  }, [id, user]);
+
+  const handlePurchase = () => {
+    if (!user) {
+      toast.error('Please sign in to access this ebook');
+      navigate('/auth/sign-in');
+      return;
+    }
+
+    if (!ebook) return;
+
+    // Navigate to payment page with ebook data
+    navigate('/payment', {
+      state: {
+        amount: 9.99, // Would come from ebook data in real app
+        currency: 'USD',
+        productId: ebook.id.toString(),
+        productType: 'ebook' as const,
+        userId: user.id
+      }
+    });
   };
 
-  const otherCurrencies = [
-    { code: 'EUR', symbol: '€', rate: 0.85, amount: (ebook.price * 0.85).toFixed(2) },
-    { code: 'GBP', symbol: '£', rate: 0.73, amount: (ebook.price * 0.73).toFixed(2) },
-    { code: 'CAD', symbol: 'C$', rate: 1.35, amount: (ebook.price * 1.35).toFixed(2) }
-  ];
+  const handleDownload = () => {
+    if (!hasAccess) {
+      toast.error('Please purchase the ebook to download');
+      return;
+    }
 
-  const handleBuyNow = () => {
-    navigate('/payment', { state: { ebookId: ebook.id, price: ebook.price, title: ebook.title } });
+    if (!ebook?.file?.[0]?.url) {
+      toast.error('No download file available');
+      return;
+    }
+
+    // In a real app, this would download the ebook file
+    const link = document.createElement('a');
+    link.href = ebook.file[0].url;
+    link.download = ebook.file[0].name || 'ebook.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success('Download started');
   };
 
   const handleCryptoPay = () => {
-    setShowCrypto(true);
+    setIsCryptoModalOpen(true);
   };
 
   const handleCryptoPaymentSuccess = () => {
@@ -97,61 +122,133 @@ const EbookDetail = () => {
     navigate('/dashboard/my-ebooks');
   };
 
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      
-      <div className="pt-20 pb-16">
-        <div className="container mx-auto px-4">
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-purple mx-auto"></div>
+          <p className="text-white mt-4">Loading ebook details...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !ebook) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <p className="text-white">Ebook not found or error loading ebook details.</p>
           <Button 
-            variant="outline" 
-            className="mb-6 text-white border-white/20 hover:bg-white/10"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(-1)} 
+            className="mt-4 bg-primary-purple hover:bg-primary-purple/90"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to E-books
+            Back
           </Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      
+      <div className="container mx-auto px-4 py-8">
+        <Button 
+          onClick={() => navigate(-1)} 
+          variant="outline"
+          className="mb-6 border-primary-purple/30 text-white hover:bg-primary-purple/10"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Ebooks
+        </Button>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2 space-y-8">
+            {/* Ebook Content */}
+            <div className="lg:col-span-2 space-y-6">
               {/* Ebook Header */}
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  {ebook.title}
-                </h1>
-                <div className="flex flex-wrap items-center gap-4 mb-6">
-                  <div className="flex items-center gap-2">
-                    <img 
-                      src={ebook.author.avatar} 
-                      alt={ebook.author.name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <span className="text-white font-medium">{ebook.author.name}</span>
+              <Card className="bg-dark-purple border-primary-purple/30 overflow-hidden">
+                {ebook.CoverImage ? (
+                  <img 
+                    src={ebook.CoverImage.url} 
+                    alt={ebook.title} 
+                    className="w-full h-80 object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-80 bg-gradient-to-r from-primary-purple/20 to-dark-purple flex items-center justify-center">
+                    <BookOpen className="h-20 w-20 text-primary-purple/50" />
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    <span className="text-white">{ebook.rating}</span>
+                )}
+                
+                <div className="p-6">
+                  <div className="flex flex-wrap items-center gap-2 mb-4">
+                    <Badge variant="secondary" className="bg-primary-purple/20 text-primary-purple">
+                      Ebook
+                    </Badge>
+                    <Badge variant="secondary" className="bg-mint/20 text-mint">
+                      {ebook.access || 'Free'}
+                    </Badge>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="h-4 w-4 text-gray-400" />
-                    <span className="text-gray-300">{ebook.downloads.toLocaleString()} downloads</span>
+                  
+                  <h1 className="text-3xl font-bold text-white mb-2">{ebook.title}</h1>
+                  <p className="text-white/80 mb-4">{ebook.description}</p>
+                  
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-white/70">
+                    <div className="flex items-center gap-1">
+                      <FileText className="h-4 w-4" />
+                      <span>{ebook.pages || 'N/A'} pages</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      <span>1,245 readers</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 text-yellow-500" />
+                      <span>4.7 (89 reviews)</span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  <Badge variant="secondary" className="bg-blue-900/50 text-blue-200">
-                    <FileText className="h-3 w-3 mr-1" />
-                    {ebook.pages} pages
-                  </Badge>
-                  <Badge variant="secondary" className="bg-green-900/50 text-green-200">
-                    {ebook.format} • {ebook.fileSize}
-                  </Badge>
-                  <Badge variant="secondary" className="bg-purple-900/50 text-purple-200">
-                    <Globe className="h-3 w-3 mr-1" />
-                    {ebook.language}
-                  </Badge>
+              </Card>
+              
+              {/* Ebook Preview */}
+              <Card className="bg-dark-purple border-primary-purple/30 p-6">
+                <h2 className="text-xl font-bold text-white mb-4">Preview</h2>
+                <div className="aspect-video bg-black/20 rounded-lg flex items-center justify-center">
+                  <FileText className="h-12 w-12 text-white/50" />
+                  <span className="ml-2 text-white/50">Ebook Preview</span>
                 </div>
-              </div>
+              </Card>
+              
+              {/* Author */}
+              {ebook.author && (
+                <Card className="bg-dark-purple border-primary-purple/30 p-6">
+                  <h2 className="text-xl font-bold text-white mb-4">Author</h2>
+                  <div className="flex items-center gap-4">
+                    {ebook.author.avatar ? (
+                      <img 
+                        src={ebook.author.avatar.url} 
+                        alt={ebook.author.name} 
+                        className="h-16 w-16 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-16 w-16 rounded-full bg-primary-purple/20 flex items-center justify-center">
+                        <span className="text-primary-purple font-bold text-xl">
+                          {ebook.author.name?.substring(0, 2).toUpperCase() || 'AU'}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">{ebook.author.name}</h3>
+                      <p className="text-white/70 text-sm">{ebook.author.bio || 'No bio available'}</p>
+                    </div>
+                  </div>
+                </Card>
+              )}
 
               {/* Preview Pages */}
               <Card className="bg-card border-border p-6">
@@ -222,21 +319,6 @@ const EbookDetail = () => {
                 </ul>
               </Card>
 
-              {/* Author Bio */}
-              <Card className="bg-card border-border p-6">
-                <h2 className="text-2xl font-bold text-white mb-4">About the Author</h2>
-                <div className="flex items-start gap-4">
-                  <img 
-                    src={ebook.author.avatar} 
-                    alt={ebook.author.name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">{ebook.author.name}</h3>
-                    <p className="text-gray-300">{ebook.author.bio}</p>
-                  </div>
-                </div>
-              </Card>
 
               {/* Reviews */}
               <Card className="bg-card border-border p-6">
@@ -269,70 +351,63 @@ const EbookDetail = () => {
               </Card>
             </div>
             
-            {/* Sidebar */}
-            <div className="space-y-6">
-              {/* E-book Cover & Purchase */}
-              <Card className="bg-card border-border p-6 sticky top-24">
-                <div className="text-center mb-6">
-                  <img 
-                    src={ebook.cover} 
-                    alt={ebook.title}
-                    className="w-48 h-64 object-cover rounded-lg mx-auto mb-4 shadow-lg"
-                  />
-                  <div className="text-3xl font-bold text-white mb-2">
-                    ${ebook.price}
+            {/* Access Card */}
+            <div className="lg:col-span-1">
+              <Card className="bg-dark-purple border-primary-purple/30 p-6 sticky top-24">
+                <h2 className="text-xl font-bold text-white mb-4">Ebook Access</h2>
+                
+                <div className="mb-6">
+                  <div className="text-3xl font-bold text-primary-purple mb-2">
+                    {ebook.access === "Free" ? "Free" : "$9.99"}
                   </div>
-                  <div className="text-sm text-gray-400 space-y-1">
-                    {otherCurrencies.map((currency) => (
-                      <div key={currency.code}>
-                        {currency.symbol}{currency.amount} {currency.code}
-                      </div>
-                    ))}
+                  <div className="flex items-center gap-2 text-white/70 text-sm">
+                    <Globe className="h-4 w-4" />
+                    <span>Lifetime access</span>
                   </div>
                 </div>
-
-                <div className="space-y-4">
+                
+                <Separator className="my-4 bg-primary-purple/20" />
+                
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-2 text-white/80">
+                    <FileText className="h-4 w-4 text-primary-purple" />
+                    <span>{ebook.pages || 'N/A'} pages</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-white/80">
+                    <Download className="h-4 w-4 text-primary-purple" />
+                    <span>Downloadable PDF</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-white/80">
+                    <Globe className="h-4 w-4 text-primary-purple" />
+                    <span>Read on any device</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-white/80">
+                    <BookOpen className="h-4 w-4 text-primary-purple" />
+                    <span>Searchable content</span>
+                  </div>
+                </div>
+                
+                {hasAccess ? (
                   <Button 
-                    onClick={handleBuyNow}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={handleDownload}
+                    className="w-full bg-mint hover:bg-mint/90 text-forest font-medium"
                   >
                     <Download className="h-4 w-4 mr-2" />
-                    Download Full E-book
+                    Download Ebook
                   </Button>
-                  
+                ) : (
                   <Button 
-                    onClick={handleCryptoPay}
-                    variant="outline" 
-                    className="w-full border-yellow-500 text-yellow-500 hover:bg-yellow-500/10"
+                    onClick={handlePurchase}
+                    className="w-full bg-primary-purple hover:bg-primary-purple/90 text-white font-medium"
                   >
-                    Pay with Crypto
+                    <Lock className="h-4 w-4 mr-2" />
+                    {ebook.access === "Premium" ? "Get Premium to Access" : "Purchase Ebook"}
                   </Button>
-                </div>
-
-                <Separator className="my-6" />
-
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Pages:</span>
-                    <span className="text-white">{ebook.pages}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Format:</span>
-                    <span className="text-white">{ebook.format}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">File Size:</span>
-                    <span className="text-white">{ebook.fileSize}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Language:</span>
-                    <span className="text-white">{ebook.language}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Downloads:</span>
-                    <span className="text-white">{ebook.downloads.toLocaleString()}</span>
-                  </div>
-                </div>
+                )}
+                
+                <p className="text-white/50 text-xs text-center mt-4">
+                  Secure payment powered by Stripe & Paddle
+                </p>
               </Card>
             </div>
           </div>
@@ -342,8 +417,8 @@ const EbookDetail = () => {
       <Footer />
       
       <CryptoPaymentModal 
-        isOpen={showCrypto}
-        onClose={() => setShowCrypto(false)}
+        isOpen={isCryptoModalOpen}
+        onClose={() => setIsCryptoModalOpen(false)}
         amount={ebook.price}
         currency="USDT"
         creatorWalletAddress={ebook.author.walletAddress}

@@ -1,6 +1,11 @@
 // This service will handle crypto payment related API calls
 // In a real implementation, this would connect to your backend API
 
+const CRYPTO_API_KEY = import.meta.env.VITE_CRYPTO_API_KEY || 'YOUR_CRYPTO_API_KEY';
+const BLOCKCHAIN_WEBHOOK_URL = import.meta.env.VITE_BLOCKCHAIN_WEBHOOK_URL || 'https://taskmason.web.app/webhooks/blockchain';
+
+export type TransactionStatus = 'pending' | 'confirmed' | 'failed';
+
 export interface CryptoPaymentRequest {
   amount: number;
   currency: string;
@@ -18,50 +23,77 @@ export interface CryptoPaymentResponse {
   transactionId: string;
 }
 
-export interface TransactionStatus {
-  status: 'pending' | 'confirmed' | 'failed' | 'expired';
+export interface TransactionStatusResponse {
+  status: TransactionStatus;
   confirmations: number;
   transactionHash?: string;
-  paidAt?: number; // Unix timestamp
 }
 
 class CryptoPaymentService {
-  // Generate a unique payment address for a purchase
-  async generatePaymentAddress(request: CryptoPaymentRequest): Promise<CryptoPaymentResponse> {
+  private async makeApiRequest(endpoint: string, data: any): Promise<any> {
     // In a real implementation, this would call your backend API
-    // which would then interact with a crypto payment processor
+    // which would then interact with crypto payment providers
     
-    // Mock response for demonstration
-    return {
-      paymentAddress: "TXYZ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-      amount: request.amount,
-      currency: request.currency || "USDT",
-      qrCodeUrl: "/mock-qr-code.png",
-      expirationTime: Date.now() + 15 * 60 * 1000, // 15 minutes from now
-      transactionId: `tx_${Math.random().toString(36).substr(2, 9)}`
-    };
+    // For now, we'll simulate the API call
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          data: {
+            paymentAddress: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
+            amount: data.amount,
+            currency: data.currency,
+            qrCodeUrl: `https://api.qrserver.com/v1/create-qr-code/?data=${data.currency}:${'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq'}?amount=${data.amount}&size=200x200`,
+            expirationTime: Date.now() + 3600000, // 1 hour from now
+            transactionId: `txn_${Date.now()}`
+          }
+        });
+      }, 500);
+    });
   }
 
-  // Check the status of a payment
-  async checkPaymentStatus(transactionId: string): Promise<TransactionStatus> {
-    // In a real implementation, this would check with your backend
-    // which would monitor the blockchain for the transaction
-    
-    // Mock response for demonstration
-    return {
-      status: "pending",
-      confirmations: 0
-    };
+  async createPayment(request: CryptoPaymentRequest): Promise<CryptoPaymentResponse> {
+    try {
+      // In a real implementation, this would call your backend API
+      const response = await this.makeApiRequest('/create-payment', request);
+      
+      if (!response.success) {
+        throw new Error('Failed to create crypto payment');
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error('Crypto payment creation error:', error);
+      throw error;
+    }
   }
 
-  // Confirm payment and grant access to content
-  async confirmPayment(transactionId: string): Promise<boolean> {
-    // In a real implementation, this would update the user's access rights
-    // in your database (e.g., Strapi)
-    
-    // Mock response for demonstration
-    console.log(`Payment confirmed for transaction ${transactionId}`);
-    return true;
+  async getTransactionStatus(transactionId: string): Promise<TransactionStatusResponse> {
+    try {
+      // In a real implementation, this would call your backend API
+      // which would then check with the blockchain
+      
+      // For now, we'll simulate the API call
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            status: Math.random() > 0.3 ? 'confirmed' : (Math.random() > 0.5 ? 'pending' : 'failed'),
+            confirmations: Math.floor(Math.random() * 6),
+            transactionHash: `0x${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`
+          });
+        }, 500);
+      });
+    } catch (error) {
+      console.error('Transaction status check error:', error);
+      throw error;
+    }
+  }
+
+  async validateWebhook(payload: any, signature: string): Promise<boolean> {
+    // In a real implementation, this would validate the webhook signature
+    // using the crypto payment provider's public key
+    console.log('Validating crypto payment webhook:', payload, signature);
+    return true; // For demo purposes, always return true
   }
 }
 

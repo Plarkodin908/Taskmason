@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import SkillSidebar from '@/components/SkillSidebar';
 import MobileNavBar from '@/components/MobileNavBar';
@@ -9,8 +9,9 @@ import ProfileTabs from '@/components/profile/ProfileTabs';
 import EditProfileDialog from '@/components/profile/EditProfileDialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import VerifiedBadge from '@/components/profile/VerifiedBadge';
-import { Calendar, Trophy } from 'lucide-react';
+import { Calendar, Trophy, Edit } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const Profile = () => {
   const { user, updateUserProfile } = useAuth();
@@ -29,7 +30,14 @@ const Profile = () => {
   }
 
   // Use empty array for courses - no mock data
-  const userCourses: any[] = [];
+  const userCourses: Array<{
+    id: number;
+    title: string;
+    author: string;
+    likes: number;
+    comments: number;
+    views: number;
+  }> = [];
 
   const handleProfilePictureChange = (url: string) => {
     console.log('Profile picture changed:', url);
@@ -119,6 +127,15 @@ const Profile = () => {
                   
                   {/* Action Buttons */}
                   <div className="flex flex-col gap-3 min-w-[220px]">
+                    <Link to="/profile/edit">
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-mint/20 text-mint hover:bg-mint/10 mb-2"
+                      >
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit Profile
+                      </Button>
+                    </Link>
                     <EditProfileDialog 
                       profile={{
                         name: user.name || '',

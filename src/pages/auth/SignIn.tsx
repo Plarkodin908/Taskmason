@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useAuth } from "@/contexts/AuthContext";
 import { ArrowLeft, Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
+import { validateRedirectUrl } from "@/utils/url-validator";
 import DemoLoginNotice from "@/components/auth/DemoLoginNotice";
 
 const SignIn = () => {
@@ -23,7 +24,8 @@ const SignIn = () => {
       const result = await signIn(email, password);
       
       if (result.shouldRedirect) {
-        navigate(result.redirectTo);
+        const safeRedirectUrl = validateRedirectUrl(result.redirectTo);
+        navigate(safeRedirectUrl);
       }
       
       // Show demo notice if using demo account
@@ -151,7 +153,7 @@ const SignIn = () => {
                 </div>
                 
                 <div className="text-center">
-                  <Link to="#" className="text-sm text-muted-foreground hover:text-primary">
+                  <Link to="/auth/password-recovery" className="text-sm text-muted-foreground hover:text-primary">
                     Forgot password?
                   </Link>
                 </div>
