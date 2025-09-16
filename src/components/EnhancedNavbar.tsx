@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, User, MessageSquare, HelpCircle, Settings, Search, Bell, Menu, X } from 'lucide-react';
@@ -19,9 +20,12 @@ const EnhancedNavbar = () => {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
           <img alt="SKILLTRICK Logo" className="h-12 w-auto animate-fade-in" src="/lovable-uploads/bb658353-d4e9-4200-9d56-7f0319f4a3cc.jpg" />
-          <span className="text-2xl font-bold text-white">Taskmason</span>
+          <div className="loader">
+            <span>Taskmason</span>
+            <span>Taskmason</span>
+          </div>
         </Link>
-        
+
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center space-x-4 transition-all duration-300">
           <div className="relative max-w-md w-64 mr-4">
@@ -131,4 +135,5 @@ const EnhancedNavbar = () => {
         </div>}
     </nav>;
 };
+
 export default EnhancedNavbar;
