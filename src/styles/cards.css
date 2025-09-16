@@ -10,7 +10,7 @@
   position: absolute;
   inset: -3px;
   z-index: -1;
-  background: linear-gradient(90deg, var(--primary-purple), #7E69AB, var(--primary-purple));
+  background: linear-gradient(90deg, #7c3aed, #7E69AB, #7c3aed);
   background-size: 200% 200%;
   border-radius: 12px;
   animation: border-animation 3s ease infinite;
@@ -34,11 +34,11 @@
 }
 
 .floating-card-outer {
-  @apply bg-gradient-to-br from-primary-purple to-light-purple rounded-xl transition-all duration-300;
+  @apply bg-gradient-to-br from-purple-600 to-purple-400 rounded-xl transition-all duration-300;
 }
 
 .floating-card-inner {
-  @apply bg-dark-purple rounded-xl transition-all duration-200;
+  @apply bg-slate-900 rounded-xl transition-all duration-200;
 }
 
 .floating-card-inner:hover {
@@ -50,7 +50,7 @@
 }
 
 .card-hover {
-  @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary-purple/5 hover:border-primary-purple/30;
+  @apply transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5 hover:border-purple-500/30;
 }
 
 /* Glassmorphism styling for cards */

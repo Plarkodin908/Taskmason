@@ -13,7 +13,6 @@ export interface User {
   avatar?: string;
   coverImage?: string;
   bio?: string;
-  role?: string;
   location?: string;
   website?: string;
   membership: MembershipType;
@@ -186,7 +185,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     const updatedUser = { ...user, ...profileData };
     setUser(updatedUser);
-    localStorage.setItem('skillNexusUser', JSON.stringify(updatedUser));
+    localStorage.setItem('taskmasonUser', JSON.stringify(updatedUser));
     toast.success('Profile updated successfully!');
   };
 

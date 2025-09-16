@@ -18,7 +18,7 @@ const EnhancedNavbar = () => {
   return <nav className="fixed top-0 left-0 right-0 z-50 glass-nav bg-dark-purple/80 backdrop-blur-lg border-b border-primary-purple/30">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-          <img alt="SKILLTRICK Logo" className="h-12 w-auto animate-fade-in" src="/lovable-uploads/bb658353-d4e9-4200-9d56-7f0319f4a3cc.jpg" />
+          <img alt="Taskmason Logo" className="h-12 w-auto animate-fade-in" src="/lovable-uploads/taskmason-logo.png" />
           <span className="text-2xl font-bold text-white">Taskmason</span>
         </Link>
         

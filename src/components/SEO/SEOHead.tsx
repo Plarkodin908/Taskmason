@@ -10,13 +10,13 @@ interface SEOHeadProps {
 }
 
 const SEOHead = ({
-  title = "Skill Nexus - Community-Driven Learning Platform",
+  title = "Taskmason - Community-Driven Learning Platform",
   description = "Share knowledge, build skills, and grow together on our community-driven learning platform. Connect with experts and learn new skills today.",
-  canonicalUrl = "https://skillnexus.example.com",
+  canonicalUrl = "https://www.taskmaso-n.web.com",
   ogType = "website",
-  ogImage = "/lovable-uploads/609db0c7-2e29-405b-ad44-bee4b401e14e.png"
+  ogImage = "/lovable-uploads/taskmason-logo.png"
 }: SEOHeadProps) => {
-  const fullTitle = title.includes("Skill Nexus") ? title : `${title} | Skill Nexus`;
+  const fullTitle = title.includes("Taskmason") ? title : `${title} | Taskmason`;
   
   return (
     <Helmet>
