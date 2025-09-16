@@ -24,7 +24,7 @@ const Hero = () => {
   };
   
   return (
-    <section className="hero-section relative overflow-hidden transform-3d section-container">
+    <section className="hero-section relative overflow-hidden transform-3d section-container pt-20 md:pt-24">
       {/* Animated pattern background */}
       <div className="animated-pattern-container"></div>
       <div className="animated-pattern-overlay"></div>
@@ -35,7 +35,7 @@ const Hero = () => {
       {/* 3D Floating Shapes */}
       <FloatingShapes />
       
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto relative z-10 pt-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
           <ScrollReveal direction="left" className="w-full md:w-1/2 space-y-6">
             <Text3D as="h1" variant="glow" className="text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-2xl">
