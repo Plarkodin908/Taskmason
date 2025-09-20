@@ -57,7 +57,7 @@ interface UserProfileData {
 
 // Course interfaces
 interface Course {
-  purchases: import("c:/Users/Bellal/app;ctx/Taskmason/src/contexts/AuthContext").User;
+  purchases: any;
   id: string;
   title: string;
   description: string;
@@ -96,6 +96,7 @@ interface Chapter {
 
 // Ebook interfaces
 interface Ebook {
+  access?: string;
   id: string;
   title: string;
   description: string;

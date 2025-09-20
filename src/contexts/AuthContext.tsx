@@ -48,7 +48,7 @@ interface StrapiResponse<T> {
   meta?: Record<string, unknown>;
 }
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ shouldRedirect: boolean; redirectTo: string }>;
@@ -67,7 +67,7 @@ const isAuthError = (error: unknown): error is AuthError => {
   return typeof error === 'object' && error !== null && 'message' in error;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

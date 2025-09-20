@@ -155,10 +155,11 @@ const EbookDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <div className="container mx-auto px-4 py-8">
+    <>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        
+        <div className="container mx-auto px-4 py-8">
         <Button 
           onClick={() => navigate(-1)} 
           variant="outline"
@@ -421,10 +422,12 @@ const EbookDetail = () => {
         onClose={() => setIsCryptoModalOpen(false)}
         amount={ebook.price}
         currency="USDT"
-        creatorWalletAddress={ebook.author.walletAddress}
+        productId={ebook.id}
+        productType="ebook"
+        userId={user?.id || ''}
         onPaymentSuccess={handleCryptoPaymentSuccess}
       />
-    </div>
+    </>
   );
 };
 

@@ -105,4 +105,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       throw error;
     } finally {
       setIsLoading(false);
-    };
+    }
+  };
+
+  // Sign out function
+  const signOut = async () => {
+    setUser(null);
+    localStorage.removeItem('taskmasonUser');
+    localStorage.removeItem('taskmasonToken');
+    toast.success('Signed out successfully!');
+  };
+
+  // Update user function
+  const updateUser = async (userData: Partial<User>) => {
+    if (!user) return;
+    
+    const updatedUser = { ...user, ...userData };
+    setUser(updatedUser);
+    localStorage.setItem('taskmasonUser', JSON.stringify(updatedUser));
+  };
+
+  const contextValue: AuthContextType = {
+    user,
+    isLoading,
+    signIn,
+    signUp,
+    signOut,
+    upgradeSubscription: () => {},
+    submitVerification: async () => {},
+    updateUserAvatar: () => {},
+    updateUserCover: () => {},
+    updateUserProfile: updateUser,
+    sendPasswordResetEmail: async () => {},
+    resetPassword: async () => {}
+  };
+
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

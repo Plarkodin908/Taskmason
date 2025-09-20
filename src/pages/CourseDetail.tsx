@@ -17,7 +17,7 @@ const CourseDetail = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   // Use 'unknown' type instead of 'any' for better type safety
-  const [course, setCourse] = useState<unknown | null>(null);
+  const [course, setCourse] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasPurchased, setHasPurchased] = useState(false);
